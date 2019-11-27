@@ -10,51 +10,51 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
+
 /**
  *
- * @author antno
+ * @author Raffaele
  */
-public class FallingObstacles extends JPanel implements Runnable{
-        private final int B_WIDTH = 350;
-    private final int B_HEIGHT = 350;
-    private final int INIT_X = -40;
-    private final int INIT_Y = -40;
-    private final int DEL = 25;
-
-    private Image elem;
+public class Obstaclessss extends JPanel implements Runnable {
+    protected static final int B_WIDTH = 350;
+    protected static final int B_HEIGHT = 350;
+     private final int DEL = 3;
+    private Obstacle[] imageArray = new Obstacle[5];
     private Thread anim;
-    private int x, y;
+  
     
-    public FallingObstacles(){
-     initBoard();
-    }
-    
-    private void initBoard() {
-
+    public Obstaclessss() {
         setBackground(Color.BLUE);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
-
-        loadImage();
-
-        x = INIT_X;
-        y = INIT_Y;
+        for (int i = 0; i < imageArray.length; i++)
+            imageArray[i] = new Obstacle((i*50)*-1);
+     
     }
-    private void loadImage() {
-
-        ImageIcon im = new ImageIcon("src/sokoban/wall.png");
-        elem = im.getImage();
-    }
+    
+    
     @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        
+        for (int i = 0; i < imageArray.length; i++){
+        imageArray[i].drawObstacle(g);
+        Toolkit.getDefaultToolkit().sync();
+        }
+        
+    } 
+    
+   @Override
     public void addNotify() {
         super.addNotify();
 
         anim = new Thread(this);
         anim.start();
     }
-     @Override
+        
+        
+    @Override
     public void run() {
 
         long beforeTime, timeDiff, sleep;
@@ -62,7 +62,10 @@ public class FallingObstacles extends JPanel implements Runnable{
         beforeTime = System.currentTimeMillis();
         while (true) {
 
-           // cycle();
+        for (int i = 0; i < imageArray.length; i++){
+        imageArray[i].update();
+        
+        }
             repaint();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
@@ -75,10 +78,12 @@ public class FallingObstacles extends JPanel implements Runnable{
             try{
                 Thread.sleep(sleep);
             }catch(InterruptedException e){
-                System.out.println("error, mast");
+                String msg = String.format("Thread interrupted: %s", e.getMessage());
+                    JOptionPane.showMessageDialog(this, msg, "Error", 
+                    JOptionPane.ERROR_MESSAGE);
             }
+            beforeTime = System.currentTimeMillis();
         }
-    }
     
 }
-
+}

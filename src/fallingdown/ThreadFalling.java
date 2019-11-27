@@ -11,13 +11,16 @@ import javax.swing.*;
  * @author antno
  */
 public class ThreadFalling extends JFrame{
+    
+    
     public ThreadFalling(){
         initUi();
     }
+    
      private void initUi() {
         
-        //add(new Board());
-
+        add(new Obstaclessss());
+    
         setResizable(false);
         pack();
         
@@ -25,6 +28,8 @@ public class ThreadFalling extends JFrame{
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
     }
+     
+     
      public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
