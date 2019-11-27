@@ -16,7 +16,7 @@ public class ThreadFalling extends JFrame{
     }
      private void initUi() {
         
-        add(new Board());
+        //add(new Board());
 
         setResizable(false);
         pack();
