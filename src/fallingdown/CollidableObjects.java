@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package unisainvaders;
+package fallingdown;
+
+import java.awt.Rectangle;
 
 /**
  *
  * @author Raffaele
  */
-public class UnisaInvaders {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
-    }
-    
+public interface CollidableObjects {
+    public Rectangle getBounds();
 }
