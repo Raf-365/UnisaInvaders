@@ -18,15 +18,13 @@ public class ThreadFalling extends JFrame{
     }
     
      private void initUi() {
-        
-        add(new Obstaclessss());
-    
-        setResizable(false);
-        pack();
-        
-        setTitle("UnisaInvaders");    
+
+        add(new PepperJPanel());
+        setSize(1920, 1080);
+
+        setTitle("Application");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
     }
      
      
@@ -35,6 +33,7 @@ public class ThreadFalling extends JFrame{
         EventQueue.invokeLater(() -> {
             JFrame ex = new ThreadFalling();
             ex.setVisible(true);
+         
         });
     }
 }

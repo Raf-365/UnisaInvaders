@@ -5,98 +5,64 @@
  */
 package fallingdown;
 
-import java.awt.Color;
-import java.awt.Dimension;
+
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.Rectangle;
 import java.util.Random;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 /**
  *
  * @author antno
  */
-public class Obstacle extends JPanel/* implements Runnable*/{
-   /* private final int B_WIDTH = 350;
-    private final int B_HEIGHT = 350;
-    private final int INIT_X = 0;
-    private final int INIT_Y = -10;*/
-    
+public class Obstacle extends JPanel implements CollidableObjects{
     private ImageIcon image;
     private Image elem;
     private int x, y;
-    /*private final int DEL = 25;*/
-
-   /* private Image[] imageArray = new Obstacle[3];*/
-
-   
-    /*private Thread anim;*/
+    private final int y0;
+    protected boolean visible2;
     
     
     public Obstacle(int y){
-    image=new ImageIcon("src/sokoban/wall.png");
-    elem= image.getImage();
+    image=new ImageIcon("src/Resources/Books.png");
+    elem= image.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+    visible2 = true;
     x=generateRandom();
     this.y=y;
+    this.y0=y;
     }
+    
+    
+    
     
     private int generateRandom(){
     Random random = new Random();
-    return random.nextInt(Obstaclessss.B_WIDTH-20)+10;
+  
+    return random.nextInt(PepperJPanel.B_WIDTH-160)+80;
     }
     
-   /* private void initBoard() {
-
-        setBackground(Color.BLUE);
-        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
-
-        loadImage();
-
-        x = INIT_X;
-        y = INIT_Y;
-    }*/
-    
-    
-   /* private void loadImage() {
-
-        /*ImageIcon im = new ImageIcon("src/sokoban/wall.png");
-        elem = im.getImage();
-    } */
-    
-    
-    
-    /*@Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        drawObstacle(g);
-    }
-    */
-    /*private*/ public void drawObstacle(Graphics g) {
-
+ 
+    public void drawObstacle(Graphics g) {
+        
+        if(isVisibles()){
+            
         g.drawImage(elem, x, y, this);
-        /*Toolkit.getDefaultToolkit().sync();*/
+        
+        } else if (y<=0){
+            setVisibles(true);
+        }
+  
     }
      
-    
-   /* @Override
-    public void addNotify() {
-        super.addNotify();
+ private void cycle() {
 
-        anim = new Thread(this);
-        anim.start();
-    }*/
-    
-        private void cycle() {
 
-        //x += 1;
         y += 2;
 
-        if (y > Obstaclessss.B_HEIGHT) {
-
-            y = -10;
+        if (y > PepperJPanel.B_HEIGHT) {
+        
+            y =y0 ;
             x = generateRandom();
         }
     }
@@ -105,36 +71,24 @@ public class Obstacle extends JPanel/* implements Runnable*/{
             cycle();
     }
         
+    @Override
+        public Rectangle getBounds(){
+        return new Rectangle(x+15, y+15, 30, 30);
+        }
+        
+        
+    public void setVisibles (Boolean visible) { 
+        this.visible2 = visible; 
+    }
+    
+    public boolean isVisibles() {
+        return visible2;
+    }
+        
+
         }
     
-   /*  @Override
-    public void run() {
-
-        long beforeTime, timeDiff, sleep;
-
-        beforeTime = System.currentTimeMillis();
-        while (true) {
-
-            cycle();
-            repaint();
-
-            timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = DEL - timeDiff;//VERIFICO QUANTO CI METTONO CYCLE E REPAINT
-            //PER AVERE UN AGGIORNAMENTO COSTANTE DELLE COORDINATE
-
-            if (sleep < 0) {
-                sleep = 2;
-            }
-            try{
-                Thread.sleep(sleep);
-            }catch(InterruptedException e){
-                String msg = String.format("Thread interrupted: %s", e.getMessage());
-                    JOptionPane.showMessageDialog(this, msg, "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-            }
-            beforeTime = System.currentTimeMillis();
-        }
-    }*/
+  
     
 
 
