@@ -25,8 +25,8 @@ public class PepperJPanel extends JPanel implements Runnable {
     private Pepper pepper;
     private final int DELAY = 10;
     private Thread animator;
-    protected static final int B_WIDTH = 1920;
-    protected static final int B_HEIGHT = 1080;
+    protected static final int B_WIDTH = 1280;
+    protected static final int B_HEIGHT = 720;
     private Obstacle[] imageArray = new Obstacle[7];
 
 
@@ -77,6 +77,7 @@ public class PepperJPanel extends JPanel implements Runnable {
         imageArray[i].drawObstacle(g);
         Toolkit.getDefaultToolkit().sync();
         }
+       /* g2d.drawRect(40+70, 430+70, 75, 300);*/
         g2d.drawImage(pepper.getImage(), pepper.getX(), 
             pepper.getY(), this);
     }

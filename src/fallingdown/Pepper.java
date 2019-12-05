@@ -18,7 +18,7 @@ public class Pepper extends Observable implements CollidableObjects {
     private int dx;
     private int dy;
     private int x = 40;
-    private int y = 670;
+    private int y = 430;
     private int w;
     private int h;
     private Image image;
@@ -41,14 +41,14 @@ public class Pepper extends Observable implements CollidableObjects {
         
         ImageIcon ii = new ImageIcon("src/Resources/Pepper2.png");
         
-        image = ii.getImage().getScaledInstance(300, 400, Image.SCALE_SMOOTH); 
+        image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH); 
         
         w = image.getWidth(null);
         h = image.getHeight(null);
     }
 
     public void move() {        
-        if( (x+dx<=1690) && (x+dx >= -80)){
+        if( (x+dx<=1124) && (x+dx >= -60)){
         x += dx;
         }
         
@@ -108,7 +108,7 @@ public class Pepper extends Observable implements CollidableObjects {
     @Override
         public Rectangle getBounds() {
             
-        return new Rectangle(x+70, y+70, 150, 400);
+        return new Rectangle(x+70, y+70, 150, 300);
         
     }
 }
