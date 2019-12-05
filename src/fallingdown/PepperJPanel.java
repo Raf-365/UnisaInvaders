@@ -15,85 +15,103 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  *
  * @author stefa
  */
 public class PepperJPanel extends JPanel implements Runnable {
-    
+
     private Pepper pepper;
     private final int DELAY = 10;
     private Thread animator;
-    protected static final int B_WIDTH = 1920;
-    protected static final int B_HEIGHT = 1080;
+    protected static final int B_WIDTH = 1280;
+    protected static final int B_HEIGHT = 720;
     private Obstacle[] imageArray = new Obstacle[7];
 
-
-    
-    
-    
-    
     public PepperJPanel() {
         initBoard();
     }
 
     private void initBoard() {
-        
+
         addKeyListener(new TAdapter());
-	setFocusable(true);
+        setFocusable(true);
 
         pepper = new Pepper();
-        pepper.addObserver(new SoundPlayerObserver("collide.wav","check.wav"));
+        pepper.addObserver(new SoundPlayerObserver("collide.wav", "check.wav"));
         setBackground(Color.BLUE);
-   
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
-        for (int i = 0; i < imageArray.length; i++)
-            imageArray[i] = new Obstacle((i*70)*-1);
-        
+        for (int i = 0; i < imageArray.length; i++) {
+            imageArray[i] = new Obstacle((i * 70) * -1);
+        }
+
     }
-    
+
     @Override
     public void addNotify() {
         super.addNotify();
         animator = new Thread(this);
         animator.start();
-}
+    }
+
+    private void drawObjects(Graphics g) {
+
+        ArrayList<Missile> missileArray = pepper.getMissiles();
+        for (int i = 0; i < missileArray.size(); i++) {
+            Missile m = missileArray.get(i);
+            if (m.isVisible()) {
+                g.drawImage(m.getImage(), m.getX(), m.getY(), this);
+            }
+        }
+    }
 
     @Override
     public void paintComponent(Graphics g) {
-        
+
         super.paintComponent(g);
-        doDrawing(g); 
+        doDrawing(g);
+        drawObjects(g);
         Toolkit.getDefaultToolkit().sync();
     }
-    
+
     /*In the doDrawing() method, we draw Pepper with the drawImage() method. 
     We get the image and the coordinates from the sprite class. */
     private void doDrawing(Graphics g) {
-        
+
         Graphics2D g2d = (Graphics2D) g;
-        for (int i = 0; i < imageArray.length; i++){
-        imageArray[i].drawObstacle(g);
-        Toolkit.getDefaultToolkit().sync();
+      
+        for (int i = 0; i < imageArray.length; i++) {
+            imageArray[i].drawObstacle(g);
+            
+            Toolkit.getDefaultToolkit().sync();
         }
-        g2d.drawImage(pepper.getImage(), pepper.getX(), 
-            pepper.getY(), this);
+        g2d.drawImage(pepper.getImage(), pepper.getX(),
+                pepper.getY(), this);
     }
-    
-    
+
     /*We move the sprite and repaint the part of the board that has changed. 
     We use a small optimisation technique that repaints only the small area 
     of the window that actually changed. */
     private void step() {
-        
-        pepper.move();    
-        for (int i = 0; i < imageArray.length; i++){
-        imageArray[i].update();
-        checkCollisions();
+
+        pepper.move();
+        for (int i = 0; i < imageArray.length; i++) {
+            imageArray[i].update();
+            checkCollisions();
         }
-        repaint();     
-    }    
+        ArrayList<Missile> missilesArray = pepper.getMissiles();
+        for (int i = 0; i < missilesArray.size(); i++) {
+            Missile m = missilesArray.get(i);
+            if (m.isVisible() && m.getY() > 0) {
+                m.move();
+            } else {
+                pepper.deleteMissile(m);
+            }
+        }
+        repaint();
+    }
 
     private class TAdapter extends KeyAdapter {
 
@@ -109,22 +127,41 @@ public class PepperJPanel extends JPanel implements Runnable {
     }
 
     public void checkCollisions() {
-      
+
         Rectangle r3 = pepper.getBounds();
 
         for (int i = 0; i < 7; i++) {
             Rectangle r2 = imageArray[i].getBounds();
-           
-            if (r3.intersects(r2)) {
-                imageArray[i].setVisibles(false); 
-                if(!imageArray[i].getCheckCollis()){                              
-                pepper.setSt(1);
-                imageArray[i].setCheckCollis(true);
-                } 
-            } else{
-            imageArray[i].setCheckCollis(false);
+
+            if (r3.intersects(r2) && imageArray[i].isVisibles()) {
+
+                imageArray[i].setVisibles( false);
+                if (!imageArray[i].getCheckCollis()) {
+                    pepper.setSt(1);
+                    imageArray[i].setCheckCollis(true);
+                }
+
+            } else {
+                imageArray[i].setCheckCollis(false);
             }
 
+        }
+
+        ArrayList<Missile> missilesArray = pepper.getMissiles();
+
+        for (Missile m : missilesArray) {
+            Rectangle r33 = m.getBounds();
+
+            for (int i = 0; i < 7; i++) {
+                Rectangle r2 = imageArray[i].getBounds();
+
+                if (r33.intersects(r2)) {
+
+                    imageArray[i].setVisibles(false);
+
+                }
+
+            }
         }
     }
       
@@ -140,7 +177,7 @@ public class PepperJPanel extends JPanel implements Runnable {
         while (true) {
 
             step();
-            
+
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
 

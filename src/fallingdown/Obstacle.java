@@ -39,7 +39,7 @@ public class Obstacle extends JPanel implements CollidableObjects{
     
     public Obstacle(int y){
     image=new ImageIcon("src/Resources/Books.png");
-    elem= image.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+    elem= image.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
     visible2 = true;
     x=generateRandom();
     this.y=y;
