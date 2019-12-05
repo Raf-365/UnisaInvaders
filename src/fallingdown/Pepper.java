@@ -8,11 +8,12 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
+import java.util.Observable;
 /**
  *
  * @author stefa
  */
-public class Pepper implements CollidableObjects {
+public class Pepper extends Observable implements CollidableObjects {
 
     private int dx;
     private int dy;
@@ -21,9 +22,19 @@ public class Pepper implements CollidableObjects {
     private int w;
     private int h;
     private Image image;
+    private int st;
 
     public Pepper() {
         loadImage();
+    }
+    public int getSt() {
+        return st;
+    }
+
+    public void setSt(int st) {
+        this.st = st;
+         setChanged();
+        notifyObservers();
     }
 
     private void loadImage() {

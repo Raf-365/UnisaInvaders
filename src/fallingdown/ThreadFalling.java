@@ -22,18 +22,19 @@ public class ThreadFalling extends JFrame{
         add(new PepperJPanel());
         setSize(1920, 1080);
 
-        setTitle("Application");
+        setTitle("UnisaInvaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
      
      
-     public static void main(String[] args) {
+     public static void main(String[] args)  {
         
         EventQueue.invokeLater(() -> {
             JFrame ex = new ThreadFalling();
             ex.setVisible(true);
          
         });
+        
     }
 }
