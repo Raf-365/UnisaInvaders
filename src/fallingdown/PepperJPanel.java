@@ -20,7 +20,7 @@ import java.awt.event.KeyEvent;
  *
  * @author stefa
  */
-public class PepperJPanel extends JPanel implements Runnable{
+public class PepperJPanel extends JPanel implements Runnable {
     
     private Pepper pepper;
     private final int DELAY = 10;
@@ -28,6 +28,9 @@ public class PepperJPanel extends JPanel implements Runnable{
     protected static final int B_WIDTH = 1920;
     protected static final int B_HEIGHT = 1080;
     private Obstacle[] imageArray = new Obstacle[7];
+    
+
+    
     
     
     
@@ -41,6 +44,7 @@ public class PepperJPanel extends JPanel implements Runnable{
 	setFocusable(true);
 
         pepper = new Pepper();
+        pepper.addObserver(new SoundPlayerObserver("collide.wav","check.wav"));
         setBackground(Color.BLUE);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         for (int i = 0; i < imageArray.length; i++)
@@ -113,7 +117,7 @@ public class PepperJPanel extends JPanel implements Runnable{
             if (r3.intersects(r2)) {
                 
                 imageArray[i].setVisibles(false);
-              
+              pepper.setSt(1);
             }
 
         }
