@@ -49,8 +49,9 @@ public class Pepper extends Observable implements CollidableObjects {
     
     public void changeImage(int num){
         ImageIcon ii = new ImageIcon("src/resources/Pepper"+num+".png");
-        image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH);
-        image = ii.getImage();
+        
+        //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH);
+       image = ii.getImage();
     }
     
         
@@ -62,16 +63,17 @@ public class Pepper extends Observable implements CollidableObjects {
 
     private void loadImage() {
         
-        ImageIcon ii = new ImageIcon("src/Resources/Pepper2.png");
+        ImageIcon ii = new ImageIcon("src/Resources/Pepper20.png");
         
-        image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH); 
+        //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH); 
+        image = ii.getImage();
         stopFiring=false;
         w = image.getWidth(null);
         h = image.getHeight(null);
     }
 
     public void move() {        
-        if( (x+dx<=1124) && (x+dx >= -60)){
+        if( (x+dx<=1140) && (x+dx >= 15)){
         x += dx;
         }
         

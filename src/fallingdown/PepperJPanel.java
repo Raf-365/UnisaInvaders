@@ -81,7 +81,7 @@ public class PepperJPanel extends JPanel implements Runnable {
     private void doDrawing(Graphics g) {
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawRect(40+20, 430+10, 75,300);
+      
         for (int i = 0; i < imageArray.length; i++) {
             imageArray[i].drawObstacle(g);
             
@@ -133,9 +133,9 @@ public class PepperJPanel extends JPanel implements Runnable {
         for (int i = 0; i < 7; i++) {
             Rectangle r2 = imageArray[i].getBounds();
 
-            if (r3.intersects(r2)) {
+            if (r3.intersects(r2) && imageArray[i].isVisibles()) {
 
-                imageArray[i].setVisibles(false);
+                imageArray[i].setVisibles( false);
                 if (!imageArray[i].getCheckCollis()) {
                     pepper.setSt(1);
                     imageArray[i].setCheckCollis(true);
