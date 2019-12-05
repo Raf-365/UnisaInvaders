@@ -23,7 +23,7 @@ public class ThreadFalling extends JFrame{
         add(new PepperJPanel());
         setSize(1280, 720);
         this.setResizable(true);
-        setTitle("UnisaInvaders");
+        setTitle("UnisaInvader");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
