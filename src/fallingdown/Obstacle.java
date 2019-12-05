@@ -22,6 +22,19 @@ public class Obstacle extends JPanel implements CollidableObjects{
     private int x, y;
     private final int y0;
     protected boolean visible2;
+    private boolean checkCollis;
+
+    public boolean getCheckCollis() {
+        return checkCollis;
+    }
+
+ 
+
+    public void setCheckCollis(boolean checkCollis) {
+        this.checkCollis = checkCollis;
+    }
+    
+    
     
     
     public Obstacle(int y){
@@ -31,6 +44,7 @@ public class Obstacle extends JPanel implements CollidableObjects{
     x=generateRandom();
     this.y=y;
     this.y0=y;
+    checkCollis=false;
     }
     
     

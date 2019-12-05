@@ -28,7 +28,7 @@ public class PepperJPanel extends JPanel implements Runnable {
     protected static final int B_WIDTH = 1920;
     protected static final int B_HEIGHT = 1080;
     private Obstacle[] imageArray = new Obstacle[7];
-    
+
 
     
     
@@ -46,6 +46,7 @@ public class PepperJPanel extends JPanel implements Runnable {
         pepper = new Pepper();
         pepper.addObserver(new SoundPlayerObserver("collide.wav","check.wav"));
         setBackground(Color.BLUE);
+   
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         for (int i = 0; i < imageArray.length; i++)
             imageArray[i] = new Obstacle((i*70)*-1);
@@ -113,11 +114,15 @@ public class PepperJPanel extends JPanel implements Runnable {
 
         for (int i = 0; i < 7; i++) {
             Rectangle r2 = imageArray[i].getBounds();
-             
+           
             if (r3.intersects(r2)) {
-                
-                imageArray[i].setVisibles(false);
-              pepper.setSt(1);
+                imageArray[i].setVisibles(false); 
+                if(!imageArray[i].getCheckCollis()){                              
+                pepper.setSt(1);
+                imageArray[i].setCheckCollis(true);
+                } 
+            } else{
+            imageArray[i].setCheckCollis(false);
             }
 
         }
