@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 /**
  *
- * @author antno
+ * 
  */
 public class Obstacle extends JPanel implements CollidableObjects{
     private ImageIcon image;

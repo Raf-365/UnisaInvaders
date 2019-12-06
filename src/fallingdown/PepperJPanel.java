@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author stefa
+ * 
  */
 public class PepperJPanel extends JPanel implements Runnable {
 
@@ -40,7 +40,7 @@ public class PepperJPanel extends JPanel implements Runnable {
         setFocusable(true);
 
         pepper = new Pepper();
-        pepper.addObserver(new SoundPlayerObserver("collide.wav", "check.wav"));
+        pepper.addObserver(new SoundPlayerObserver("collide.wav", "check.wav","shot.wav","splat.wav"));
         setBackground(Color.BLUE);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         for (int i = 0; i < imageArray.length; i++) {
@@ -156,9 +156,9 @@ public class PepperJPanel extends JPanel implements Runnable {
                 Rectangle r2 = imageArray[i].getBounds();
 
                 if (r33.intersects(r2)) {
-
+                    
                     imageArray[i].setVisibles(false);
-
+                    pepper.setSt(4);
                 }
 
             }

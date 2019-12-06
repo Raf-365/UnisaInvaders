@@ -8,7 +8,7 @@ import java.awt.EventQueue;
 import javax.swing.*;
 /**
  *
- * @author antno
+
  */
 public class ThreadFalling extends JFrame{
     

@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author stefa
+ *
  */
 public class Missile {
     

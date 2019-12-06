@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import java.util.Observable;
 /**
  *
- * @author stefa
+ * 
  */
 public class Pepper extends Observable implements CollidableObjects {
 
@@ -57,7 +57,7 @@ public class Pepper extends Observable implements CollidableObjects {
         
     public void setSt(int st) {
         this.st = st;
-         setChanged();
+        setChanged();
         notifyObservers();
     }
 
@@ -117,6 +117,7 @@ public class Pepper extends Observable implements CollidableObjects {
         if (key == KeyEvent.VK_SPACE && !stopFiring){ 
             changeImage(10);
             fire(); 
+            setSt(3);
             stopFiring=true;
         }
 
