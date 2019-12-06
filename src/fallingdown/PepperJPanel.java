@@ -9,6 +9,8 @@ import fallingdown.Pepper;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -26,9 +28,14 @@ public class PepperJPanel extends JPanel implements Runnable {
     private Pepper pepper;
     private final int DELAY = 10;
     private Thread animator;
-    protected static final int B_WIDTH = 1280;
-    protected static final int B_HEIGHT = 720;
+    protected static final int B_WIDTH = ThreadFalling.MAX_X;
+    protected static final int B_HEIGHT = ThreadFalling.MAX_Y;
     private Obstacle[] imageArray = new Obstacle[7];
+    private boolean ingame;
+    private JProgressBar healthBar;
+    private Font font1, font2;
+    private JLabel healthLabel;
+    
 
     public PepperJPanel() {
         initBoard();
@@ -38,7 +45,8 @@ public class PepperJPanel extends JPanel implements Runnable {
 
         addKeyListener(new TAdapter());
         setFocusable(true);
-
+        ingame = true;
+        graphicsSetup();
         pepper = new Pepper();
         pepper.addObserver(new SoundPlayerObserver("collide.wav", "check.wav","shot.wav","splat.wav"));
         setBackground(Color.BLUE);
@@ -49,6 +57,28 @@ public class PepperJPanel extends JPanel implements Runnable {
 
     }
 
+    private void graphicsSetup(){
+        font1 = new Font("Helvetica", Font.BOLD, 20);
+        font2 = new Font("Helvetica", Font.BOLD, 30);    
+        
+        healthLabel = new JLabel("HEALTH BAR");
+        healthLabel.setFont(font1);
+        healthLabel.setForeground(Color.white);
+        healthLabel.setBounds(5, 5, 200, 30);
+        
+        healthBar=new JProgressBar(0, 5);
+        healthBar.setStringPainted(true);
+        healthBar.setForeground(Color.RED);
+        //healthBar.setString(pepper.getHealth().toString());        
+        healthBar.setBounds(5, 35, 130, 40);
+        healthBar.setValue(pepper.getHealth());
+        healthBar.setFont(font2);
+        
+        add(healthLabel);
+        add(healthBar);
+
+    }
+    
     @Override
     public void addNotify() {
         super.addNotify();
@@ -69,11 +99,29 @@ public class PepperJPanel extends JPanel implements Runnable {
 
     @Override
     public void paintComponent(Graphics g) {
+        
+        if (ingame) {
+            super.paintComponent(g);
+            doDrawing(g);
+            drawObjects(g);
+            Toolkit.getDefaultToolkit().sync();
+        } else {
+            drawGameOver(g);
+        }
+    }
+    
+    
+    
+    private void drawGameOver(Graphics g){       
 
-        super.paintComponent(g);
-        doDrawing(g);
-        drawObjects(g);
-        Toolkit.getDefaultToolkit().sync();
+        String msg = "Health = 0, 4Today the Game is Over!";
+        FontMetrics fm = getFontMetrics(font2);
+
+        g.setColor(Color.white);
+        g.setFont(font2);
+        g.drawString(msg, (ThreadFalling.MAX_X - fm.stringWidth(msg)) / 2,
+                ThreadFalling.MAX_Y / 2);    
+        
     }
 
     /*In the doDrawing() method, we draw Pepper with the drawImage() method. 
@@ -158,7 +206,7 @@ public class PepperJPanel extends JPanel implements Runnable {
                 if (r33.intersects(r2)) {
                     
                     imageArray[i].setVisibles(false);
-                    pepper.setSt(4);
+                    /*pepper.setSt(4);*/ /*DA SISTEMARE*/
                 }
 
             }
@@ -174,7 +222,7 @@ public class PepperJPanel extends JPanel implements Runnable {
 
         beforeTime = System.currentTimeMillis();
 
-        while (true) {
+        while (ingame) {
 
             step();
 

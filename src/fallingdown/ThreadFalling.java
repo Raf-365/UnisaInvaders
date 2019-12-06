@@ -12,7 +12,9 @@ import javax.swing.*;
  */
 public class ThreadFalling extends JFrame{
     
-    
+   public static final int MAX_X=1280, MAX_Y=720;
+   
+   
     public ThreadFalling(){
         initUi();
     }
@@ -21,7 +23,7 @@ public class ThreadFalling extends JFrame{
          
          
         add(new PepperJPanel());
-        setSize(1280, 720);
+        setSize(MAX_X, MAX_Y);
         this.setResizable(true);
         setTitle("UnisaInvader");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

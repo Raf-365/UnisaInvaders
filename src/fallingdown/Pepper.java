@@ -27,6 +27,8 @@ public class Pepper extends Observable implements CollidableObjects {
     private Integer health;
     private ArrayList<Missile> missilesArray;
     private boolean  stopFiring;
+    private static final int  HEALTH_MAX=5;
+
 
     public Pepper() {
         loadImage();
@@ -46,7 +48,22 @@ public class Pepper extends Observable implements CollidableObjects {
         missilesArray.remove(m);
     }
     
+    public Integer getHealth() {return health;}
     
+    
+    public void updateHealth(int value) {health+=value;}
+    
+    
+    
+    public boolean isAlive(){
+        if(health == 0)
+            return false;
+        else
+            return true;
+    }
+        
+        
+        
     public void changeImage(int num){
         ImageIcon ii = new ImageIcon("src/resources/Pepper"+num+".png");
         
@@ -68,6 +85,7 @@ public class Pepper extends Observable implements CollidableObjects {
         //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH); 
         image = ii.getImage();
         stopFiring=false;
+        health=HEALTH_MAX;
         w = image.getWidth(null);
         h = image.getHeight(null);
     }
