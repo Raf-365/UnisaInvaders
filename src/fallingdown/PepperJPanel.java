@@ -31,11 +31,13 @@ public class PepperJPanel extends JPanel implements Runnable {
     protected static final int B_WIDTH = ThreadFalling.MAX_X;
     protected static final int B_HEIGHT = ThreadFalling.MAX_Y;
     private Obstacle[] imageArray = new Obstacle[7];
-    private boolean ingame;
+    private static boolean ingame;
     private JProgressBar healthBar;
     private Font font1, font2;
     private JLabel healthLabel;
-    
+    public static boolean getIngame(){
+        return ingame;
+    }
 
     public PepperJPanel() {
         initBoard();
@@ -46,9 +48,11 @@ public class PepperJPanel extends JPanel implements Runnable {
         addKeyListener(new TAdapter());
         setFocusable(true);
         ingame = true;
+         pepper = new Pepper();
         graphicsSetup();
-        pepper = new Pepper();
+       
         pepper.addObserver(new SoundPlayerObserver("collide.wav", "check.wav","shot.wav","splat.wav"));
+        pepper.addObserver(new UpdateHealthBarObserver(healthBar));
         setBackground(Color.BLUE);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         for (int i = 0; i < imageArray.length; i++) {
@@ -69,7 +73,7 @@ public class PepperJPanel extends JPanel implements Runnable {
         healthBar=new JProgressBar(0, 5);
         healthBar.setStringPainted(true);
         healthBar.setForeground(Color.RED);
-        //healthBar.setString(pepper.getHealth().toString());        
+        healthBar.setString(Integer.toString(pepper.getHealth()));        
         healthBar.setBounds(5, 35, 130, 40);
         healthBar.setValue(pepper.getHealth());
         healthBar.setFont(font2);
@@ -182,13 +186,16 @@ public class PepperJPanel extends JPanel implements Runnable {
             Rectangle r2 = imageArray[i].getBounds();
 
             if (r3.intersects(r2) && imageArray[i].isVisibles()) {
-
+             pepper.updateHealth(Obstacle.getDamage());
                 imageArray[i].setVisibles( false);
                 if (!imageArray[i].getCheckCollis()) {
                     pepper.setSt(1);
                     imageArray[i].setCheckCollis(true);
+                    
                 }
-
+                 if(!pepper.isAlive()){
+                  ingame=false;
+                  }
             } else {
                 imageArray[i].setCheckCollis(false);
             }
@@ -206,7 +213,7 @@ public class PepperJPanel extends JPanel implements Runnable {
                 if (r33.intersects(r2)) {
                     
                     imageArray[i].setVisibles(false);
-                    /*pepper.setSt(4);*/ /*DA SISTEMARE*/
+                    pepper.setSt(4); //DA SISTEMARE
                 }
 
             }

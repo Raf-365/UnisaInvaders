@@ -23,6 +23,7 @@ public class Obstacle extends JPanel implements CollidableObjects{
     private final int y0;
     protected boolean visible2;
     private boolean checkCollis;
+    private static final int DAMAGEVALUE=-1;
 
     public boolean getCheckCollis() {
         return checkCollis;
@@ -34,7 +35,9 @@ public class Obstacle extends JPanel implements CollidableObjects{
         this.checkCollis = checkCollis;
     }
     
-    
+    public static int getDamage(){
+        return DAMAGEVALUE;
+    }
     
     
     public Obstacle(int y){

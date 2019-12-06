@@ -35,14 +35,23 @@ public class SoundPlayerObserver implements Observer {
     @Override
     public void update(Observable subject, Object arg) {
         Pepper ale = (Pepper) subject;
-        if (ale.getSt() == 1) {
-            clip.play();
-        } else if (ale.getSt() == 2) {
-            clip1.play();
-        } else if (ale.getSt() == 3){
-            clip2.play();
-        } else if (ale.getSt() == 4){
-            clip3.play();
+        if(PepperJPanel.getIngame()){
+        switch (ale.getSt()) {
+            case 1:
+                clip.play();
+                break;
+            case 2:
+                clip1.play();
+                break;
+            case 3:
+                clip2.play();
+                break;
+            case 4:
+                clip3.play();
+                break;
+            default:
+                break;
         }
+    }
     }
 }

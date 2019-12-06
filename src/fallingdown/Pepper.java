@@ -51,7 +51,9 @@ public class Pepper extends Observable implements CollidableObjects {
     public Integer getHealth() {return health;}
     
     
-    public void updateHealth(int value) {health+=value;}
+    public void updateHealth(int value) {
+        health+=value;
+    }
     
     
     
@@ -73,6 +75,7 @@ public class Pepper extends Observable implements CollidableObjects {
     
         
     public void setSt(int st) {
+       
         this.st = st;
         setChanged();
         notifyObservers();
