@@ -5,6 +5,8 @@
  */
 package unisainvaders;
 
+import java.awt.*;
+
 /**
  *
  * @author Raffaele
@@ -17,5 +19,4 @@ public class UnisaInvaders {
     public static void main(String[] args) {
         System.out.print("Hello Unisa!");
     }
-    
 }
