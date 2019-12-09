@@ -18,8 +18,8 @@ public class Pepper extends Observable implements CollidableObjects {
 
     private int dx;
     private int dy;
-    private int x = 40;
-    private int y = 430;
+    private int x;
+    private int y;
     private int w;
     private int h;
     private Image image;
@@ -29,11 +29,27 @@ public class Pepper extends Observable implements CollidableObjects {
     private boolean  stopFiring;
     private static final int  HEALTH_MAX=5;
 
-
+    private static int INF_BORDER = 60;
+    
     public Pepper() {
         loadImage();
+        x = (ThreadFalling.MAX_X-w)/2;
+        y = ThreadFalling.MAX_Y-h-INF_BORDER;
         missilesArray = new ArrayList<>();
     }
+    
+    private void loadImage() {
+        
+        ImageIcon ii = new ImageIcon("src/Resources/Pepper20.png");
+        
+        //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH); 
+        image = ii.getImage();
+        stopFiring=false;
+        health=HEALTH_MAX;
+        w = image.getWidth(null);
+        h = image.getHeight(null);
+    }
+    
     public int getSt() {
         return st;
     }
@@ -62,9 +78,7 @@ public class Pepper extends Observable implements CollidableObjects {
             return false;
         else
             return true;
-    }
-        
-        
+    }       
         
     public void changeImage(int num){
         ImageIcon ii = new ImageIcon("src/resources/Pepper"+num+".png");
@@ -74,30 +88,15 @@ public class Pepper extends Observable implements CollidableObjects {
     }
     
         
-    public void setSt(int st) {
-       
+    public void setSt(int st) {       
         this.st = st;
         setChanged();
         notifyObservers();
     }
 
-    private void loadImage() {
-        
-        ImageIcon ii = new ImageIcon("src/Resources/Pepper20.png");
-        
-        //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH); 
-        image = ii.getImage();
-        stopFiring=false;
-        health=HEALTH_MAX;
-        w = image.getWidth(null);
-        h = image.getHeight(null);
-    }
-
     public void move() {        
-        if( (x+dx<=1140) && (x+dx >= 15)){
-        x += dx;
-        }
-        
+        if( (x+dx<=ThreadFalling.MAX_X-w-20) && (x+dx >= 5))
+            x += dx;       
         y += dy;
     }
 
@@ -164,9 +163,7 @@ public class Pepper extends Observable implements CollidableObjects {
     }
     
     @Override
-        public Rectangle getBounds() {
-            
-        return new Rectangle(x+40, y+30, 150, 300);
-        
+        public Rectangle getBounds() {        
+            return new Rectangle(x, y, w, h);       
     }
 }

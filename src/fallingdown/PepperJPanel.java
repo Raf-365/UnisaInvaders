@@ -9,6 +9,7 @@ import fallingdown.Pepper;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 public class PepperJPanel extends JPanel implements Runnable {
 
     private Pepper pepper;
-    private final int DELAY = 10;
+    private final int DELAY = 10, MALUS=-10, BONUS=1;
     private Thread animator;
     protected static final int B_WIDTH = ThreadFalling.MAX_X;
     protected static final int B_HEIGHT = ThreadFalling.MAX_Y;
@@ -34,7 +35,9 @@ public class PepperJPanel extends JPanel implements Runnable {
     private static boolean ingame;
     private JProgressBar healthBar;
     private Font font1, font2;
-    private JLabel healthLabel;
+    private JLabel healthLabel, punteggioLabel, bonusLabel, malusLabel;
+    private float punteggio;
+    private int punteggioBonus, punteggioMalus;
     public static boolean getIngame(){
         return ingame;
     }
@@ -48,22 +51,39 @@ public class PepperJPanel extends JPanel implements Runnable {
         addKeyListener(new TAdapter());
         setFocusable(true);
         ingame = true;
-         pepper = new Pepper();
-        graphicsSetup();
-       
+        pepper = new Pepper();
+        punteggio = 0;
+        punteggioBonus=0;
+        punteggioMalus=0;
+        graphicsSetup();       
         pepper.addObserver(new SoundPlayerObserver("collide.wav", "check.wav","shot.wav","splat.wav"));
         pepper.addObserver(new UpdateHealthBarObserver(healthBar));
-        setBackground(Color.BLUE);
+        setBackground(Color.BLACK);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         for (int i = 0; i < imageArray.length; i++) {
             imageArray[i] = new Obstacle((i * 70) * -1);
         }
-
     }
 
     private void graphicsSetup(){
+        this.setLayout(null);
         font1 = new Font("Helvetica", Font.BOLD, 20);
-        font2 = new Font("Helvetica", Font.BOLD, 30);    
+        font2 = new Font("Helvetica", Font.BOLD, 30);
+        
+        punteggioLabel = new JLabel("Punteggio: "+punteggio);
+        punteggioLabel.setFont(font1);
+        punteggioLabel.setForeground(Color.yellow);
+        punteggioLabel.setBounds(5, 90, 200, 30);
+        
+        bonusLabel = new JLabel("Bonus: "+punteggioBonus);
+        bonusLabel.setFont(font1);
+        bonusLabel.setForeground(Color.yellow);
+        bonusLabel.setBounds(5, 130, 200, 30);
+        
+        malusLabel = new JLabel("Malus: "+punteggioMalus);
+        malusLabel.setFont(font1);
+        malusLabel.setForeground(Color.yellow);
+        malusLabel.setBounds(5, 170, 200, 30);
         
         healthLabel = new JLabel("HEALTH BAR");
         healthLabel.setFont(font1);
@@ -80,8 +100,12 @@ public class PepperJPanel extends JPanel implements Runnable {
         
         add(healthLabel);
         add(healthBar);
-
+        add(punteggioLabel);
+        add(malusLabel);
+        add(bonusLabel);
     }
+    
+    public Pepper getPepper(){return pepper;}
     
     @Override
     public void addNotify() {
@@ -112,13 +136,11 @@ public class PepperJPanel extends JPanel implements Runnable {
         } else {
             drawGameOver(g);
         }
-    }
-    
-    
+    }    
     
     private void drawGameOver(Graphics g){       
 
-        String msg = "Health = 0, 4Today the Game is Over!";
+        String msg = "Game over, you're dead, for today is enough, you can stop here!";
         FontMetrics fm = getFontMetrics(font2);
 
         g.setColor(Color.white);
@@ -186,43 +208,45 @@ public class PepperJPanel extends JPanel implements Runnable {
             Rectangle r2 = imageArray[i].getBounds();
 
             if (r3.intersects(r2) && imageArray[i].isVisibles()) {
-             pepper.updateHealth(Obstacle.getDamage());
+                pepper.updateHealth(Obstacle.getDamage());
+                punteggio+=MALUS;
+                punteggioMalus+=MALUS;
                 imageArray[i].setVisibles( false);
-                if (!imageArray[i].getCheckCollis()) {
+                if (!imageArray[i].getCheckCollision()) {
                     pepper.setSt(1);
-                    imageArray[i].setCheckCollis(true);
-                    
+                    imageArray[i].setCheckCollision(true);                    
                 }
                  if(!pepper.isAlive()){
-                  ingame=false;
-                  }
+                    ingame=false;
+                }
             } else {
-                imageArray[i].setCheckCollis(false);
+                imageArray[i].setCheckCollision(false);
             }
 
         }
 
         ArrayList<Missile> missilesArray = pepper.getMissiles();
 
-        for (Missile m : missilesArray) {
-            Rectangle r33 = m.getBounds();
+        for (int j=0; j<missilesArray.size(); j++) {
+            Rectangle r33 = missilesArray.get(j).getBounds();
 
             for (int i = 0; i < 7; i++) {
                 Rectangle r2 = imageArray[i].getBounds();
 
-                if (r33.intersects(r2)) {
-                    
+                if (imageArray[i].isVisibles() && r33.intersects(r2)) {                    
                     imageArray[i].setVisibles(false);
-                    pepper.setSt(4); //DA SISTEMARE
+                    missilesArray.get(j).setVisible(false);
+                    punteggioBonus += BONUS;
+                    punteggio += BONUS;
+                    
+                    //pepper.setSt(4); //DA SISTEMARE
                 }
-
             }
+            
         }
-    }
-      
+    }     
     
-    
-     @Override
+    @Override
     public void run() {
 
         long beforeTime, timeDiff, sleep;
@@ -230,7 +254,20 @@ public class PepperJPanel extends JPanel implements Runnable {
         beforeTime = System.currentTimeMillis();
 
         while (ingame) {
-
+            
+            punteggio += 0.01;
+            EventQueue.invokeLater(() -> {
+                punteggioLabel.setText("Punteggio: "+(int)punteggio);
+            });
+            
+            EventQueue.invokeLater(() -> {
+                malusLabel.setText("Malus: "+ punteggioMalus);
+            });
+            
+            EventQueue.invokeLater(() -> {
+                bonusLabel.setText("Bonus: "+punteggioBonus);
+            });
+            
             step();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
@@ -244,13 +281,13 @@ public class PepperJPanel extends JPanel implements Runnable {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {
                 
-                String msg = String.format("Thread interrupted: %s", e.getMessage());
-                
+                String msg = String.format("Thread interrupted: %s", e.getMessage());                
                 JOptionPane.showMessageDialog(this, msg, "Error", 
                     JOptionPane.ERROR_MESSAGE);
             }
 
             beforeTime = System.currentTimeMillis();
         }
+        
     }
 }

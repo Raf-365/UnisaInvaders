@@ -19,79 +19,71 @@ import javax.swing.JPanel;
 public class Obstacle extends JPanel implements CollidableObjects{
     private ImageIcon image;
     private Image elem;
-    private int x, y;
+    private int x, y, w, h;
     private final int y0;
     protected boolean visible2;
     private boolean checkCollis;
-    private static final int DAMAGEVALUE=-1;
+    private static final int DAMAGE_VALUE=-1, OBSTACLE_SCALE=50, OBSTACLE_SPEED=3;   
+    
 
-    public boolean getCheckCollis() {
+    public Obstacle(int y){
+        image=new ImageIcon("src/Resources/Books.png");
+        elem= image.getImage().getScaledInstance(OBSTACLE_SCALE, OBSTACLE_SCALE, Image.SCALE_SMOOTH);
+        
+        //w = elem.getWidth(null);
+        //h = elem.getHeight(null);
+        
+        visible2 = true;
+        x=generateRandom();
+        this.y=y;
+        this.y0=y;
+        checkCollis=false;
+    }
+    
+    public boolean getCheckCollision() {
         return checkCollis;
     }
-
  
 
-    public void setCheckCollis(boolean checkCollis) {
+    public void setCheckCollision(boolean checkCollis) {
         this.checkCollis = checkCollis;
     }
     
     public static int getDamage(){
-        return DAMAGEVALUE;
-    }
-    
-    
-    public Obstacle(int y){
-    image=new ImageIcon("src/Resources/Books.png");
-    elem= image.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-    visible2 = true;
-    x=generateRandom();
-    this.y=y;
-    this.y0=y;
-    checkCollis=false;
-    }
-    
-    
-    
+        return DAMAGE_VALUE;
+    }     
     
     private int generateRandom(){
-    Random random = new Random();
-  
-    return random.nextInt(PepperJPanel.B_WIDTH-160)+80;
+        Random random = new Random();
+        return random.nextInt(PepperJPanel.B_WIDTH-160)+80;
     }
     
  
     public void drawObstacle(Graphics g) {
         
-        if(isVisibles()){
-            
-        g.drawImage(elem, x, y, this);
-        
-        } else if (y<=0){
-            setVisibles(true);
-        }
-  
+        if(isVisibles())            
+            g.drawImage(elem, x, y, this);        
+        else if (y<=0)
+            setVisibles(true);          
     }
      
- private void cycle() {
+    private void cycle() {
+        y += OBSTACLE_SPEED;
 
-
-        y += 2;
-
-        if (y > PepperJPanel.B_HEIGHT) {
-        
+        if (y > PepperJPanel.B_HEIGHT) {        
             y =y0 ;
             x = generateRandom();
         }
     }
     
-        public void update(){
+    public void update(){
             cycle();
     }
         
     @Override
-        public Rectangle getBounds(){
-        return new Rectangle(x+15, y+15, 30, 30);
-        }
+    public Rectangle getBounds(){
+        return new Rectangle(x, y, 30, 30);
+    }
         
         
     public void setVisibles (Boolean visible) { 
@@ -102,8 +94,7 @@ public class Obstacle extends JPanel implements CollidableObjects{
         return visible2;
     }
         
-
-        }
+}
     
   
     

@@ -4,30 +4,33 @@
  * and open the template in the editor.
  */
 package fallingdown;
+
 import java.util.*;
 import javax.swing.*;
+
 /**
  *
  * @author antno
  */
-public class UpdateHealthBarObserver implements Observer{
+public class UpdateHealthBarObserver implements Observer {
+
     private JProgressBar healthBar;
 
     public UpdateHealthBarObserver(JProgressBar healthBar) {
         this.healthBar = healthBar;
     }
-    
-     @Override
+
+    @Override
     public void update(Observable subject, Object arg) {
-        Pepper ale = (Pepper) subject;
-        if(ale.getSt()==1){
+        Pepper pepper = (Pepper) subject;
+        if (pepper.getSt() == 1) {
             SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        healthBar.setValue(ale.getHealth());
-                        healthBar.setString(ale.getHealth().toString());
-                    }
-                });
+                public void run() {
+                    healthBar.setValue(pepper.getHealth());
+                    healthBar.setString(pepper.getHealth().toString());
+                }
+            });
         }
-        
+
     }
 }

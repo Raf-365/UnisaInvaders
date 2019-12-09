@@ -25,7 +25,7 @@ public class Missile {
     private Image image;
     private boolean visible;
     
-    private static int DISTANCE_FROM_PEPPER = 5, MISSILE_SPEED=2;
+    private static int DISTANCE_FROM_PEPPER = 5, MISSILE_SPEED=10;
     
     public Missile(int x, int y){
         loadImage();

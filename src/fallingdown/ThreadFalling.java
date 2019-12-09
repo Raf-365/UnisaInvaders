@@ -12,32 +12,33 @@ import javax.swing.*;
  */
 public class ThreadFalling extends JFrame{
     
-   public static final int MAX_X=1280, MAX_Y=720;
-   
+   public static final int MAX_X=1480, MAX_Y=920;
+   public static boolean flagBottone=false;
+   public PepperJPanel mainPanel;
    
     public ThreadFalling(){
         initUi();
     }
     
      private void initUi() {
-         
-         
-        add(new PepperJPanel());
+        mainPanel = new PepperJPanel();
+        add(mainPanel);
         setSize(MAX_X, MAX_Y);
-        this.setResizable(true);
+        this.setResizable(false);
         setTitle("UnisaInvader");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
      
      
-     public static void main(String[] args)  {
+    public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
             JFrame ex = new ThreadFalling();
             ex.setVisible(true);
-         
         });
+        
         
     }
 }
+ 
