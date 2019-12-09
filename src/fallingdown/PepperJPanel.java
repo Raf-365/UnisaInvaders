@@ -29,8 +29,8 @@ public class PepperJPanel extends JPanel implements Runnable {
     private Pepper pepper;
     private final int DELAY = 10, MALUS=-10, BONUS=1;
     private Thread animator;
-    protected static final int B_WIDTH = ThreadFalling.MAX_X;
-    protected static final int B_HEIGHT = ThreadFalling.MAX_Y;
+    public static final int B_WIDTH = ThreadFalling.MAX_X;
+    public static final int B_HEIGHT = ThreadFalling.MAX_Y;
     private Obstacle[] imageArray = new Obstacle[7];
     private static boolean ingame;
     private JProgressBar healthBar;
