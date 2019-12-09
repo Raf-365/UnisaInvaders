@@ -13,31 +13,17 @@ import javax.swing.*;
  * @author stefa
  */
 public abstract class Entity {
-    protected int x, y, w, h;
+    protected int x, y;
+    
     protected boolean visible;
-    protected Image image;
 
-    public Entity(int x, int y, boolean visible, String path) {
+    public Entity(int x, int y, boolean visible) {
         this.x = x;
         this.y = y;
         this.visible = visible;
-        
-        loadImage(path);
-        
-        
-       
     }
     
    
-    
-    
-    
-   public void loadImage(String path){
-        ImageIcon imageIcon = new ImageIcon(path);
-        image = imageIcon.getImage();  
-        w = image.getWidth(null);
-        h = image.getHeight(null);
-   }
     
     public int getX(){return this.x;}
     
@@ -51,12 +37,10 @@ public abstract class Entity {
     
     public boolean isVisible(){return visible;}
     
-    public Rectangle getBounds(){return new Rectangle(x, y, w, h);}
+    //public Rectangle getBounds(){return new Rectangle(x, y, w, h);}
     
-    public int getWidth() {return w;}
+    //public int getWidth() {return w;}
     
-    public int getHeight() {return h;}
-    
-    public Image getImage(){return image;}
+    //public int getHeight() {return h;}
     
 }

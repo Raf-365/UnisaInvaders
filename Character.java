@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package entities;
+import fallingdown.Missile;
 import java.util.*;
 /**
  *
@@ -11,13 +12,13 @@ import java.util.*;
  */
 public abstract class Character extends Entity{
     protected int health;
-    //protected ArrayList<Missile> missilesArray;
     protected int dx=7;
-    
-    public Character(int x, int y, String path, int health) {
-        super(x, y, true, path);
+    protected ArrayList<Missile> missilesArray;
+
+    public Character(int x, int y, int health) {
+        super(x, y, true);
         this.health = health;
-        //this.missilesArray = new ArrayList<Missile>();
+        this.missilesArray = new ArrayList<Missile>();
     }
     
     public int getDx(){
@@ -28,6 +29,12 @@ public abstract class Character extends Entity{
     
     public void updateHealth(int value) {
         health+=value;
+    }
+      public boolean isAlive(){
+        if(health == 0)
+            return false;
+        else
+            return true;
     }
     
 }

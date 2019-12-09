@@ -59,13 +59,7 @@ public class Obstacle extends JPanel implements CollidableObjects{
     }
     
  
-    public void drawObstacle(Graphics g) {
-        
-        if(isVisibles())            
-            g.drawImage(elem, x, y, this);        
-        else if (y<=0)
-            setVisibles(true);          
-    }
+    
      
     private void cycle() {
         y += OBSTACLE_SPEED;
