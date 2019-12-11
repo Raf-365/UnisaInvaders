@@ -49,9 +49,9 @@ public class BookControllerIT {
         BookController instance = new BookController();
         Book[] arrayBooks = instance.getBooks();
         Book first = arrayBooks[0];
-        first.setY(GameFrame.MAX_Y-3);
+        first.setY(GameFrame.MAX_Y-(Book.BOOK_SPEED-1));
         //Book second = arrayBooks[6];
-        System.out.println("first:"+first.getX()+","+first.getY());
+        System.out.println("position before test:"+first.getX()+","+first.getY());
         instance.update();
         assertEquals(first.getY0(),first.getY());
         
