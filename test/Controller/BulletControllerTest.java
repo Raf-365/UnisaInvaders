@@ -39,7 +39,7 @@ public class BulletControllerTest {
         bc.getBulletsArray().add(b);
         int before = bc.getBulletsArray().get(0).getY();
         bc.update();
-        assertEquals(before-10, bc.getBulletsArray().get(0).getY());
+        assertEquals(before-Bullet.MISSILE_SPEED, bc.getBulletsArray().get(0).getY());
         
         
         

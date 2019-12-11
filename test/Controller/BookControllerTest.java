@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
  *
  * @author antno
  */
-public class BookControllerIT {
+public class BookControllerTest {
     
-    public BookControllerIT() {
+    public BookControllerTest() {
     }
     
     @BeforeClass

@@ -25,6 +25,7 @@ public class HudControllerTest {
         hc.update();
         assertEquals(score+0.01, hc.getScore(),0.001);
         
+        
     }
     
     @Test

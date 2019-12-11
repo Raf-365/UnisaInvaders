@@ -35,6 +35,8 @@ public class PepperController{
         //int y = GameFrame.MAX_Y-h-GameFrame.INF_BORDER;
         bulletController = new BulletController();
         pepper = new Pepper(0, 0, "src/Resources/Pepper20.png");
+        pepper.setX((GameFrame.MAX_X - pepper.getWidth()) / 2);
+        pepper.setY(GameFrame.MAX_Y - pepper.getHeight() - GameFrame.INF_BORDER);
         this.pepper = pepper;
 
         
@@ -42,7 +44,7 @@ public class PepperController{
 
     public void setPepperInitialPosition() {
         pepper.setX((GameFrame.MAX_X - pepper.getWidth()) / 2);
-        pepper.setY(GameFrame.MAX_Y - pepper.getHeight() - GameFrame.INF_BORDER);
+        //pepper.setY(GameFrame.MAX_Y - pepper.getHeight() - GameFrame.INF_BORDER);
     }
 
     public Pepper getPepper() {
@@ -65,12 +67,12 @@ public class PepperController{
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_A) {
+        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) {
             //pepper.setX(pepper.getX()-pepper.getDx());
             pepper.setDx(-Pepper.PEPPER_SPEED);
         }
 
-        if (key == KeyEvent.VK_D) {
+        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT))  {
             pepper.setDx(Pepper.PEPPER_SPEED);
 
         }
@@ -96,11 +98,11 @@ public class PepperController{
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_A) {
+        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) {
             pepper.setDx(0);
         }
 
-        if (key == KeyEvent.VK_D) {
+        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT)) {
             pepper.setDx(0);
         }
 

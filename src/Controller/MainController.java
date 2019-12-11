@@ -28,7 +28,7 @@ public class MainController {
 
         bookController = new BookController();
         pepperController = new PepperController();
-        pepperController.setPepperInitialPosition();
+        pepperController.setPepperInitialPosition(); //BUG DA SISTMARE (o forse NO) :)
         hudController = new HudController(pepperController.getPepper().getHealth());
     }
 

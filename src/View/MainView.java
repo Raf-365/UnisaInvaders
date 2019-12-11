@@ -89,27 +89,30 @@ public class MainView extends JPanel {
         punteggioLabel.setFont(font1);
         punteggioLabel.setForeground(Color.yellow);
         punteggioLabel.setBounds(5, 90, 200, 30);
+        punteggioLabel.setVisible(false);
 
         bonusLabel = new JLabel("Bonus: " + punteggioBonus);
         bonusLabel.setFont(font1);
         bonusLabel.setForeground(Color.yellow);
         bonusLabel.setBounds(5, 130, 200, 30);
+        bonusLabel.setVisible(false);
 
         malusLabel = new JLabel("Malus: " + punteggioMalus);
         malusLabel.setFont(font1);
         malusLabel.setForeground(Color.yellow);
         malusLabel.setBounds(5, 170, 200, 30);
+        malusLabel.setVisible(false);
 
         healthLabel = new JLabel("HEALTH BAR");
         healthLabel.setFont(font1);
         healthLabel.setForeground(Color.white);
         healthLabel.setBounds(5, 5, 200, 30);
 
-        healthBar = new JProgressBar(0, 7);
+        healthBar = new JProgressBar(0, 5);
         healthBar.setStringPainted(true);
-        healthBar.setForeground(Color.orange);
-        healthBar.setString(" ");
-        healthBar.setBounds(5, 35, 200, 30);
+        healthBar.setForeground(Color.red);
+        healthBar.setString(Integer.toString(pepper.getHealth()));
+        healthBar.setBounds(5, 35, 130, 30);
         healthBar.setValue(pepper.getHealth());
         healthBar.setFont(font2);
 
@@ -152,7 +155,7 @@ public class MainView extends JPanel {
         
         EventQueue.invokeLater(() -> {
             healthBar.setValue(pepper.getHealth());
-            //healthBar.setString(Integer.toString(pepper.getHealth()));
+            healthBar.setString(Integer.toString(pepper.getHealth()));
         });
         
         
@@ -277,70 +280,5 @@ public class MainView extends JPanel {
 
     }
 
-    /*We move the sprite and repaint the part of the board that has changed. 
-    We use a small optimisation technique that repaints only the small area 
-    of the window that actually changed. */
- /*private void step() {
 
-        pepper.move();
-        for (int i = 0; i < imageArray.length; i++) {
-            imageArray[i].update();
-            checkCollisions();
-        }
-        ArrayList<Missile> missilesArray = pepper.getMissiles();
-        for (int i = 0; i < missilesArray.size(); i++) {
-            Missile m = missilesArray.get(i);
-            if (m.isVisible() && m.getY() > 0) {
-                m.move();
-            } else {
-                pepper.deleteMissile(m);
-            }
-        }
-        repaint();
-    }*/
- /*public void checkCollisions() {
-
-        Rectangle r3 = pepper.getBounds();
-
-        for (int i = 0; i < 7; i++) {
-            Rectangle r2 = imageArray[i].getBounds();
-
-            if (r3.intersects(r2) && imageArray[i].isVisibles()) {
-                pepper.updateHealth(Obstacle.getDamage());
-                punteggio+=MALUS;
-                punteggioMalus+=MALUS;
-                imageArray[i].setVisibles( false);
-                if (!imageArray[i].getCheckCollision()) {
-                    pepper.setSt(1);
-                    imageArray[i].setCheckCollision(true);                    
-                }
-                 if(!pepper.isAlive()){
-                    ingame=false;
-                }
-            } else {
-                imageArray[i].setCheckCollision(false);
-            }
-
-        }
-
-        ArrayList<Missile> missilesArray = pepper.getMissiles();
-
-        for (int j=0; j<missilesArray.size(); j++) {
-            Rectangle r33 = missilesArray.get(j).getBounds();
-
-            for (int i = 0; i < 7; i++) {
-                Rectangle r2 = imageArray[i].getBounds();
-
-                if (imageArray[i].isVisibles() && r33.intersects(r2)) {                    
-                    imageArray[i].setVisibles(false);
-                    missilesArray.get(j).setVisible(false);
-                    punteggioBonus += BONUS;
-                    punteggio += BONUS;
-                    
-                    //pepper.setSt(4); //DA SISTEMARE
-                }
-            }
-            
-        }
-    }*/
 }

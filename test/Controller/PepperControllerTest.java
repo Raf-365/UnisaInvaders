@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-public class TestPepperController {
+public class PepperControllerTest {
     private Pepper p;
     private PepperController pc;
     @Before
@@ -61,7 +61,7 @@ public class TestPepperController {
        // System.out.println(pc.getPepper().getDx());
         //System.out.println(GameFrame.MAX_X);
         //System.out.println(pc.getPepper().getWidth());
-        pc.getPepper().setDx(7);
+        pc.getPepper().setDx(Pepper.PEPPER_SPEED);
         
         method.invoke(pc,null );
         
