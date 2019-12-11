@@ -18,8 +18,7 @@ import View.GameFrame;
 public class BookController {
 
     private Book[] imageArray = new Book[7];
-    private static final int DAMAGE_VALUE = -1, OBSTACLE_SCALE = 50, OBSTACLE_SPEED = 3;
-    Book book;
+    private static final int DAMAGE_VALUE = -1, OBSTACLE_SCALE = 50;// OBSTACLE_SPEED = 3;
 
     public BookController() {
         for (int i = 0; i < 7; i++) {
@@ -55,9 +54,8 @@ public class BookController {
             if (y > GameFrame.MAX_Y) {
                 y = book.getY0();
                 x = generateRandom();
+                book.setX(x);
             }
-
-            book.setX(x);
             book.setY(y);
         }
     }
