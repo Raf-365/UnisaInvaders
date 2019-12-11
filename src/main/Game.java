@@ -5,43 +5,50 @@
  */
 package main;
 
+import View.GameFrame;
+import View.MainView;
+import Controller.MainController;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author stefa
  */
-public class Game implements Runnable{
-    
+public class Game implements Runnable {
+
     private static MainController mainController;
-    private static final int DELAY=10;
-    
-    public Game(){
+    private static final int DELAY = 10;
+
+    public Game() {
         mainController = MainController.getController();
     }
-    
+
     public static void main(String[] args) {
         Game game = new Game();
-        MainView mainView=new MainView();
+        MainView mainView = new MainView();
         mainController.setView(mainView);
         //int w = GameFrame.MAX_X-mainView.getPepperImage().getWidth(null);
         //int h = GameFrame.MAX_X-mainView.getPepperImage().getHeight(null);
-        
+
         //mainController.getPepperController().getPepper().setX((GameFrame.MAX_X-200)/2);          
         //mainController.getPepperController().getPepper().setY((GameFrame.MAX_Y-200-GameFrame.INF_BORDER));
-        
         EventQueue.invokeLater(() -> {
             GameFrame frame = new GameFrame();
             frame.add(mainView);
             frame.setVisible(true);
-        });        
-                
+
+        });
+
         Thread animator = new Thread(game);
         animator.start();
+
     }
-    
+
     @Override
     public void run() {
 
@@ -50,14 +57,15 @@ public class Game implements Runnable{
         beforeTime = System.currentTimeMillis();
 
         while (mainController.getIngame()) {
-            
+
             mainController.update();
+
             /*
-            punteggio += 0.01;
+            punteggioLabel += 0.01;
             EventQueue.invokeLater(() -> {
                 punteggioLabel.setText("Punteggio: "+(int)punteggio);
             });
-            
+           
             EventQueue.invokeLater(() -> {
                 malusLabel.setText("Malus: "+ punteggioMalus);
             });
@@ -65,8 +73,7 @@ public class Game implements Runnable{
             EventQueue.invokeLater(() -> {
                 bonusLabel.setText("Bonus: "+punteggioBonus);
             });
-            */
-            
+             */
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
 
@@ -77,15 +84,15 @@ public class Game implements Runnable{
             try {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {
-                
-                String msg = String.format("Thread interrupted: %s", e.getMessage());                
-                JOptionPane.showMessageDialog(null, msg, "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+
+                String msg = String.format("Thread interrupted: %s", e.getMessage());
+                JOptionPane.showMessageDialog(null, msg, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
             beforeTime = System.currentTimeMillis();
         }
-        
+
     }
-    
+
 }

@@ -12,41 +12,41 @@ import java.util.ArrayList;
  * @author stefa
  */
 public class Pepper extends Character {
-    
+
     private int dx, dy;
     private int state;
     private boolean stopFiring;
-    
-    private static final int HEALTH_MAX = 5;
+    private ArrayList<Bullet> missilesArray;
+
+    public static final int HEALTH_MAX = 7 , PEPPER_SPEED = 7;
 
     public Pepper(int x, int y, String path) {
         super(x, y, path, HEALTH_MAX);
         this.stopFiring = false;
     }
-    
-    public int getState() {return state;}
-    
-    //public ArrayList<Missile> getMissiles(){return missilesArray;}
-    /*
-    private void fire(){
-        missilesArray.add(new Missile(x, y));
+
+    public int getState() {
+        return state;
+    }
+
+    //public ArrayList<bullet> getMissiles(){return missilesArray;}
+    /*private void fire(){
+        missilesArray.add(new Bullet(x, y));
     }
     
     public void deleteMissile(Missile m){
         missilesArray.remove(m);
     }
-    */
-    public boolean isAlive(){
+     */
+ /*public boolean isAlive(){
         if(health == 0)
             return false;
         else
             return true;
-    }
-    
-    /*public void setState(int state) {       
+    }*/
+ /*public void setState(int state) {       
         this.state = state;
         setChanged();
         notifyObservers();
     }*/
-    
 }

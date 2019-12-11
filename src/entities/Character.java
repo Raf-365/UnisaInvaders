@@ -4,30 +4,39 @@
  * and open the template in the editor.
  */
 package entities;
+
 import java.util.*;
+
 /**
  *
  * @author stefa
  */
-public abstract class Character extends Entity{
+public abstract class Character extends Entity {
+
     protected int health;
     //protected ArrayList<Missile> missilesArray;
-    protected int dx=7;
-    
+    protected int dx = 0;
+
     public Character(int x, int y, String path, int health) {
         super(x, y, true, path);
         this.health = health;
         //this.missilesArray = new ArrayList<Missile>();
     }
-    
-    public int getDx(){
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public int getDx() {
         return dx;
     }
-    
-    public int getHealth(){return this.health;}
-    
-    public void updateHealth(int value) {
-        health+=value;
+
+    public int getHealth() {
+        return this.health;
     }
-    
+
+    public void updateHealth(int value) {
+        health += value;
+    }
+
 }

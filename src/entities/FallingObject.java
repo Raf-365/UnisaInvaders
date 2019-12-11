@@ -9,20 +9,21 @@ package entities;
  *
  * @author stefa
  */
-public abstract class FallingObject extends Entity{
+public abstract class FallingObject extends Entity {
+
     private boolean checkCollision;
 
     public FallingObject(int x, int y, String path) {
         super(x, y, true, path);
         checkCollision = false;
     }
-    
-    
-    
-    public boolean getCheckCollision(){return this.checkCollision;}
-    
-    public void setChekCollision(boolean check){this.checkCollision=check;}
-    
-    
-    
+
+    public boolean getCheckCollision() {
+        return this.checkCollision;
+    }
+
+    public void setChekCollision(boolean check) {
+        this.checkCollision = check;
+    }
+
 }

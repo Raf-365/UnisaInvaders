@@ -13,6 +13,7 @@ import javax.swing.*;
  * @author stefa
  */
 public abstract class Entity {
+
     protected int x, y, w, h;
     protected boolean visible;
     protected Image image;
@@ -21,42 +22,63 @@ public abstract class Entity {
         this.x = x;
         this.y = y;
         this.visible = visible;
-        
+
         loadImage(path);
-        
-        
-       
+
     }
-    
-   
-    
-    
-    
-   public void loadImage(String path){
+
+    public void loadImage(String path) {
         ImageIcon imageIcon = new ImageIcon(path);
-        image = imageIcon.getImage();  
+        image = imageIcon.getImage();
         w = image.getWidth(null);
         h = image.getHeight(null);
-   }
-    
-    public int getX(){return this.x;}
-    
-    public int getY(){return this.y;}
+    }
 
-    public void setX(int x) {this.x = x;}
+    public void changeImage(int num) {
+        ImageIcon ii = new ImageIcon("src/resources/Pepper" + num + ".png");
 
-    public void setY(int y) {this.y = y;}
+        //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH);
+        image = ii.getImage();
+    }
 
-    public void setVisible(boolean visible) {this.visible = visible;}
-    
-    public boolean isVisible(){return visible;}
-    
-    public Rectangle getBounds(){return new Rectangle(x, y, w, h);}
-    
-    public int getWidth() {return w;}
-    
-    public int getHeight() {return h;}
-    
-    public Image getImage(){return image;}
-    
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, w, h);
+    }
+
+    public int getWidth() {
+        return w;
+    }
+
+    public int getHeight() {
+        return h;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
 }
