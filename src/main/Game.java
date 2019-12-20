@@ -116,8 +116,8 @@ public class Game implements Runnable {
                 playController.getBossController().getBoss().setVisible(false);
                 playController.resetBossController();
                 playController.getBossController().updateKilledBoss();
-                playController.getHudController().updateScore(HudController.KILLED_BOSS);
-                playController.getHudController().updateBonus(HudController.KILLED_BOSS);
+                playController.getHudController().updateScore(Controller.HudController.KILLED_BOSS);
+                playController.getHudController().updateBonus(Controller.HudController.KILLED_BOSS);
                 disappearBookFlag = false;
                 playController.getBookController().setDisappearBookFlag(disappearBookFlag);
                 playController.getBonusController().setDisappearBonusFlag(disappearBookFlag);
