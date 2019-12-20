@@ -8,14 +8,13 @@ package Controller;
 import Controller.BulletController;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 import entities.*;
-//import fallingdown.View;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import View.GameFrame;
-
+import audio.*;
 /**
  *
  * @author antno
@@ -24,25 +23,20 @@ public class PepperController{
 
     Pepper pepper; 
     BulletController bulletController;
-    private boolean stopFiring;
-
-    //private int w, h;
+    BonusController bonusController;
+    private boolean stopFiring, fireFlag;
+    private SoundObservable a;
+    
     public PepperController() {
-        //w=view.getPepperImage().getWidth(null);
-        //h=view.getPepperImage().getHeight(null);
-
-        //int x = (GameFrame.MAX_X-w)/2;
-        //int y = GameFrame.MAX_Y-h-GameFrame.INF_BORDER;
+        bonusController = new BonusController();
         bulletController = new BulletController();
         pepper = new Pepper(0, 0, "src/Resources/Pepper20.png");
-        this.pepper = pepper;
-
-        
-    }
-
-    public void setPepperInitialPosition() {
-        pepper.setX((GameFrame.MAX_X - pepper.getWidth()) / 2);
-        pepper.setY(GameFrame.MAX_Y - pepper.getHeight() - GameFrame.INF_BORDER);
+        int x = (GameFrame.MAX_X - pepper.getWidth()) / 2;
+        int y = GameFrame.MAX_Y - pepper.getHeight() - 40;
+        pepper.setX(x);        
+        pepper.setY(y);   
+        a=new SoundObservable();
+        a.addListener(new SoundPlayerPepperShoots("shot.wav"));
     }
 
     public Pepper getPepper() {
@@ -65,27 +59,35 @@ public class PepperController{
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_A) {
+        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) {
             //pepper.setX(pepper.getX()-pepper.getDx());
             pepper.setDx(-Pepper.PEPPER_SPEED);
         }
 
-        if (key == KeyEvent.VK_D) {
+        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT))  {
             pepper.setDx(Pepper.PEPPER_SPEED);
 
         }
 
         if (key == KeyEvent.VK_SPACE && !stopFiring) {
+          
+            fireFlag=true;
             pepper.changeImage(10);
             fire();
-            //setSt(3);
+            a.addStates(1);
             stopFiring = true;
         }
 
     }
+    
+    public boolean getFireFlag(){
+        return fireFlag;
+    }
 
     private void fire() {
-        bulletController.getBulletsArray().add(new Bullet(pepper.getX(), pepper.getY(), "src/resources/missile2.png"));
+        
+        bulletController.getBulletsArray().add(new Bullet(pepper.getX(), pepper.getY(), 
+                "src/resources/missile2.png"));
     }
 
     public ArrayList<Bullet> getBulletsArray() {
@@ -96,15 +98,17 @@ public class PepperController{
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_A) {
+        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) {
             pepper.setDx(0);
         }
 
-        if (key == KeyEvent.VK_D) {
+        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT)) {
             pepper.setDx(0);
         }
 
         if (key == KeyEvent.VK_SPACE) {
+           
+            fireFlag = false;
             pepper.changeImage(20);
             stopFiring = false;
         }
@@ -115,12 +119,6 @@ public class PepperController{
         if (pepper.getHealth() > 0)
             return true;
         else 
-            return false;
-                    
+            return false;                    
     }
-    
-    
-
-    
-
 }

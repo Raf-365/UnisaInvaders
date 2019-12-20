@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  *
  * @author marcopreziosi
  */
-public class BulletController extends JPanel {
+public class BulletController {
 
     ArrayList<Bullet> bulletsArray;
 

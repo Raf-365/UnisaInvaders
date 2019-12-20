@@ -35,6 +35,8 @@ public abstract class Entity {
     }
 
     public void changeImage(int num) {
+        
+        
         ImageIcon ii = new ImageIcon("src/resources/Pepper" + num + ".png");
 
         //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH);

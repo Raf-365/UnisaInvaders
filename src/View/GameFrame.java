@@ -15,15 +15,13 @@ import javax.swing.*;
 public class GameFrame extends JFrame {
 
     public static final int MAX_X = 1280, MAX_Y = 720;
-    public static final int INF_BORDER = 30;
+    public static final int INF_BORDER = 40;
 
     public GameFrame() {
         initUi();
     }
 
     private void initUi() {
-        MainView mainPanel = new MainView();
-        add(mainPanel);
         setSize(MAX_X, MAX_Y);
         this.setResizable(false);
         setTitle("UnisaInvader");

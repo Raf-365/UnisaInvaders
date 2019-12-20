@@ -14,7 +14,6 @@ import java.util.*;
 public abstract class Character extends Entity {
 
     protected int health;
-    //protected ArrayList<Missile> missilesArray;
     protected int dx = 0;
 
     public Character(int x, int y, String path, int health) {

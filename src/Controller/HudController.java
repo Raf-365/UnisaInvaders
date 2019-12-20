@@ -13,7 +13,8 @@ public class HudController {
 
     private float score;
     private int health, bonus, malus;
-    public static final int MALUS = -10, BONUS = 1;
+    public static final int MALUS = -10,KILLED_BOSS = 50, BONUS = 1;
+    private static final double SCORE_UPDATE = 0.02;
 
     public HudController(int health) {
         score = 0;
@@ -40,7 +41,7 @@ public class HudController {
     }
 
     private void updateDefault() {
-        score += 0.01;
+        score += SCORE_UPDATE;
     }
 
     public void update() {

@@ -22,7 +22,7 @@ public abstract class FallingObject extends Entity {
         return this.checkCollision;
     }
 
-    public void setChekCollision(boolean check) {
+    public void setCheckCollision(boolean check) {
         this.checkCollision = check;
     }
 

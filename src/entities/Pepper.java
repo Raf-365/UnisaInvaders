@@ -13,12 +13,10 @@ import java.util.ArrayList;
  */
 public class Pepper extends Character {
 
-    private int dx, dy;
     private int state;
     private boolean stopFiring;
-    private ArrayList<Bullet> missilesArray;
 
-    public static final int HEALTH_MAX = 7 , PEPPER_SPEED = 7;
+    public static final int HEALTH_MAX = 5 , PEPPER_SPEED = 7;
 
     public Pepper(int x, int y, String path) {
         super(x, y, path, HEALTH_MAX);
