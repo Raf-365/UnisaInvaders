@@ -38,15 +38,19 @@ public class SoundObservable {
     }
     public List<Integer> getList(){
         return states;
-    }            
+    }           
+
+    public List<SoundPlayerListener> getListeners() {
+        return listeners;
+    }
+    
+    
 
     protected void stateChanged() {
         StateChangedEvent speedEvent =
-                new StateChangedEvent(this, getList());//creo un evento e dico che io
-        //speedometro ho creato questo evento (this), perchè voglio notificare un evento di cambio velocità
-        for (SoundPlayerListener eachListener : listeners) {//speedometerlistener sono oggetti
-            //che implementano questa interfaccia e quindi degli observer
-            eachListener.stateChanged(speedEvent);//sostituisce il notifyobservers
+                new StateChangedEvent(this, getList());
+        for (SoundPlayerListener eachListener : listeners) {
+            eachListener.stateChanged(speedEvent);
         }
     }
     
