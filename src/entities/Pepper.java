@@ -5,8 +5,6 @@
  */
 package entities;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author stefa
@@ -26,7 +24,8 @@ public class Pepper extends Character {
     public int getState() {
         return state;
     }
-
+    
+    
     //public ArrayList<bullet> getMissiles(){return missilesArray;}
     /*private void fire(){
         missilesArray.add(new Bullet(x, y));

@@ -19,13 +19,14 @@ public class BossController {
     Boss boss;
     BulletBossController bulletBossController;
     PlayController playController;
-    Pepper pepper;
+    public Pepper pepper;
     private boolean stopFiring, stopTiming=false;
     private long timeFire;
     private int numBossKilled=0;
     private static final int SECONDS_BOSS_FIRE = 1, NUM_FIRE=3;
     
     public BossController(){
+        pepper=new Pepper(0,0,"");
         bulletBossController = new BulletBossController();        
         boss = new Boss(0, 0, "src/Resources/boss.png");
         boss.setVisible(false);

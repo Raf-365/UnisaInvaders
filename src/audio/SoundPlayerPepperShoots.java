@@ -26,7 +26,7 @@ public class SoundPlayerPepperShoots implements SoundPlayerListener{
 
   
     public void stateChanged(StateChangedEvent event) {
-        if (event.getState().contains(1)) {//when  Pepper shoot
+        if (event.getState().contains(1)) {//when  Pepper shoots
             
          clip.play();
           

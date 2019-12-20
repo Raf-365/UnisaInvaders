@@ -38,12 +38,22 @@ public class SoundObservable {
     }
     public List<Integer> getList(){
         return states;
-    }            
+    }  
+
+    public List<SoundPlayerListener> getListeners() {
+        return listeners;
+    }
+    
+    
      protected void stateChanged() {
-        StateChangedEvent speedEvent =new StateChangedEvent(this, getList());
+        StateChangedEvent speedEvent =
+                new StateChangedEvent(this, getList());
+       
         for (SoundPlayerListener eachListener : listeners) {
             eachListener.stateChanged(speedEvent);
         }
     }
+     
+     
     
 }
