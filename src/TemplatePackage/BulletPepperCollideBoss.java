@@ -18,16 +18,15 @@ import java.awt.Rectangle;
  *
  * @author Brunello
  */
-public class BulletPepperCollideBoss extends Collision {
+public class BulletPepperCollideBoss extends Collision{
+
 
     @Override
-    public void differentTypeCollision(MainView view, Entity entity, Rectangle rArray, Entity entity2, PlayController playController) {
-
-        
+    public void differentTypeCollision(MainView view, Entity entity,  Entity entity2) {
+  
         if (entity2.isVisible()){
             entity.setVisible(false);
-            view.addStates(5);
-            view.removeState(5);
-        }
-    }
+            view.addStates(MainView.BULLET_PEPPER_COLLIDE_BOSS);
+            view.removeState(MainView.BULLET_PEPPER_COLLIDE_BOSS);
+        }    }
 }

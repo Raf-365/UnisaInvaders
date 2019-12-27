@@ -34,7 +34,11 @@ public class PlayController extends Controller implements Observer {
     private boolean ingame, enabled = false;
     private boolean disableSpeedUpdateFlag = false, disappearBookFlag = false, shieldFlag = false;
     private long bookSpeedUpdateTime, bookDisappearTime, beforeTime, timeDiff, sleep, bonusSpeedUpdateTime, bonusSpeedTimeBefore = 0, bonusSpeedTimeAfter = 0;
-
+    
+    public static final int LIFE_UPDATE = 1, SHIELD_UPDATE = 2, SOUND_BULLET= 5, SOUND_COLLISION = 6, PEPPER_DEATH = 7;
+    
+    
+    
     private PlayController() {
         ingame = true;
         bookSpeedUpdateTime = System.currentTimeMillis();
@@ -66,10 +70,7 @@ public class PlayController extends Controller implements Observer {
         bonusController = new BonusController();
         pepperController = new PepperController();
         hudController = new HudController(pepperController.getPepper().getHealth());
-        bossController = new BossController();
-
-        
-        
+        bossController = new BossController();   
     }
 
     public void updateFallingObjectSpeed() {
@@ -136,8 +137,7 @@ public class PlayController extends Controller implements Observer {
     }
 
     public void updateView() {
-        mainView.repaintComponents(bookController.getBooks(), pepperController.getBulletsArray(),
-                bossController.getBulletsArrayBoss());
+        mainView.repaintComponents();
     }
 
     public void update() {
@@ -218,17 +218,23 @@ public class PlayController extends Controller implements Observer {
     @Override
     public void eventCollisionChanged(CollisionEvent collisionEvent) {
 
-        if (collisionEvent.getState().contains(1) && !getBonusController().getProtectionFlag()) {
+        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_BOOK) && !getBonusController().getProtectionFlag()) {
             //pepper con i libri 
             
             getPepperController().updateHealthPepper(Pepper.MALUS);
             getHudController().updateScore(HudController.MALUS);
             getHudController().updateMalus(HudController.MALUS);
-            getPepperController().getPepper().addState(6);
-            getPepperController().getPepper().removeState(6);
+            getPepperController().getPepper().addState(SOUND_COLLISION); //suono collisione 
+            getPepperController().getPepper().removeState(SOUND_COLLISION);
+            if (!getPepperController().isAlive()){
+                getPepperController().getPepper().addState(PEPPER_DEATH); //morte
+                getPepperController().getPepper().removeState(PEPPER_DEATH);
+            }
+                
+                
         }
 
-        if (collisionEvent.getState().contains(2)) { //pepper con la vita
+        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_LIFE)) { //pepper con la vita
             if (pepperController.getPepper().getHealth() < pepper.HEALTH_MAX - 1) {
                 getPepperController().updateHealthPepper(Pepper.HEALTH2);
                 
@@ -237,23 +243,27 @@ public class PlayController extends Controller implements Observer {
             }
         }
         
-        if (collisionEvent.getState().contains(3)) //pepper con lo scudo 
+        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_SHIELD)) //pepper con lo scudo 
             getBonusController().setProtectionFlag(true);
         
 
-        if (collisionEvent.getState().contains(4)) { //i colpi di pepper con i libri 
+        if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOOK)) { //i colpi di pepper con i libri 
             getHudController().updateScore(HudController.BONUS);
             getHudController().updateBonus(HudController.BONUS);
         }
 
-        if (collisionEvent.getState().contains(5) && getBossController().getBoss().isVisible()) {
+        if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOSS) && getBossController().getBoss().isVisible()) {
             getBossController().updateHealthBoss(Boss.MALUS);
         }
 
-        if (collisionEvent.getState().contains(6)) {
+        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_BULLET_BOSS)) { //bulletBoss & pepper
             getPepperController().updateHealthPepper(Pepper.MALUS);
             getHudController().updateScore(HudController.MALUS);
             getHudController().updateMalus(HudController.MALUS);
+            if (!getPepperController().isAlive()){
+                getPepperController().getPepper().addState(PEPPER_DEATH); //morte
+                getPepperController().getPepper().removeState(PEPPER_DEATH);
+            }
         }
     }
 

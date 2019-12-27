@@ -87,11 +87,11 @@ public class BonusController extends Controller {
     public void update() {
         
         if (i % 2 == 0) {
-            lifeCycle();
+            cycle(life, PlayController.LIFE_UPDATE);
             
             i++;
         } else {
-            shieldCycle();
+            cycle(shield, PlayController.SHIELD_UPDATE);
             i++;
         }
   
@@ -99,68 +99,40 @@ public class BonusController extends Controller {
             reduceShieldDuration();
     }
 
-    private void lifeCycle() {
+    private void cycle(Bonus bonus, int a) {
         
         int x,y;
         
            
-            x = life.getX();
-            y = life.getY();
-            y += life.getSpeed();
+            x = bonus.getX();
+            y = bonus.getY();
+            y += bonus.getSpeed();
 
             
             if (y > GameFrame.MAX_Y) {
                 if (!disappearBonusFlag) {
-                    y = life.getY0();
+                    y = bonus.getY0();
                     x = generateRandomLife();
                    
-                    life.setX(x);
-                    life.setY(y);
+                    bonus.setX(x);
+                    bonus.setY(y);
                     
-                    life.addState(1); //aggiornamento bonus 
-                    life.removeState(1);
+                    bonus.addState(a); //aggiornamento bonus  //1 3 1 life || 2 4 2 shield
+                    bonus.removeState(a);
                     //book.setVisible(true);
                 } else {
-                    life.addState(3);
-                    life.removeState(3);
+                    /*
+                    bonus.addState(b);
+                    bonus.removeState(b); 
+                    */
                     //life.setVisible(false); 
                 }
             } else {
-                life.addState(1);
-                life.removeState(1);
-                life.setY(y);
+                bonus.addState(a);
+                bonus.removeState(a);
+                bonus.setY(y);
             }
         
     }
 
-    private void shieldCycle() {
-        int x, y;
-        
-            
-           
-            x = shield.getX();
-            y = shield.getY();
-            y += shield.getSpeed();
-
-            if (y > GameFrame.MAX_Y + 100) {
-                if (!disappearBonusFlag) {
-                    y = shield.getY0();
-                    x = generateRandomShield();
-                    shield.setX(x);
-                    shield.setY(y);
-                    shield.addState(2); //aggiornamento bonus 
-                    shield.removeState(2);
-                    
-                } else {
-                    shield.addState(4);
-                    shield.removeState(4);
-                }
-            } else {
-                shield.addState(2); //aggiornamento bonus 
-                shield.removeState(2);
-                shield.setY(y);
-            }
-               
-        
-    }
 }

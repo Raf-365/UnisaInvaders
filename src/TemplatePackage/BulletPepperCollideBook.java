@@ -20,14 +20,11 @@ import java.awt.Rectangle;
 public class BulletPepperCollideBook extends Collision {
 
     @Override
-    public void differentTypeCollision(MainView view, Entity entity, Rectangle rArray, Entity entity2, PlayController playController) {
-
+    public void differentTypeCollision(MainView view, Entity entity, Entity entity2) {
         
-                    entity.setVisible(false);
-                    entity2.setVisible(false);
-                    
-                    view.addStates(4);
-                    view.removeState(4);
-                    
-}
+        entity.setVisible(false);
+        entity2.setVisible(false);
+        view.addStates(MainView.BULLET_PEPPER_COLLIDE_BOOK);
+        view.removeState(MainView.BULLET_PEPPER_COLLIDE_BOOK);
+    }
 }

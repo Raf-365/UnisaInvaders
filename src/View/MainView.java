@@ -45,16 +45,18 @@ public class MainView extends JPanel implements Observer  {
     private Pepper pepper;
     private Boss boss;
     private final int DELAY = 10;
+    public static final int PEPPER_COLLIDE_BOOK = 1, PEPPER_COLLIDE_LIFE = 2, PEPPER_COLLIDE_SHIELD = 3,
+                            BULLET_PEPPER_COLLIDE_BOOK = 4, BULLET_PEPPER_COLLIDE_BOSS = 5, PEPPER_COLLIDE_BULLET_BOSS = 6;
     
     private ArrayList<Book> booksArray;
     //private ArrayList<Bonus> lifeArray, shieldArray;
     private Bonus life, shield;
     private ArrayList<Bullet> bulletsArray;
     private ArrayList<BulletBoss> bulletsArrayBoss;
-    private static boolean ingame;
+    private boolean ingame;
 
-    public static void setIngame(boolean ingame) {
-        MainView.ingame = ingame;
+    public void setIngame(boolean ingame) {
+        this.ingame = ingame;
     }
     private JProgressBar healthBar, healthBarBoss, remainingShieldBar;
     private Font font1, font2;
@@ -84,7 +86,7 @@ public class MainView extends JPanel implements Observer  {
     private AudioClip clip5;
     
     
-    public static boolean getIngame() {
+    public boolean getIngame() {
         return ingame;
     }
 
@@ -119,6 +121,12 @@ public class MainView extends JPanel implements Observer  {
         //hudControllerBoss = playController.getHudControllerBoss();
         life = bonusController.getLife();
         shield = bonusController.getShield();
+        
+        booksArray = bookController.getBooks();
+        bulletsArray = pepperController.getBulletsArray();
+        bulletsArrayBoss = bossController.getBulletsArrayBoss();
+                
+        
         
         /*Serve per rendere la mainView osservata dal playController*/
         this.states = new ArrayList<Integer>();
@@ -225,14 +233,7 @@ public class MainView extends JPanel implements Observer  {
         
     }
     
-    
-
-    public void repaintComponents(ArrayList<Book> booksArray, ArrayList<Bullet> bulletsArray, 
-            ArrayList<BulletBoss> bulletsArrayBoss) {
-        this.booksArray = booksArray;
-        this.bulletsArray = bulletsArray;
-        this.bulletsArrayBoss=bulletsArrayBoss;
-        
+    public void repaintComponents() {
         
         repaint();
     }    
@@ -369,16 +370,20 @@ public class MainView extends JPanel implements Observer  {
     @Override
     public void eventCollisionChanged(CollisionEvent event) {
 
-        if (event.getState().contains(1))
+        if (event.getState().contains(PlayController.LIFE_UPDATE))
             drawLifeFlag = true;
         
-        if (event.getState().contains(2))
+        if (event.getState().contains(PlayController.SHIELD_UPDATE))
             drawShieldFlag = true;
         
-        if (event.getState().contains(5))
+        if (event.getState().contains(PlayController.SOUND_BULLET))
             clip.play();
-        if (event.getState().contains(6))
+        
+        if (event.getState().contains(PlayController.SOUND_COLLISION))
             clip2.play();
+        
+        if (event.getState().contains(PlayController.PEPPER_DEATH))
+            ingame = false;
         
       
     }
@@ -415,15 +420,15 @@ public class MainView extends JPanel implements Observer  {
         BulletPepperCollideBook bulletPepperCollideBook = new BulletPepperCollideBook();
         
         
-        pepperCollideBook.collision(this, (ArrayList)booksArray, pepper, playController);
-        pepperCollideBonus.collision(this, life, pepper, playController);
-        pepperCollideShield.collision(this, shield, pepper, playController);
-        bulletPepperCollideBoss.collision(this,(ArrayList)bulletsArray, boss, playController);
-        pepperCollideBulletBoss.collision(this,(ArrayList)bulletsArrayBoss, pepper, playController);
+        pepperCollideBook.collision(this, (ArrayList)booksArray, pepper);
+        pepperCollideBonus.collision(this, life, pepper);
+        pepperCollideShield.collision(this, shield, pepper);
+        bulletPepperCollideBoss.collision(this,(ArrayList)bulletsArray, boss);
+        pepperCollideBulletBoss.collision(this,(ArrayList)bulletsArrayBoss, pepper);
         
          for (int j = 0; j < bulletsArray.size(); j++) {
             Bullet bullet = bulletsArray.get(j);
-            bulletPepperCollideBook.collision(this, (ArrayList)booksArray, bullet, playController);
+            bulletPepperCollideBook.collision(this, (ArrayList)booksArray, bullet);
          }
 
     }

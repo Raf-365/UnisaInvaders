@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.*;
+
 
 public abstract class Character extends Entity {
 

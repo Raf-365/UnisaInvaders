@@ -16,6 +16,8 @@ public abstract class Entity {
     protected ArrayList<Observer> observers;
     private ArrayList<Integer> states; 
 
+    
+    /*???*/
     public Entity(){
         
     }

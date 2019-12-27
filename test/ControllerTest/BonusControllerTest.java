@@ -16,6 +16,8 @@ import org.junit.Test;
  */
 public class BonusControllerTest {
     private BonusController bc;
+    
+    
     @Before
     public void setUp() {
        bc= new BonusController();

@@ -19,21 +19,15 @@ import java.awt.Rectangle;
  */
 public class PepperCollideBook extends Collision {
 
+ 
+
     @Override
-    public void differentTypeCollision(MainView view, Entity entity, Rectangle rArray, Entity entity2, PlayController playController) {
+    public void differentTypeCollision(MainView view, Entity entity,  Entity entity2) {
 
-
+        view.addStates(MainView.PEPPER_COLLIDE_BOOK); //1 è lo stato di Pepper che collide con i libri
+        view.removeState(MainView.PEPPER_COLLIDE_BOOK);
+        entity.setVisible(false);   
         
-            view.addStates(1); //1 è lo stato di Pepper che collide con i libri
-            
-            view.removeState(1);
-            entity.setVisible(false);
-            
-           
-
-        if (!playController.getPepperController().isAlive()) {
-            MainView.setIngame(false);
-        }
     }
                                                                 
 }
