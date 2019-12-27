@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class BossController extends Controller{
-
+    Boolean playControllerReady;
     Boss boss;
     BulletBossController bulletBossController;
     PlayController playController;
@@ -19,7 +19,7 @@ public class BossController extends Controller{
     
     public BossController(){
         bulletBossController = new BulletBossController(); 
-        
+        playControllerReady=false;
         boss = new Boss(0, 0, "src/Resources/boss.png");
         boss.setVisible(false);
         boss.setX((((GameFrame.MAX_X - boss.getWidth()) / 2)));
@@ -66,10 +66,11 @@ public class BossController extends Controller{
     }
     
     private void move(){
-        
-        playController = PlayController.getPlayController();
+        if(!playControllerReady){
+        this.playController = PlayController.getPlayController();
         this.pepper = playController.getPepperController().getPepper();
-        
+        this.playControllerReady=true;
+        }
 
             followPepper();
         
