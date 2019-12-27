@@ -11,9 +11,9 @@ public class BossController extends Controller{
     BulletBossController bulletBossController;
     PlayController playController;
     Pepper pepper;
-    private boolean stopTiming=false;
+    private boolean stopTiming;
     private long timeFire;
-    private int numBossKilled=0, movementBoss=0;
+    private int numBossKilled, movementBoss;
     private static final int SECONDS_BOSS_FIRE = 1, NUM_FIRE=3;
     public static final int INCREASE_SPEED_BOSS = 1;
     
@@ -21,10 +21,12 @@ public class BossController extends Controller{
         bulletBossController = new BulletBossController();        
         boss = new Boss(0, 0, "src/Resources/boss.png");
         boss.setVisible(false);
-        int x = (((GameFrame.MAX_X - boss.getWidth()) / 2));
-        int y = (50);
-        boss.setX(x);
-        boss.setY(y);
+        boss.setX((((GameFrame.MAX_X - boss.getWidth()) / 2)));
+        boss.setY(50);
+        this.stopTiming=false;
+        this.numBossKilled=0;
+        this.movementBoss=0;
+        
         movementBoss=Boss.BOSS_SPEED/2;
     }
 
@@ -62,9 +64,7 @@ public class BossController extends Controller{
         playController = PlayController.getPlayController();
         pepper = playController.getPepperController().getPepper();
         
-        if((boss.getX() - pepper.getX() < 7) && (boss.getX() - pepper.getX() > -7))
-            boss.setDx(0);
-        else
+
             followPepper();
         
         if ((boss.getX() + boss.getDx() <= GameFrame.MAX_X - boss.getWidth() - 20) 
