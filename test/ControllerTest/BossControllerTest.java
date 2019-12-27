@@ -36,8 +36,10 @@ public class BossControllerTest {
     
     @Test
     public void testUpdate(){
-         bc.getBoss().setVisible(true);
-         bc.update();
+         bc.getBoss().setVisible(true);//settiamo l'attributo visible del boss a true
+         //perchè nel metodo update di bossController, la chiamata a Move è condizionata
+         //al fatto che questo attributo sia True
+         bc.update();//ci assicuriamo che move venga chiamato perchè esso inizializza Pepper
          bc.getPepper().setX(bc.getBoss().getX()+5);
          bc.update();//il boss si deve muovere verso destra
          assertEquals(bc.getMovementBoss(), bc.getBoss().getDx());
