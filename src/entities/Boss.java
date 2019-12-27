@@ -1,9 +1,7 @@
 package entities;
-import java.util.ArrayList;
 
 public class Boss extends Character{
     
-    private int dx, dv;
     private int state;
     private boolean stopFiring;
     public static final int HEALTH_MAX = 10, BOSS_SPEED = 7, MALUS=-1;

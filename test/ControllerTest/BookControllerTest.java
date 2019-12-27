@@ -8,6 +8,7 @@ package ControllerTest;
 import Controller.BookController;
 import View.GameFrame;
 import entities.Book;
+import entities.FallingObject;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class BookControllerTest {
     private BookController bc;
-    private ArrayList<Book> bookArray;
+    
 
 
     @Before
@@ -39,7 +40,7 @@ public class BookControllerTest {
     public void testUpdate() {
         int y= bc.getBooks().get(0).getY();
         bc.update();
-        assertEquals(0, bc.getBooks().get(0).getY());
+        assertEquals(FallingObject.FALLING_OBJECT_SPEED, bc.getBooks().get(0).getY());
         bc.setDisappearBookFlag(true);
         bc.getBooks().get(0).setY(20000);
         bc.update();

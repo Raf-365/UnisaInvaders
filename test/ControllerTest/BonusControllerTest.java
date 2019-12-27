@@ -6,9 +6,10 @@
 package ControllerTest;
 
 import Controller.BonusController;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
+import View.GameFrame;
+import entities.FallingObject;
+import static org.junit.Assert.*;
+import org.junit.*;
 
 /**
  *
@@ -21,14 +22,23 @@ public class BonusControllerTest {
     @Before
     public void setUp() {
        bc= new BonusController();
-       
-       
     }
     
     @Test
-    public void testCreateBonusArray(){
-        assertEquals(1, bc.getShield().size());
-    
+    public void testUpdate() {
+        int y= bc.getLife().getY();
+        bc.update();       
+        assertEquals(-207, bc.getLife().getY());
+        /*La posizione y dell'istanza di Bonus "life" presente in BonusController
+        viene settata così: (i + 3) * 70) * -1 
+        quindi quando verrà creato BonusController i sarà uguale a zero e la suo posizione iniziale pari a -210
+        dopo un'esecuzione del metodo update esso verrà aumentata di 3 (valore di speed in FallingObject)
+        */
+        bc.setDisappearBonusFlag(true);
+        bc.getLife().setY(GameFrame.MAX_Y+1);
+        bc.update();
+        assertFalse(bc.getLife().isVisible());
+        
     }
     
     

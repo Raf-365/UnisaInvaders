@@ -7,7 +7,10 @@ package ObserverPackage;
 
 /**
  *
- * @author marcopreziosi
+ * @author Raffaele
  */
-public abstract class Controller implements Controller1  {        
+public interface Controller1 {
+
+    void update();
+    
 }

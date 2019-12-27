@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Brunello, che grande!
+ * @author Brunello
  */
 public abstract class Collision {
     

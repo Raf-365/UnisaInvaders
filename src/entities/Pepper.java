@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Pepper extends Character {
 
-    private int dx, dy;
     private int state;
     private boolean stopFiring;
     private ArrayList<Bullet> missilesArray;

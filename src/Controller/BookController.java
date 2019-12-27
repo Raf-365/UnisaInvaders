@@ -98,7 +98,7 @@ public class BookController {
             y += Book.getSpeed();
 
             if (y > GameFrame.MAX_Y) {
-                if (!disappearBookFlag) { //VARIABILE PERFAR SCOMPARIRE I LIBRI QUANDO APPARE IL BOSS
+                if (!disappearBookFlag) { //VARIABILE PER FAR SCOMPARIRE I LIBRI QUANDO APPARE IL BOSS
                     y = book.getY0();
                     x = generateRandom();
                     book.setX(x);

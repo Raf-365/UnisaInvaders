@@ -17,7 +17,7 @@ public abstract class Entity {
     private ArrayList<Integer> states; 
 
     
-    /*???*/
+    
     public Entity(){
         
     }

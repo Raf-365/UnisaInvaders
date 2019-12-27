@@ -2,7 +2,7 @@ package entities;
 
 public class Bullet extends Weapon {
 
-    public static int DISTANCE_FROM_PEPPER = 5, MISSILE_SPEED = 10;
+    public static int DISTANCE_FROM_PEPPER = 5;
 
     public Bullet(int x, int y, String path) {
         super(x, y, path);
