@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
+import ObserverPackage.Controller;
 import Controller.BulletController;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+import ObserverPackage.CollisionEvent;
 import entities.*;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
@@ -14,18 +10,21 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import View.GameFrame;
-import audio.*;
-/**
- *
- * @author antno
- */
-public class PepperController{
+import ObserverPackage.ControllerObserver;
+import ObserverPackage.Observer;
+import View.MainView;
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.net.URL;
+
+public class PepperController extends Controller implements ControllerObserver{
 
     Pepper pepper; 
     BulletController bulletController;
     BonusController bonusController;
     private boolean stopFiring, fireFlag;
-    private SoundObservable a;
+ 
+    
     
     public PepperController() {
         bonusController = new BonusController();
@@ -34,9 +33,8 @@ public class PepperController{
         int x = (GameFrame.MAX_X - pepper.getWidth()) / 2;
         int y = GameFrame.MAX_Y - pepper.getHeight() - 40;
         pepper.setX(x);        
-        pepper.setY(y);   
-        a=new SoundObservable();
-        a.addListener(new SoundPlayerPepperShoots("shot.wav"));
+        pepper.setY(y);  
+        
     }
 
     public Pepper getPepper() {
@@ -49,35 +47,30 @@ public class PepperController{
     }
 
     private void move() {
-
-        if ((pepper.getX() + pepper.getDx() <= GameFrame.MAX_X - pepper.getWidth() - 20) && (pepper.getX() + pepper.getDx() >= 5)) {
+        
+        if ((pepper.getX() + pepper.getDx() <= GameFrame.MAX_X - pepper.getWidth() - 20) && (pepper.getX() + pepper.getDx() >= 5)) 
             pepper.setX(pepper.getX() + pepper.getDx());
-        }
+        
     }
 
     public void keyPressed(KeyEvent e) {
-
         int key = e.getKeyCode();
 
-        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) {
-            //pepper.setX(pepper.getX()-pepper.getDx());
+        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) 
             pepper.setDx(-Pepper.PEPPER_SPEED);
-        }
 
-        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT))  {
+        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT))  
             pepper.setDx(Pepper.PEPPER_SPEED);
-
-        }
-
+            
+     
         if (key == KeyEvent.VK_SPACE && !stopFiring) {
-          
+            pepper.addState(5);
+            pepper.removeState(5);
             fireFlag=true;
             pepper.changeImage(10);
             fire();
-            a.addStates(1);
             stopFiring = true;
         }
-
     }
     
     public boolean getFireFlag(){
@@ -85,7 +78,6 @@ public class PepperController{
     }
 
     private void fire() {
-        
         bulletController.getBulletsArray().add(new Bullet(pepper.getX(), pepper.getY(), 
                 "src/resources/missile2.png"));
     }
@@ -95,24 +87,16 @@ public class PepperController{
     }
 
     public void keyReleased(KeyEvent e) {
-
         int key = e.getKeyCode();
-
-        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) {
+        if ((key == KeyEvent.VK_A) || (key == KeyEvent.VK_LEFT)) 
             pepper.setDx(0);
-        }
-
-        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT)) {
+        if ((key == KeyEvent.VK_D) || (key == KeyEvent.VK_RIGHT)) 
             pepper.setDx(0);
-        }
-
         if (key == KeyEvent.VK_SPACE) {
-           
             fireFlag = false;
             pepper.changeImage(20);
             stopFiring = false;
         }
-
     }
     
     public boolean isAlive(){
@@ -120,5 +104,22 @@ public class PepperController{
             return true;
         else 
             return false;                    
+    }
+    
+    
+     public void updateHealthPepper(int malus){
+        pepper.updateHealth(malus);
+    }
+
+     public void setObserverPepper(MainView view){
+         pepper.addObserver((Observer) view);
+     }
+     
+     
+    @Override
+    public void eventCollisionChanged(CollisionEvent collisionEvent) {
+
+        
+
     }
 }

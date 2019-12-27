@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View;
 
 import Controller.BonusController;
@@ -11,9 +6,16 @@ import Controller.PlayController;
 import Controller.HudController;
 import Controller.BookController;
 import Controller.BossController;
-import Controller.HudControllerBoss;
-import audio.SoundObservable;
-import audio.SoundPlayerCollision;
+import ObserverPackage.CollisionEvent;
+import ObserverPackage.ControllerObservable;
+import ObserverPackage.Observer;
+//import Controller.HudControllerBoss;
+import TemplatePackage.BulletPepperCollideBook;
+import TemplatePackage.BulletPepperCollideBoss;
+import TemplatePackage.PepperCollideLife;
+import TemplatePackage.PepperCollideBook;
+import TemplatePackage.PepperCollideBulletBoss;
+import TemplatePackage.PepperCollideShield;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,43 +28,61 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.*;
-
 import entities.*;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.io.File;
+import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import main.Game;
 
-/**
- *
- * @author stefa
- */
-public class MainView extends JPanel {
-    private SoundObservable a;
+public class MainView extends JPanel implements Observer  {
+
     private Pepper pepper;
     private Boss boss;
     private final int DELAY = 10;
+    
     private ArrayList<Book> booksArray;
-    private ArrayList<Bonus> lifeArray, shieldArray;
+    //private ArrayList<Bonus> lifeArray, shieldArray;
+    private Bonus life, shield;
     private ArrayList<Bullet> bulletsArray;
     private ArrayList<BulletBoss> bulletsArrayBoss;
     private static boolean ingame;
-    private JProgressBar healthBar, healthBarBoss;
+
+    public static void setIngame(boolean ingame) {
+        MainView.ingame = ingame;
+    }
+    private JProgressBar healthBar, healthBarBoss, remainingShieldBar;
     private Font font1, font2;
-    private JLabel healthLabel, punteggioLabel, bonusLabel, malusLabel, healthLabelBoss, killedBossLabel;
+    private JLabel healthLabel, punteggioLabel, bonusLabel, malusLabel, healthLabelBoss, killedBossLabel, remainingShieldLabel;
     private float punteggio;
     private int punteggioBonus, punteggioMalus,numBossKilled;
-    private PlayController mainController;
+    private PlayController playController;
     private Image imagePepper, imageBook;
     private PepperController pepperController;
     private BossController bossController;
     private BookController bookController;
     private BonusController bonusController;
     private HudController hudController;
-    private HudControllerBoss hudControllerBoss;
+    //private HudControllerBoss hudControllerBoss;
     private GameFrame gameFrame;
     private boolean stopBlinking=false;
     private boolean protection = false;
+    private boolean drawLifeFlag = false;
+    private boolean drawShieldFlag = false;
+    private Image img = Toolkit.getDefaultToolkit().createImage("src/Resources/sfondo.jpg");
+    private ArrayList<Observer> observers;
+    private ArrayList<Integer> states;
+    private AudioClip clip;
+    private AudioClip clip2;
+    private AudioClip clip3;
+    private AudioClip clip4;
+    private AudioClip clip5;
     
-    private Image img = Toolkit.getDefaultToolkit().createImage("src/Resources/unisa_def.jpg");
     
     public static boolean getIngame() {
         return ingame;
@@ -70,14 +90,15 @@ public class MainView extends JPanel {
 
     public MainView(GameFrame frame) {
         this.gameFrame=frame;
-        this.a=new SoundObservable();
-         //a.addListener(new SoundPlayerCollision("splat.wav","splat.wav","splat.wav","splat.wav","splat.wav"));
-         a.addListener(new SoundPlayerCollision("collide.wav","splat.wav","check.wav","collide.wav","explo.wav"));
-        initBoard();        
+        
+        initBoard(); 
+        
+        
+        
     }
 
     private void initBoard() {
-        mainController = PlayController.getPlayController(); //SINGLETON
+        playController = PlayController.getPlayController(); //SINGLETON
         addKeyListener(new TAdapter());
         setFocusable(true);
         ingame = true;
@@ -85,29 +106,50 @@ public class MainView extends JPanel {
         punteggioBonus = 0;
         punteggioMalus = 0;
         numBossKilled = 0;
-        bookController = mainController.getBookController();
-        bonusController = mainController.getBonusController();
-        pepperController = mainController.getPepperController();
-        bossController = mainController.getBossController();
-        pepper = mainController.getPepperController().getPepper();
-        boss = mainController.getBossController().getBoss();
-        hudController = mainController.getHudController();
-        hudControllerBoss = mainController.getHudControllerBoss();
+        
+        //CHIEDERE A FOGGIA SE DOBBIAMO CREARE LE NOSTRE ENTITA' IN QUESTA CLASSE O NEI CONTROLLER E LASCIARE COSI'
+        
+        bookController = playController.getBookController();
+        bonusController = playController.getBonusController();
+        pepperController = playController.getPepperController();
+        bossController = playController.getBossController();
+        pepper = playController.getPepperController().getPepper();
+        boss = playController.getBossController().getBoss();
+        hudController = playController.getHudController();
+        //hudControllerBoss = playController.getHudControllerBoss();
+        life = bonusController.getLife();
+        shield = bonusController.getShield();
+        
+        /*Serve per rendere la mainView osservata dal playController*/
+        this.states = new ArrayList<Integer>();
+        this.observers = new ArrayList<Observer>();
+        this.addObserver((Observer) playController);  
+        pepperController.getPepper().addObserver(this);
+        
+        
+        URL url = getClass().getResource("shot.wav");
+        URL url2 = getClass().getResource("collide.wav");
+        /*
+        URL url3 = getClass().getResource("src/Resources/shot.wav");
+        URL url4 = getClass().getResource("src/Resources/shot.wav");
+        URL url5 = getClass().getResource("src/Resources/shot.wav");*/
+           
+        clip =  Applet.newAudioClip(url);
+        clip2 = Applet.newAudioClip(url2);/*
+        clip3 = Applet.newAudioClip(url2);
+        clip4 = Applet.newAudioClip(url2);
+        clip5 = Applet.newAudioClip(url2);*/
+        
         graphicsSetup();
-        //pepper.addObserver(new SoundPlayerObserver("collide.wav", "check.wav","shot.wav","splat.wav"));
-        //pepper.addObserver(new UpdateHealthBarObserver(healthBar));
-        //setBackground(Color.BLACK);
         setPreferredSize(new Dimension(GameFrame.MAX_X, GameFrame.MAX_Y));
-        //for (int i = 0; i < imageArray.length; i++) {
-        //    imageArray[i] = new Obstacle((i * 70) * -1);
-        //}
+        
     }
 
     private void graphicsSetup() {
         this.setLayout(null);
+        
         font1 = new Font("Helvetica", Font.BOLD, 20);
         font2 = new Font("Helvetica", Font.BOLD, 30);
-
         punteggioLabel = new JLabel("Score: " + punteggio);
         punteggioLabel.setFont(font1);
         punteggioLabel.setForeground(Color.yellow);
@@ -116,17 +158,17 @@ public class MainView extends JPanel {
         bonusLabel = new JLabel("Bonus: " + punteggioBonus);
         bonusLabel.setFont(font1);
         bonusLabel.setForeground(Color.yellow);
-        bonusLabel.setBounds(5, 130, 200, 30);
+        bonusLabel.setBounds(5, 120, 200, 30);
 
         malusLabel = new JLabel("Malus: " + punteggioMalus);
         malusLabel.setFont(font1);
         malusLabel.setForeground(Color.yellow);
-        malusLabel.setBounds(5, 170, 200, 30);
+        malusLabel.setBounds(5, 150, 200, 30);
 
         killedBossLabel = new JLabel("Killed boss: " + numBossKilled);
         killedBossLabel.setFont(font1);
         killedBossLabel.setForeground(Color.yellow);
-        killedBossLabel.setBounds(5, 210, 200, 30);
+        killedBossLabel.setBounds(5, 180, 200, 30);
         
         healthLabel = new JLabel("HEALTH BAR");
         healthLabel.setFont(font1);
@@ -153,7 +195,24 @@ public class MainView extends JPanel {
         healthBarBoss.setBounds(GameFrame.MAX_X-200, 35, 130, 30);
         healthBarBoss.setValue(boss.getHealth());
         healthBarBoss.setFont(font2);
+        
+        remainingShieldLabel = new JLabel("REMAINING SHIELD");
+        remainingShieldLabel.setFont(font1);
+        remainingShieldLabel.setForeground(Color.white);
+        remainingShieldLabel.setBounds(5, 250, 200, 30);
+        
+        remainingShieldBar = new JProgressBar(0, Game.SECONDS_SHIELD_DISAPPEAR); //5 secondi
+        remainingShieldBar.setStringPainted(true);
+        remainingShieldBar.setForeground(Color.red);
+        remainingShieldBar.setBounds(5, 290, 130, 30);
+        remainingShieldBar.setValue(pepper.getHealth());
+        remainingShieldBar.setFont(font2);
+        
+        remainingShieldLabel.setVisible(false);
+        remainingShieldBar.setVisible(false);
 
+        add(remainingShieldBar);
+        add(remainingShieldLabel);
         add(healthLabelBoss);
         add(healthLabel);
         add(healthBarBoss);
@@ -162,17 +221,19 @@ public class MainView extends JPanel {
         add(malusLabel);
         add(bonusLabel);
         add(killedBossLabel);
+        
+        
     }
     
     
 
     public void repaintComponents(ArrayList<Book> booksArray, ArrayList<Bullet> bulletsArray, 
-            ArrayList<BulletBoss> bulletsArrayBoss, ArrayList<Bonus> lifeArray, ArrayList<Bonus> shieldArray) {
+            ArrayList<BulletBoss> bulletsArrayBoss) {
         this.booksArray = booksArray;
         this.bulletsArray = bulletsArray;
         this.bulletsArrayBoss=bulletsArrayBoss;
-        this.lifeArray = lifeArray;
-        this.shieldArray = shieldArray;
+        
+        
         repaint();
     }    
 
@@ -180,19 +241,14 @@ public class MainView extends JPanel {
 
         for (int i = 0; i < bulletsArray.size(); i++) {
             Bullet b = bulletsArray.get(i);
-            if (b.isVisible()) {
+            if (b.isVisible()) 
                 g.drawImage(b.getImage(), b.getX(), b.getY(), this);
-            }
         }
-        
-        
-       
               
         for (int i = 0; i < bulletsArrayBoss.size(); i++) {
             BulletBoss b = bulletsArrayBoss.get(i);
-            if (b.isVisible()) {
+            if (b.isVisible()) 
                 g.drawImage(b.getImage(), b.getX(), b.getY(), this);
-            }
         }
     }
 
@@ -202,10 +258,23 @@ public class MainView extends JPanel {
         malusLabel.setText("Malus: " + hudController.getMalus());        
         bonusLabel.setText("Bonus: " + hudController.getBonus()); 
         killedBossLabel.setText("Killed boss: "+ bossController.getNumBossKilled());
+        
         healthBar.setValue(pepper.getHealth());
         healthBar.setString(Integer.toString(pepper.getHealth()));
+        
         healthBarBoss.setValue(boss.getHealth());
         healthBarBoss.setString(Integer.toString(boss.getHealth()));
+        
+        if(bonusController.getProtectionFlag()){
+            remainingShieldLabel.setVisible(true);
+            remainingShieldBar.setVisible(true);
+            remainingShieldBar.setValue((int)bonusController.getShieldDuration());
+        }
+        
+        else{
+            remainingShieldLabel.setVisible(false);
+            remainingShieldBar.setVisible(false);
+        }
         
         if(!bossController.getBoss().isVisible()){
             healthLabelBoss.setVisible(false);
@@ -213,6 +282,7 @@ public class MainView extends JPanel {
             healthBarBoss.setString(Integer.toString(boss.getHealth()));
             healthBarBoss.setVisible(false);
         }
+        
         else{
             healthBarBoss.setVisible(true);
             healthLabelBoss.setVisible(true);
@@ -224,7 +294,7 @@ public class MainView extends JPanel {
     public void paintComponent(Graphics g) {
         setOpaque(false);
         g.drawImage(img, 0, 0, this);
-        //super.paintComponent(g);
+       
         
         if(booksArray != null){ //altrimenti al primo repaint() dopo la removeAll() lancia eccezione
             
@@ -240,29 +310,25 @@ public class MainView extends JPanel {
                     drawBook(g, book);
                     Toolkit.getDefaultToolkit().sync();
                 }
-
-                for (int i = 0; i < lifeArray.size(); i++) {
-                    Bonus bonus = lifeArray.get(i);
-                    drawBonus(g, bonus);
-                    Toolkit.getDefaultToolkit().sync();
+               
+                if (drawLifeFlag == true){
+                     drawBonus(g, life);
+                    }
+                
+                if (drawShieldFlag == true){
+                     drawBonus(g, shield);
                 }
                 
-                 for (int i = 0; i < shieldArray.size(); i++) {
-                    Bonus bonus = shieldArray.get(i);
-                    drawBonus(g, bonus);
-                    Toolkit.getDefaultToolkit().sync();
-                }
-                g2d.drawImage(pepper.getImage(), pepper.getX(), pepper.getY(), this);
+                 g2d.drawImage(pepper.getImage(), pepper.getX(), pepper.getY(), this);
                 
                 if (bossController.isAlive() && boss.isVisible())
                     g2d.drawImage(boss.getImage(), boss.getX(), boss.getY(), this);
 
-                
                 drawBullets(g);
                 updateLabels();
-            } else {
-                    drawGameOver(g);
-            }
+                
+            } else 
+                drawGameOver(g);            
         }
     }
 
@@ -270,15 +336,13 @@ public class MainView extends JPanel {
        
         MenuView view = new MenuView(gameFrame);
         view.setMessage("GAME OVER!");
-        mainController.setEnabled(false);
+        playController.setEnabled(false);
 
         EventQueue.invokeLater(() -> {
             gameFrame.getContentPane().removeAll();
             gameFrame.add(view);
             gameFrame.repaint();
             gameFrame.revalidate();
-            //creo una menuview. quando finisce il gioco faccio removeAll, togliendo tutti gli elementi 
-            //della grafica, faccio repaint e revalidate per richiamare la view del menu
             view.requestFocus();
         });
     }
@@ -289,204 +353,116 @@ public class MainView extends JPanel {
     }
 
     public void drawBook(Graphics g, Book book) {
-        if (book.isVisible()) {
+        if (book.isVisible()) 
             g.drawImage(book.getImage(), book.getX(), book.getY(), this);
-        } else if (book.getY() <= 0) {
+        else if (book.getY() <= 0)
             book.setVisible(true);
-        }
     }
     
-     public void drawBonus(Graphics g, Bonus bonus) {
-        if (bonus.isVisible()) {
+    public void drawBonus(Graphics g, Bonus bonus) {
+        if (bonus.isVisible())
             g.drawImage(bonus.getImage(), bonus.getX(), bonus.getY(), this);
-        } else if (bonus.getY() <= 0) {
+        else if (bonus.getY() <= 0)
             bonus.setVisible(true);
-        }
     }
 
-    private class TAdapter extends KeyAdapter {
+    @Override
+    public void eventCollisionChanged(CollisionEvent event) {
 
+        if (event.getState().contains(1))
+            drawLifeFlag = true;
+        
+        if (event.getState().contains(2))
+            drawShieldFlag = true;
+        
+        if (event.getState().contains(5))
+            clip.play();
+        if (event.getState().contains(6))
+            clip2.play();
+        
+      
+    }
+    
+    
+  
+
+    private class TAdapter extends KeyAdapter {
+        
         @Override
         public void keyReleased(KeyEvent e) {
             pepperController.keyReleased(e);
+            
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
             pepperController.keyPressed(e);
+            
+           
         }
-
-    }
     
+    }
     
     public void checkCollisions() {
-
         Rectangle pepperRectangle = pepper.getBounds();
-            /*PEPPER CON I LIBRI*/
-        for (int i = 0; i < 7; i++) {
-            Rectangle r2 = booksArray.get(i).getBounds();
-
-            if (pepperRectangle.intersects(r2) && booksArray.get(i).isVisible()) {
-               
-                if (bonusController.getProtectionFlag()){//dice se Pepper ha lo scudo o meno
-                    
-                    hudController.updateScore(HudController.MALUS);
-                    //se Pepper viene colpito quando ha uno scudo, gli vengono sottratti punti ma non la vita.
-                    booksArray.get(i).setVisible(false);//quando si verifica la collisione, rendo il libro
-                    //non visibile.Altrimenti, se pepper non ha lo scudo, aggiorno la vita, lo score e il malus
-                }
-                else {
-                    
-                    if(!booksArray.get(i).getCheckCollision()){
-                    booksArray.get(i).setCheckCollision(true);
-                    a.addStates(2);
-                    }
-                pepper.updateHealth(-1);
-
-                hudController.updateScore(HudController.MALUS);
-
-                hudController.updateMalus(HudController.MALUS);
-
-                booksArray.get(i).setVisible(false);
-                    }
-               
-               if(!pepperController.isAlive()){
-                    ingame=false;
-                }
-            } else {
-                booksArray.get(i).setCheckCollision(false);
-            }
+        Rectangle bossRectangle  = boss.getBounds();
           
-
-        }
-
-        /*PEPPER CON I BONUS*/
+        PepperCollideBook pepperCollideBook = new PepperCollideBook();
+        PepperCollideLife pepperCollideBonus = new PepperCollideLife();
+        PepperCollideShield pepperCollideShield = new PepperCollideShield();
+        BulletPepperCollideBoss bulletPepperCollideBoss = new BulletPepperCollideBoss();
+        PepperCollideBulletBoss pepperCollideBulletBoss = new PepperCollideBulletBoss();
+        BulletPepperCollideBook bulletPepperCollideBook = new BulletPepperCollideBook();
         
-        for (int i = 0; i < 1; i++) {
-            Rectangle r2 = bonusController.getLife().get(i).getBounds();
-
-            if (pepperRectangle.intersects(r2) && lifeArray.get(i).isVisible()) {
-                a.addStates(3);
-                if (pepper.getHealth()<pepper.HEALTH_MAX-1)
-                    pepper.updateHealth(2);
-                if (pepper.getHealth() == pepper.HEALTH_MAX-1)
-                    pepper.updateHealth(1);
-                
-                
-
-                lifeArray.get(i).setVisible(false);
-                if(!lifeArray.get(i).getCheckCollision()){
-                    lifeArray.get(i).setCheckCollision(true);
-                    a.addStates(3);
-                    }
-               if(!pepperController.isAlive()){
-                    ingame=false;
-                }
-            } else {
-                lifeArray.get(i).setCheckCollision(false);
-            }
-           
-
-        }  
-        /*PEPPER CON GLI SCUDI*/
-        for (int i = 0; i < 1; i++) {
-            Rectangle r2 = shieldArray.get(i).getBounds();
-
-            if (pepperRectangle.intersects(r2) && shieldArray.get(i).isVisible()) {
-              
-                //pepper.changeImage(30);
-                bonusController.setProtectionFlag(true);
-                
-                
-                
-
-                shieldArray.get(i).setVisible(false);
-                 if(!shieldArray.get(i).getCheckCollision()){
-                    shieldArray.get(i).setCheckCollision(true);
-                    a.addStates(3);
-                    }
-               if(!pepperController.isAlive()){
-                    ingame=false;
-                }
-            } else {
-                shieldArray.get(i).setCheckCollision(false);
-            }
-           // }
-
-        }  
         
-        /*BULLET CON I LIBRI*/
-        for (int j = 0; j < bulletsArray.size(); j++) {
-            Rectangle r33 = bulletsArray.get(j).getBounds();
-
-            for (int i = 0; i < 7; i++) {
-                Rectangle r2 = booksArray.get(i).getBounds();
-
-                if (booksArray.get(i).isVisible() && r33.intersects(r2)) {
-                    booksArray.get(i).setVisible(false);
-                    bulletsArray.get(j).setVisible(false);
-                    hudController.updateScore(HudController.BONUS);
-                    a.addStates(1);
-                    hudController.updateBonus(HudController.BONUS);
-                }
-            }
-
-        }
+        pepperCollideBook.collision(this, (ArrayList)booksArray, pepper, playController);
+        pepperCollideBonus.collision(this, life, pepper, playController);
+        pepperCollideShield.collision(this, shield, pepper, playController);
+        bulletPepperCollideBoss.collision(this,(ArrayList)bulletsArray, boss, playController);
+        pepperCollideBulletBoss.collision(this,(ArrayList)bulletsArrayBoss, pepper, playController);
         
-        /*BOSS CON I BULLET*/
-        Rectangle rBoss = boss.getBounds();
-        
-            for (int j = 0; j < bulletsArray.size(); j++) {
-            Rectangle rBulletsArray = bulletsArray.get(j).getBounds();           
+         for (int j = 0; j < bulletsArray.size(); j++) {
+            Bullet bullet = bulletsArray.get(j);
+            bulletPepperCollideBook.collision(this, (ArrayList)booksArray, bullet, playController);
+         }
 
-                if (boss.isVisible() && rBulletsArray.intersects(rBoss) && bulletsArray.get(j).isVisible()) {
-                    bulletsArray.get(j).setVisible(false);
-                    //bulletsArray.get(j).setVisible(false);
-                    boss.updateHealth(-1);
-                    if(boss.getHealth()==0){
-                        a.addStates(5);
-                    }
-                    if(!bulletsArray.get(j).getCheckCollision()){
-                    bulletsArray.get(j).setCheckCollision(true);
-                    a.addStates(4);
-                    }
-                }else{
-                     bulletsArray.get(j).setCheckCollision(false);
-                }
-                
-                
-            
+    }
+    
+    
+     public synchronized void addStates(int state) {
+        states.add(state);
+        stateChanged();
+    }
 
-        }     
-            
-            
-            
-        /*PEPPER CN I BULLET DEL BOSS*/
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public synchronized void removeState(int state) {
+        int ind = states.indexOf(state);
+        states.remove(ind);
+
+    }
+
+    public ArrayList<Integer> getList() {
+        return states;
+    }
+
+    public ArrayList<Observer> getObservers() {
+        return observers;
+    }
+
+    protected void stateChanged() {
+        CollisionEvent collisionEvent = new CollisionEvent(this, getList());
+       
+        for (Observer eachListener : observers) 
+            eachListener.eventCollisionChanged(collisionEvent);
         
-        for (int j = 0; j < bulletsArrayBoss.size(); j++) {
-            BulletBoss bulletBoss = bulletsArrayBoss.get(j);
-            Rectangle rBulletsBoss = bulletBoss.getBounds();
-            
-            if(bulletBoss.isVisible() && rBulletsBoss.intersects(pepperRectangle)){
-                bulletBoss.setVisible(false);
-                pepper.updateHealth(-1);
-                hudController.updateScore(HudController.MALUS);
-                hudController.updateMalus(HudController.MALUS);
-                if(!bulletsArrayBoss.get(j).getCheckCollision()){
-                    bulletsArrayBoss.get(j).setCheckCollision(true);
-                    a.addStates(4);
-                    }
-                if(!pepperController.isAlive()){
-                    ingame=false;
-                }
-            }else{
-                 bulletsArrayBoss.get(j).setCheckCollision(false);
-            }
-                
-        }
-            
     }
 
     
-    
-    }
+}

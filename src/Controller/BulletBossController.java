@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
+import ObserverPackage.Controller;
 import entities.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author marcopreziosi
- */
-public class BulletBossController {
+public class BulletBossController extends Controller{
         ArrayList<BulletBoss> bulletsArrayBoss;
 
     public BulletBossController() {
-        bulletsArrayBoss = new ArrayList<>(); //(0,0, "src/resources/missile2.png");
-
+        bulletsArrayBoss = new ArrayList<>(); 
     }
 
     public void deleteBullets(BulletBoss b) {
@@ -26,15 +17,12 @@ public class BulletBossController {
 
     private void move() {
         BulletBoss b;
-
         for (int i = 0; i < bulletsArrayBoss.size(); i++) {
             b = bulletsArrayBoss.get(i);
-            if (b.isVisible() && b.getY() > 0) {
+            if (b.isVisible() && b.getY() > 0) 
                 b.setY(bulletsArrayBoss.get(i).getY() + Bullet.MISSILE_SPEED);
-            } else {
+            else 
                 deleteBullets(b);
-            }
-
         }
     }
 

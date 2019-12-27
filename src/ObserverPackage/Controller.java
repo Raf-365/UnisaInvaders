@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package audio;
-import java.util.*;
+package ObserverPackage;
+
 /**
  *
- * @author antno
+ * @author marcopreziosi
  */
-public interface SoundPlayerListener extends EventListener{
-    //nice
-    public void stateChanged(StateChangedEvent event);
+public abstract class Controller  {
+
+    public abstract void update();
+    
+    
 }

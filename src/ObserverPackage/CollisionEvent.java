@@ -3,25 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package audio;
+package ObserverPackage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EventObject;
 
 /**
  *
- * @author antno
+ * @author marcopreziosi
  */
-public class StateChangedEvent extends EventObject{
-    private List<Integer> state; 
+public class CollisionEvent extends EventObject{
     
-    public StateChangedEvent(Object source,List<Integer> state) {
+    private ArrayList<Integer> state; 
+    
+    public CollisionEvent(Object source,ArrayList<Integer> state) {
         super(source);
         this.state = state;
         this.source=source;
     }
 
-   public List<Integer> getState(){
+   public ArrayList<Integer> getState(){
         return state;
     }      
     
 }
+
+    
+

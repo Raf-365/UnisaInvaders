@@ -19,21 +19,51 @@ import java.util.ArrayList;
 public class BookController {
 
     private ArrayList<Book> bookArray;
-    private static final int NUM_BOOKS=7, 
-            DAMAGE_VALUE = -1, OBSTACLE_SCALE = 50;// OBSTACLE_SPEED = 3;
-    public static final int EASY_BOOK = 3, MEDIUM_BOOK = 5, HARD_BOOK = 7;
+    private static final int NUM_BOOKS=7, DAMAGE_VALUE = -1, OBSTACLE_SCALE = 50;// OBSTACLE_SPEED = 3;
     private boolean disappearBookFlag=false; //falg per la scomparsa dei libri dopo tot secondi
     private PlayController playController;
+    //private ArrayList<String> profArray;
+    private ArrayList<Integer> prof;
+    private int j;
+    public static final int HARD_BOOK=7, MEDIUM_BOOK=5, EASY_BOOK=3;
     
     public BookController() {
-        bookArray = new ArrayList<>();
-        createBookArray();        
+        this.j = 7;
+        bookArray = new ArrayList<>();  
+        
+        
+        prof = new ArrayList<>();
+        
+        
+        for (int i=0; i<21; i++){
+            prof.add(i);
+        }
+       
+        createBookArray();
+        
+    }
+ 
+    
+    private void createBookArray(){ 
+        for (int i = 0; i < NUM_BOOKS; i++) 
+            bookArray.add(new Book(generateRandom(), (i * 70) * -1, "src/resources/" + Integer.toString(prof.get(i))+ ".png"));
+
     }
     
-    public void createBookArray(){        
-        for (int i = 0; i < NUM_BOOKS; i++) 
-            bookArray.add(new Book(generateRandom(), (i * 70) * -1, "src/Resources/Books.png"));
+    public void updateImageBookArray(){
         
+        
+        for (int i= 0; i <NUM_BOOKS; i++) 
+            
+            bookArray.get(i).changeImageBook(prof.get(i+j));
+            
+        if (j==7)
+            j=14;
+        else if (j==14)
+            j=0;
+        else 
+            j=7;
+            
     }
     
     public void setDisappearBookFlag(boolean flag){
@@ -49,6 +79,11 @@ public class BookController {
         return random.nextInt(GameFrame.MAX_X - 160) + 80;
     }
 
+
+  
+    
+    
+    
     public void update() {
         cycle();
     }

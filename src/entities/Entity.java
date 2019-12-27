@@ -1,30 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package entities;
+    package entities;
 
+import ObserverPackage.CollisionEvent;
+import ObserverPackage.Controller;
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
+import ObserverPackage.ControllerObserver;
+import ObserverPackage.Observer;
 
-/**
- *
- * @author stefa
- */
 public abstract class Entity {
 
     protected int x, y, w, h;
     protected boolean visible;
     protected Image image;
+    protected ArrayList<Observer> observers;
+    private ArrayList<Integer> states; 
 
+    public Entity(){
+        
+    }
+    
     public Entity(int x, int y, boolean visible, String path) {
         this.x = x;
         this.y = y;
         this.visible = visible;
-
         loadImage(path);
-
+        
+        this.states = new ArrayList<Integer>();
+        this.observers = new ArrayList<Observer>();
     }
 
     public void loadImage(String path) {
@@ -35,11 +38,12 @@ public abstract class Entity {
     }
 
     public void changeImage(int num) {
-        
-        
         ImageIcon ii = new ImageIcon("src/resources/Pepper" + num + ".png");
-
-        //image = ii.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH);
+        image = ii.getImage();
+    }
+    
+    public void changeImageBook(int num) {
+        ImageIcon ii = new ImageIcon("src/resources/" + num + ".png");
         image = ii.getImage();
     }
 
@@ -82,5 +86,45 @@ public abstract class Entity {
     public Image getImage() {
         return image;
     }
+    
+    
+     public synchronized void addState(int state) {
+        states.add(state);
+        stateChanged();
+    }
 
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public synchronized void removeState(int state) {
+        int ind = states.indexOf(state);
+        states.remove(ind);
+
+    }
+
+    public ArrayList<Integer> getList() {
+        return states;
+    }
+
+    public ArrayList<Observer> getObservers() {
+        return observers;
+    }
+
+    protected void stateChanged() {
+        CollisionEvent collisionEvent = new CollisionEvent(this, getList());
+       
+        for (Observer eachListener : observers) 
+            eachListener.eventCollisionChanged(collisionEvent);
+        
+    }
+
+    
+    
+    
+    
 }
