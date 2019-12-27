@@ -18,7 +18,8 @@ public class BossController extends Controller{
     public static final int INCREASE_SPEED_BOSS = 1;
     
     public BossController(){
-        bulletBossController = new BulletBossController();        
+        bulletBossController = new BulletBossController(); 
+        
         boss = new Boss(0, 0, "src/Resources/boss.png");
         boss.setVisible(false);
         boss.setX((((GameFrame.MAX_X - boss.getWidth()) / 2)));
@@ -28,6 +29,10 @@ public class BossController extends Controller{
         this.movementBoss=0;
         
         movementBoss=Boss.BOSS_SPEED/2;
+    }
+
+    public Pepper getPepper() {
+        return pepper;
     }
 
     public int getMovementBoss() {
@@ -46,6 +51,7 @@ public class BossController extends Controller{
         return this.boss;
     }
     
+    @Override
     public void update(){
         if(boss.isVisible())
             move();
@@ -62,7 +68,7 @@ public class BossController extends Controller{
     private void move(){
         
         playController = PlayController.getPlayController();
-        pepper = playController.getPepperController().getPepper();
+        this.pepper = playController.getPepperController().getPepper();
         
 
             followPepper();

@@ -19,24 +19,35 @@ import org.junit.Test;
  */
 public class BossControllerTest {
     private BossController bc;
+   
+            
     @Before
     public void setUp() {
         bc=new BossController();
+       
     }
     
-    @Test
+    /*@Test
     public void testUpdateKilledBoss(){
         bc.updateKilledBoss();
         assertEquals(1,bc.getNumBossKilled());
         
-    }
+    }*/
     
     @Test
     public void testUpdate(){
-        
-        
+         bc.getBoss().setVisible(true);
+         bc.update();
+         bc.getPepper().setX(bc.getBoss().getX()+5);
+         bc.update();//il boss si deve muovere verso destra
+         assertEquals(bc.getMovementBoss(), bc.getBoss().getDx());
+         bc.getPepper().setX(bc.getBoss().getX()-5);
+         bc.update();//il boss si deve muovere verso sinistra
+         assertEquals(-bc.getMovementBoss(), bc.getBoss().getDx());   
     }
-   @Test
+    
+    
+   /*@Test
    public void testfollowPepper() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
        Method method = BossController.class.getDeclaredMethod("followPepper", null);
        method.setAccessible(true);
@@ -55,6 +66,6 @@ public class BossControllerTest {
         assertTrue(bc.isAlive());
         bc.getBoss().updateHealth(-10);
         assertFalse(bc.isAlive());
-    }
+    }*/
     
 }

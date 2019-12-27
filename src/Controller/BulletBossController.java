@@ -26,6 +26,7 @@ public class BulletBossController extends Controller{
         }
     }
 
+        @Override
     public void update() {
         move();
     }

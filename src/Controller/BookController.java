@@ -6,8 +6,6 @@
 package Controller;
 
 import entities.Book;
-import entities.Entity.*;
-import java.awt.Rectangle;
 import java.util.Random;
 import View.GameFrame;
 import java.util.ArrayList;
