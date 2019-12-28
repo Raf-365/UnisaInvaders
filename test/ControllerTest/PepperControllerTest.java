@@ -13,10 +13,8 @@ package ControllerTest;
 
 import Controller.PepperController;
 import entities.Pepper;
-import View.GameFrame;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Field;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -52,15 +50,8 @@ public class PepperControllerTest {
     
     @Test
     public void testMove() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-        /*if ((pepper.getX() + pepper.getDx() <= GameFrame.MAX_X - pepper.getWidth() - 20) && (pepper.getX() + pepper.getDx() >= 5)) {
-            pepper.setX(pepper.getX() + pepper.getDx());
-        }*/
         Method method = PepperController.class.getDeclaredMethod("move", null);
         method.setAccessible(true);
-        //System.out.println(pc.getPepper().getX());
-       // System.out.println(pc.getPepper().getDx());
-        //System.out.println(GameFrame.MAX_X);
-        //System.out.println(pc.getPepper().getWidth());
         pc.getPepper().setDx(Pepper.PEPPER_SPEED);
         
        int initial_pos =pc.getPepper().getX();

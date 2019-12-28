@@ -13,7 +13,7 @@ public class HudController extends Controller{
         score = 0;
         malus = 0;
         bonus = 0;
-        //this.health = health;
+
     }
    
     public float getScore() {
@@ -39,11 +39,7 @@ public class HudController extends Controller{
     public void updateScore(int score) {
         this.score += score;
     }
-/*
-    public void updateHealth(int health) {
-        this.health += health;
-    }
-*/
+
     public void updateBonus(int bonus) {
         this.bonus += bonus;
     }

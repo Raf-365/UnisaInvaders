@@ -71,6 +71,7 @@ public class BossController extends Controller{
         this.pepper = playController.getPepperController().getPepper();
         this.playControllerReady=true;
         }
+        
 
             followPepper();
         

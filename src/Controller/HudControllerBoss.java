@@ -7,7 +7,7 @@ package Controller;
 
 /**
  *
- * @author marcopreziosi
+ * 
  */
 public class HudControllerBoss {
     private int health;

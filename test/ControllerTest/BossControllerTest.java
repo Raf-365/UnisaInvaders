@@ -24,16 +24,16 @@ public class BossControllerTest {
     @Before
     public void setUp() {
         bc=new BossController();
+        
        
     }
     
-    /*@Test
+    @Test
     public void testUpdateKilledBoss(){
         bc.updateKilledBoss();
         assertEquals(1,bc.getNumBossKilled());
         
-    }*/
-    
+    }
     @Test
     public void testUpdate(){
          bc.getBoss().setVisible(true);//settiamo l'attributo visible del boss a true
@@ -49,25 +49,20 @@ public class BossControllerTest {
     }
     
     
-   /*@Test
-   public void testfollowPepper() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-       Method method = BossController.class.getDeclaredMethod("followPepper", null);
+   @Test
+   public void testfire() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+       Method method = BossController.class.getDeclaredMethod("fire", null);
        method.setAccessible(true);
-       bc.getBoss().setX(30);
-       bc.getPepper().setX(40);
-       method.invoke(bc,null );
-       assertEquals(3, bc.getBoss().getDx());
-       bc.getBoss().setX(40);
-       bc.getPepper().setX(30);
-       method.invoke(bc,null );
-       assertEquals(-3, bc.getBoss().getDx());
+       int size=bc.getBulletsArrayBoss().size();
+       method.invoke(bc, null);//chiamo il metodo fire,ora accessibile, sulla istanza di BossController
+       assertEquals(size+3, bc.getBulletsArrayBoss().size());//vengono creati alla invocazione 3 bulletBoss
    }
    
    @Test
     public void testIsAlive(){
         assertTrue(bc.isAlive());
-        bc.getBoss().updateHealth(-10);
+        bc.getBoss().updateHealth(-10);//La vita del Boss è di 10 appena viene generato
         assertFalse(bc.isAlive());
-    }*/
+    }
     
 }

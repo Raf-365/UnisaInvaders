@@ -8,8 +8,7 @@ package ControllerTest;
  *
  * @author User
  */
-import Controller.BookController;
-import Controller.HudController;
+
 import Controller.HudController;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -38,15 +37,7 @@ public class HudControllerTest {
         assertEquals(score+score, hc.getScore(),0);
         
     }
-    
-    @Test
-    public void testUpdateHealth(){
-        int health = hc.getHealth();
-        hc.updateHealth(health);
-        assertEquals(health+health, hc.getHealth());
         
-    }
-    
     @Test
     public void testUpdateBonus(){
         int bonus = hc.getBonus();
