@@ -7,7 +7,6 @@ import Controller.HudController;
 import Controller.BookController;
 import Controller.BossController;
 import ObserverPackage.CollisionEvent;
-import ObserverPackage.ControllerObservable;
 import ObserverPackage.Observer;
 //import Controller.HudControllerBoss;
 import TemplatePackage.BulletPepperCollideBook;

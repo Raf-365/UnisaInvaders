@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 package ObserverPackage;
-
-import java.util.EventListener;
-
+import java.util.*;
 /**
  *
  * @author marcopreziosi
  */
-public interface Observer extends EventListener {
-    
+public interface  Observer extends EventListener{
     
     public void eventCollisionChanged(CollisionEvent collisionEvent);
+    
 }

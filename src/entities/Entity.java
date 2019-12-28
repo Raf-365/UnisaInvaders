@@ -5,8 +5,8 @@ import ObserverPackage.Controller;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
-import ObserverPackage.ControllerObserver;
 import ObserverPackage.Observer;
+
 
 public abstract class Entity {
 

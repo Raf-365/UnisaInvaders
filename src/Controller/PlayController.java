@@ -13,7 +13,7 @@ import static main.Game.SECONDS_BONUS_DISAPPEAR;
 import static main.Game.SECONDS_BOOK_DISAPPEAR;
 import static main.Game.SECONDS_SHIELD_DISAPPEAR;
 import static main.Game.SECONDS_SPEED_BOOKS_UPDATE;
-import ObserverPackage.Observer;
+import ObserverPackage.*;
 
 public class PlayController  implements Controller,Observer {
 
@@ -93,9 +93,9 @@ public class PlayController  implements Controller,Observer {
 
     public void setView(MainView mainView) {
         this.mainView = mainView;
-        bonusController.setObserverBonus(mainView);
-        pepperController.setObserverPepper(mainView);
-    }
+        bonusController.setObserverBonus(mainView);//aggiunge come osservatori di vita e scudo , la mainview
+        pepperController.setObserverPepper(mainView);//aggiunge come osservatore di pepper, la view
+    }/*Ricordiamo che tutte le entities (quindi i modelli) sono osservabili , quindi attraverso il metodo setView di PlayController sto aggiungendo alla LISTA DI OSSERVATORI DEI MODELLI la vista principale*/
 
     public static PlayController getPlayController() { //SINGLETON
         if (instance == null) {
@@ -213,9 +213,10 @@ public class PlayController  implements Controller,Observer {
 
     @Override
     public void eventCollisionChanged(CollisionEvent collisionEvent) {
+        // viene chiamato quando la mainview notifica playcontroller
 
         if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_BOOK) && !getBonusController().getProtectionFlag()) {
-            //pepper con i libri 
+            //pepper collide con i libri e non ha una protezione
             
             getPepperController().updateHealthPepper(Pepper.MALUS);
             getHudController().updateScore(HudController.MALUS);

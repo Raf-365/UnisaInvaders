@@ -7,11 +7,10 @@ import entities.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import View.GameFrame;
-import ObserverPackage.ControllerObserver;
-import ObserverPackage.Observer;
 import View.MainView;
+import ObserverPackage.Observer;
 
-public class PepperController  implements Controller,ControllerObserver{
+public class PepperController  implements Controller,Observer{
 
     Pepper pepper; 
     BulletController bulletController;
