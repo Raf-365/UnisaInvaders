@@ -4,17 +4,16 @@ import ObserverPackage.Observer;
 import View.GameFrame;
 import View.MainView;
 import entities.*;
-import java.util.ArrayList;
 import java.util.Random;
 import main.Game;
 
-public class BonusController extends Controller {
+public class BonusController implements Controller {
 
     
     private Bonus life, shield;
     private int i;
     private static final double SHIELD_REDUCTION=0.012;
-    private boolean disappearBonusFlag , protectionFlag; //falg per la scomparsa dei libri dopo tot secondi
+    private boolean disappearBonusFlag , protectionFlag; //flag per la scomparsa dei libri dopo tot secondi
     private boolean shieldEnabled ;
     private double shieldSeconds;
 

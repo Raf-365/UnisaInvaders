@@ -2,9 +2,8 @@ package Controller;
 import ObserverPackage.Controller;
 import entities.*;
 import java.util.ArrayList;
-import javax.swing.JPanel;
 
-public class BulletController extends Controller {
+public class BulletController implements Controller {
 
     ArrayList<Bullet> bulletsArray;
 

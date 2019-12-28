@@ -4,20 +4,14 @@ import ObserverPackage.Controller;
 import Controller.BulletController;
 import ObserverPackage.CollisionEvent;
 import entities.*;
-import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import javax.swing.JPanel;
 import View.GameFrame;
 import ObserverPackage.ControllerObserver;
 import ObserverPackage.Observer;
 import View.MainView;
-import java.applet.Applet;
-import java.applet.AudioClip;
-import java.net.URL;
 
-public class PepperController extends Controller implements ControllerObserver{
+public class PepperController  implements Controller,ControllerObserver{
 
     Pepper pepper; 
     BulletController bulletController;

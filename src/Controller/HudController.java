@@ -2,7 +2,7 @@ package Controller;
 
 import ObserverPackage.Controller;
 
-public class HudController extends Controller{
+public class HudController implements Controller{
 
     private float score;
     private int bonus, malus;

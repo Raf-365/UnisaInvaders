@@ -2,10 +2,9 @@ package Controller;
 import ObserverPackage.Controller;
 import View.GameFrame;
 import entities.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class BossController extends Controller{
+public class BossController implements Controller{
     Boolean playControllerReady;
     Boss boss;
     BulletBossController bulletBossController;

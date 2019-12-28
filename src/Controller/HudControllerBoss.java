@@ -5,11 +5,13 @@
  */
 package Controller;
 
+
+
 /**
  *
  * 
  */
-public class HudControllerBoss {
+public class HudControllerBoss   {
     private int health;
          
     

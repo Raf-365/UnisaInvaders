@@ -4,7 +4,7 @@ import ObserverPackage.Controller;
 import entities.*;
 import java.util.ArrayList;
 
-public class BulletBossController extends Controller{
+public class BulletBossController implements Controller{
         ArrayList<BulletBoss> bulletsArrayBoss;
 
     public BulletBossController() {

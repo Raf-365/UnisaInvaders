@@ -4,22 +4,18 @@ import ObserverPackage.Controller;
 import Controller.HudController;
 import Controller.BookController;
 import ObserverPackage.CollisionEvent;
-import View.GameFrame;
 import entities.Book;
 import View.MainView;
 import entities.Bonus;
 import entities.Boss;
-import entities.Bullet;
 import entities.Pepper;
-import java.util.ArrayList;
 import static main.Game.SECONDS_BONUS_DISAPPEAR;
 import static main.Game.SECONDS_BOOK_DISAPPEAR;
 import static main.Game.SECONDS_SHIELD_DISAPPEAR;
 import static main.Game.SECONDS_SPEED_BOOKS_UPDATE;
-import ObserverPackage.ControllerObserver;
 import ObserverPackage.Observer;
 
-public class PlayController extends Controller implements Observer {
+public class PlayController  implements Controller,Observer {
 
     Pepper pepper;
     BookController bookController;

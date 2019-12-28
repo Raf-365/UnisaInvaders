@@ -5,22 +5,19 @@
  */
 package Controller;
 
+import ObserverPackage.Controller;
 import entities.Book;
 import java.util.Random;
 import View.GameFrame;
 import java.util.ArrayList;
 
-/**
- *
- * @author stefa
- */
-public class BookController {
+
+public class BookController implements Controller {
 
     private ArrayList<Book> bookArray;
-    private static final int NUM_BOOKS=7, DAMAGE_VALUE = -1, OBSTACLE_SCALE = 50;// OBSTACLE_SPEED = 3;
-    private boolean disappearBookFlag=false; //falg per la scomparsa dei libri dopo tot secondi
+    private static final int NUM_BOOKS=7;
+    private boolean disappearBookFlag=false; //flag per la scomparsa dei libri dopo tot secondi
     private PlayController playController;
-    //private ArrayList<String> profArray;
     private ArrayList<Integer> prof;
     private int j;
     public static final int HARD_BOOK=7, MEDIUM_BOOK=5, EASY_BOOK=3;
@@ -78,10 +75,8 @@ public class BookController {
     }
 
 
-  
-    
-    
-    
+     
+    @Override
     public void update() {
         cycle();
     }
