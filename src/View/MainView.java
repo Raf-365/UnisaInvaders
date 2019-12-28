@@ -8,7 +8,6 @@ import Controller.BookController;
 import Controller.BossController;
 import ObserverPackage.CollisionEvent;
 import ObserverPackage.Observer;
-//import Controller.HudControllerBoss;
 import TemplatePackage.BulletPepperCollideBook;
 import TemplatePackage.BulletPepperCollideBoss;
 import TemplatePackage.PepperCollideLife;
@@ -48,7 +47,6 @@ public class MainView extends JPanel implements Observer  {
                             BULLET_PEPPER_COLLIDE_BOOK = 4, BULLET_PEPPER_COLLIDE_BOSS = 5, PEPPER_COLLIDE_BULLET_BOSS = 6;
     
     private ArrayList<Book> booksArray;
-    //private ArrayList<Bonus> lifeArray, shieldArray;
     private Bonus life, shield;
     private ArrayList<Bullet> bulletsArray;
     private ArrayList<BulletBoss> bulletsArrayBoss;
@@ -83,7 +81,12 @@ public class MainView extends JPanel implements Observer  {
     private AudioClip clip3;
     private AudioClip clip4;
     private AudioClip clip5;
-    
+    PepperCollideBook pepperCollideBook = new PepperCollideBook();
+        PepperCollideLife pepperCollideBonus = new PepperCollideLife();
+        PepperCollideShield pepperCollideShield = new PepperCollideShield();
+        BulletPepperCollideBoss bulletPepperCollideBoss = new BulletPepperCollideBoss();
+        PepperCollideBulletBoss pepperCollideBulletBoss = new PepperCollideBulletBoss();
+        BulletPepperCollideBook bulletPepperCollideBook = new BulletPepperCollideBook();
     
     public boolean getIngame() {
         return ingame;
@@ -131,9 +134,8 @@ public class MainView extends JPanel implements Observer  {
         this.states = new ArrayList<Integer>();
         this.observers = new ArrayList<Observer>();
         this.addObserver((Observer) playController);  
+        bossController.getBoss().addObserver(this);
         pepperController.getPepper().addObserver(this);
-        
-        
         URL url = getClass().getResource("shot.wav");
         URL url2 = getClass().getResource("collide.wav");
         /*
@@ -368,24 +370,37 @@ public class MainView extends JPanel implements Observer  {
 
     @Override
     public void eventCollisionChanged(CollisionEvent event) {
-
-        if (event.getState().contains(PlayController.LIFE_UPDATE))
+        if (event.getState().contains(PlayController.BOSS_NOT_VISIBLE)){
+            bossController.getBoss().setVisible(false);
+            Boss bo =(Boss)event.getSource();
+            bo.removeState(PlayController.BOSS_NOT_VISIBLE);
+        }if (event.getState().contains(PlayController.BOSS_IS_VISIBLE)){
+            bossController.getBoss().setVisible(true);
+            Boss bo =(Boss)event.getSource();
+            bo.removeState(PlayController.BOSS_IS_VISIBLE); 
+        }if (event.getState().contains(PlayController.LIFE_UPDATE)){
             drawLifeFlag = true;
-        
-        if (event.getState().contains(PlayController.SHIELD_UPDATE))
+            Bonus pep =(Bonus)event.getSource();
+            pep.removeState(PlayController.LIFE_UPDATE);
+        }if (event.getState().contains(PlayController.SHIELD_UPDATE)){
             drawShieldFlag = true;
-        
-        if (event.getState().contains(PlayController.SOUND_BULLET))
+            Bonus pep1 =(Bonus)event.getSource();
+            pep1.removeState(PlayController.SHIELD_UPDATE);
+        }if (event.getState().contains(PlayController.SOUND_BULLET)){
             clip.play();
-        
-        if (event.getState().contains(PlayController.SOUND_COLLISION))
+            Pepper pep2 =(Pepper)event.getSource();
+            pep2.removeState(PlayController.SOUND_BULLET);
+        }if (event.getState().contains(PlayController.SOUND_COLLISION)){
             clip2.play();
-        
-        if (event.getState().contains(PlayController.PEPPER_DEATH))
+            Pepper pep3 =(Pepper)event.getSource();
+            pep3.removeState(PlayController.SOUND_COLLISION);
+        }if (event.getState().contains(PlayController.PEPPER_DEATH)){
             ingame = false;
-        
-      
-    }
+        Pepper pep11 =(Pepper)event.getSource();
+        pep11.removeState(PlayController.PEPPER_DEATH);
+        }
+        }
+    
     
     
   
@@ -407,18 +422,10 @@ public class MainView extends JPanel implements Observer  {
     
     }
     
+        
+        
     public void checkCollisions() {
-        Rectangle pepperRectangle = pepper.getBounds();
-        Rectangle bossRectangle  = boss.getBounds();
-          
-        PepperCollideBook pepperCollideBook = new PepperCollideBook();
-        PepperCollideLife pepperCollideBonus = new PepperCollideLife();
-        PepperCollideShield pepperCollideShield = new PepperCollideShield();
-        BulletPepperCollideBoss bulletPepperCollideBoss = new BulletPepperCollideBoss();
-        PepperCollideBulletBoss pepperCollideBulletBoss = new PepperCollideBulletBoss();
-        BulletPepperCollideBook bulletPepperCollideBook = new BulletPepperCollideBook();
-        
-        
+       
         pepperCollideBook.collision(this, (ArrayList)booksArray, pepper);
         pepperCollideBonus.collision(this, life, pepper);
         pepperCollideShield.collision(this, shield, pepper);

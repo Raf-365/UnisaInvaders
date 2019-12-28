@@ -15,7 +15,7 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author Brunello
+ * 
  */
 public class PepperCollideShield extends Collision {
 
@@ -23,10 +23,10 @@ public class PepperCollideShield extends Collision {
 
     @Override
     public void differentTypeCollision(MainView view, Entity entity, Entity entity2) {
-        
+        entity.setVisible(false);
         view.addStates(MainView.PEPPER_COLLIDE_SHIELD);
-        view.removeState(MainView.PEPPER_COLLIDE_SHIELD);
-        entity.setVisible(false);   
+        
+          
         
     }
 

@@ -15,7 +15,7 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author Brunello
+ * 
  */
 public class PepperCollideBulletBoss extends Collision {
 
@@ -24,7 +24,8 @@ public class PepperCollideBulletBoss extends Collision {
         
         entity.setVisible(false);
         view.addStates(MainView.PEPPER_COLLIDE_BULLET_BOSS);
-        view.removeState(MainView.PEPPER_COLLIDE_BULLET_BOSS);
+        
+        
     }
 
 }

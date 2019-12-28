@@ -31,7 +31,7 @@ public class PlayController  implements Controller,Observer {
     private boolean disableSpeedUpdateFlag = false, disappearBookFlag = false, shieldFlag = false;
     private long bookSpeedUpdateTime, bookDisappearTime, beforeTime, timeDiff, sleep, bonusSpeedUpdateTime, bonusSpeedTimeBefore = 0, bonusSpeedTimeAfter = 0;
     
-    public static final int LIFE_UPDATE = 1, SHIELD_UPDATE = 2, SOUND_BULLET= 5, SOUND_COLLISION = 6, PEPPER_DEATH = 7;
+    public static final int BOSS_NOT_VISIBLE = 8, BOSS_IS_VISIBLE= 9,LIFE_UPDATE = 1, SHIELD_UPDATE = 2, SOUND_BULLET= 5, SOUND_COLLISION = 6, PEPPER_DEATH = 7;
     
     
     
@@ -95,6 +95,7 @@ public class PlayController  implements Controller,Observer {
         this.mainView = mainView;
         bonusController.setObserverBonus(mainView);//aggiunge come osservatori di vita e scudo , la mainview
         pepperController.setObserverPepper(mainView);//aggiunge come osservatore di pepper, la view
+        
     }/*Ricordiamo che tutte le entities (quindi i modelli) sono osservabili , quindi attraverso il metodo setView di PlayController sto aggiungendo alla LISTA DI OSSERVATORI DEI MODELLI la vista principale*/
 
     public static PlayController getPlayController() { //SINGLETON
@@ -193,6 +194,7 @@ public class PlayController  implements Controller,Observer {
 
         /*AGGIORNAMENTO DELLE VARIABILI DOPO LA MORTE DEL BOSS*/
         if (this.isEnabled() && !this.getBossController().isAlive()) {
+            getBossController().getBoss().addState(BOSS_NOT_VISIBLE);
             this.getBossController().getBoss().setVisible(false);
             this.resetBossController();
             this.getBossController().updateKilledBoss();
@@ -214,24 +216,26 @@ public class PlayController  implements Controller,Observer {
     @Override
     public void eventCollisionChanged(CollisionEvent collisionEvent) {
         // viene chiamato quando la mainview notifica playcontroller
-
-        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_BOOK) && !getBonusController().getProtectionFlag()) {
-            //pepper collide con i libri e non ha una protezione
+        MainView source =(MainView)collisionEvent.getSource();
+        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_BOOK)){
+             source.removeState(MainView.PEPPER_COLLIDE_BOOK);
             
+               if( !getBonusController().getProtectionFlag()) {
+            //pepper collide con i libri e non ha una protezione
             getPepperController().updateHealthPepper(Pepper.MALUS);
             getHudController().updateScore(HudController.MALUS);
             getHudController().updateMalus(HudController.MALUS);
             getPepperController().getPepper().addState(SOUND_COLLISION); //suono collisione 
-            getPepperController().getPepper().removeState(SOUND_COLLISION);
+            
             if (!getPepperController().isAlive()){
-                getPepperController().getPepper().addState(PEPPER_DEATH); //morte
-                getPepperController().getPepper().removeState(PEPPER_DEATH);
+                getPepperController().getPepper().addState(PEPPER_DEATH); //morte  
             }
-                
-                
+               }
+               
         }
 
         if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_LIFE)) { //pepper con la vita
+            source.removeState(MainView.PEPPER_COLLIDE_LIFE);
             if (pepperController.getPepper().getHealth() < pepper.HEALTH_MAX - 1) {
                 getPepperController().updateHealthPepper(Pepper.HEALTH2);
                 
@@ -240,26 +244,34 @@ public class PlayController  implements Controller,Observer {
             }
         }
         
-        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_SHIELD)) //pepper con lo scudo 
+        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_SHIELD)){ //pepper con lo scudo 
             getBonusController().setProtectionFlag(true);
+            source.removeState(MainView.PEPPER_COLLIDE_SHIELD);
         
 
-        if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOOK)) { //i colpi di pepper con i libri 
+        }if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOOK)) { //i colpi di pepper con i libri 
             getHudController().updateScore(HudController.BONUS);
             getHudController().updateBonus(HudController.BONUS);
+            source.removeState(MainView.BULLET_PEPPER_COLLIDE_BOOK);
         }
 
-        if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOSS) && getBossController().getBoss().isVisible()) {
+        if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOSS)) {
+           source.removeState(MainView.BULLET_PEPPER_COLLIDE_BOSS);
+        if(getBossController().getBoss().isVisible()){
+            
             getBossController().updateHealthBoss(Boss.MALUS);
+            
+             
+        }
         }
 
         if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_BULLET_BOSS)) { //bulletBoss & pepper
+            source.removeState(MainView.PEPPER_COLLIDE_BULLET_BOSS);
             getPepperController().updateHealthPepper(Pepper.MALUS);
             getHudController().updateScore(HudController.MALUS);
             getHudController().updateMalus(HudController.MALUS);
             if (!getPepperController().isAlive()){
                 getPepperController().getPepper().addState(PEPPER_DEATH); //morte
-                getPepperController().getPepper().removeState(PEPPER_DEATH);
             }
         }
     }

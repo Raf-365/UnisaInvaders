@@ -114,7 +114,7 @@ public class BookController implements Controller {
 
             if(flag){
                 playController = PlayController.getPlayController();
-                playController.getBossController().getBoss().setVisible(true);
+                playController.getBossController().getBoss().addState(PlayController.BOSS_IS_VISIBLE);
             } 
         }
     }

@@ -2,29 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/ObserverPackage/Controller1.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/PepperController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/TemplatePackage/BulletPepperCollideBook.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/test/EntityTest/BonusTest.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/test/ControllerTest/BonusControllerTest.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/test/ControllerTest/HudControllerTest.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/HudController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/test/ControllerTest/BossControllerTest.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/BulletBossController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/BossController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/nbproject/build-impl.xml</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/View/MainView.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/BulletController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/BonusController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/test/ControllerTest/BulletControllerTest.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/HudControllerBoss.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/PlayController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/Controller/BookController.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/test/ControllerTest/BookControllerTest.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/entities/Bonus.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/src/entities/Entity.java</file>
-            <file>file:/D:/Raffaele/Documenti/NetBeansProjects/UnisaInvaders/test/ControllerTest/PepperControllerTest.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

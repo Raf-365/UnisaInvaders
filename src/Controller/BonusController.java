@@ -106,14 +106,13 @@ public class BonusController implements Controller {
                    
                     bonus.setX(x);
                     bonus.setY(y);                    
-                    bonus.addState(a); //aggiornamento bonus  //1 3 1 life || 2 4 2 shield
-                    bonus.removeState(a);
+                    //bonus.addState(a);
+
                 } else {
                     bonus.setVisible(false);
                 }
             } else {
                 bonus.addState(a);
-                bonus.removeState(a);
                 bonus.setY(y);
             }
         

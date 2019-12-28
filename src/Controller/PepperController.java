@@ -58,7 +58,6 @@ public class PepperController  implements Controller,Observer{
      
         if (key == KeyEvent.VK_SPACE && !stopFiring) {
             pepper.addState(PlayController.SOUND_BULLET);
-            pepper.removeState(PlayController.SOUND_BULLET);
             fireFlag=true;
             pepper.changeImage(10);
             fire();

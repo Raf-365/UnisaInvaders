@@ -15,17 +15,17 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author Brunello
+ * 
  */
 public class PepperCollideLife extends Collision {
 
 
     @Override
     public void differentTypeCollision(MainView view, Entity entity,  Entity entity2) {
-
-        view.addStates(MainView.PEPPER_COLLIDE_LIFE); 
-        view.removeState(MainView.PEPPER_COLLIDE_LIFE);
         entity.setVisible(false);
+        view.addStates(MainView.PEPPER_COLLIDE_LIFE); 
+        
+        
     }
 
 }

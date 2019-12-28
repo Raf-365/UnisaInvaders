@@ -15,7 +15,7 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author Brunello
+ * 
  */
 public class PepperCollideBook extends Collision {
 
@@ -23,10 +23,9 @@ public class PepperCollideBook extends Collision {
 
     @Override
     public void differentTypeCollision(MainView view, Entity entity,  Entity entity2) {
-
+        entity.setVisible(false);
         view.addStates(MainView.PEPPER_COLLIDE_BOOK); //1 è lo stato di Pepper che collide con i libri
-        view.removeState(MainView.PEPPER_COLLIDE_BOOK);
-        entity.setVisible(false);   
+        
         
     }
                                                                 
