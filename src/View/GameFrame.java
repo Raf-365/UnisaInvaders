@@ -1,6 +1,6 @@
 package View;
 
-import View.MainView;
+
 import javax.swing.*;
 public class GameFrame extends JFrame {
     
@@ -14,7 +14,7 @@ public class GameFrame extends JFrame {
     private void initUi() {
         setSize(MAX_X, MAX_Y);
         this.setResizable(false);
-        setTitle("UnisaInvader");
+        setTitle("UnisaInvaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }

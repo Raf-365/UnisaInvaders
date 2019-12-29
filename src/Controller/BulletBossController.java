@@ -26,7 +26,7 @@ public class BulletBossController implements Controller{
         }
     }
 
-        @Override
+    @Override
     public void update() {
         move();
     }

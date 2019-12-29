@@ -1,14 +1,8 @@
 package main;
 import View.GameFrame;
-import View.MainView;
 import Controller.*;
 import View.MenuView;
-import entities.Book;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Game implements Runnable {

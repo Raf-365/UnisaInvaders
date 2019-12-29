@@ -82,7 +82,7 @@ public class MainView extends JPanel implements Observer  {
     private AudioClip clip4;
     private AudioClip clip5;
     PepperCollideBook pepperCollideBook = new PepperCollideBook();
-        PepperCollideLife pepperCollideBonus = new PepperCollideLife();
+        PepperCollideLife pepperCollideLife = new PepperCollideLife();
         PepperCollideShield pepperCollideShield = new PepperCollideShield();
         BulletPepperCollideBoss bulletPepperCollideBoss = new BulletPepperCollideBoss();
         PepperCollideBulletBoss pepperCollideBulletBoss = new PepperCollideBulletBoss();
@@ -427,7 +427,7 @@ public class MainView extends JPanel implements Observer  {
     public void checkCollisions() {
        
         pepperCollideBook.collision(this, (ArrayList)booksArray, pepper);
-        pepperCollideBonus.collision(this, life, pepper);
+        pepperCollideLife.collision(this, life, pepper);
         pepperCollideShield.collision(this, shield, pepper);
         bulletPepperCollideBoss.collision(this,(ArrayList)bulletsArray, boss);
         pepperCollideBulletBoss.collision(this,(ArrayList)bulletsArrayBoss, pepper);

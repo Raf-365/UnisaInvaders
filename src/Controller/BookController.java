@@ -42,7 +42,6 @@ public class BookController implements Controller {
     private void createBookArray(){ 
         for (int i = 0; i < NUM_BOOKS; i++) 
             bookArray.add(new Book(generateRandom(), (i * 70) * -1, "src/resources/" + Integer.toString(prof.get(i))+ ".png"));
-
     }
     
     public void updateImageBookArray(){

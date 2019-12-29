@@ -137,6 +137,7 @@ public class PlayController  implements Controller,Observer {
         mainView.repaintComponents();
     }
 
+    @Override
     public void update() {
         manageTime();
         updateEntities();

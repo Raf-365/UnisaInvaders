@@ -5,13 +5,10 @@
  */
 package TemplatePackage;
 
-import Controller.HudController;
-import Controller.PlayController;
+
 import View.MainView;
-import entities.Bonus;
 import entities.Entity;
-import entities.Pepper;
-import java.awt.Rectangle;
+
 
 /**
  *

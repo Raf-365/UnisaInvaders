@@ -23,8 +23,11 @@ public abstract class Collision {
             Rectangle rArray = array.get(i).getBounds();
             Entity entity = array.get(i);
             
-            if (entity2.getBounds().intersects(rArray) && entity.isVisible())
+            if (entity2.getBounds().intersects(rArray) && entity.isVisible()){
                 differentTypeCollision(view, entity, entity2);
+               
+               
+            }
         }
     }
     
