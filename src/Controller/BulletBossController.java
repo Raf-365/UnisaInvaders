@@ -1,34 +1,25 @@
 package Controller;
 
 import ObserverPackage.Controller;
+import TemplatePackage1.UpdateBulletBossControllerY;
 import entities.*;
 import java.util.ArrayList;
 
 public class BulletBossController implements Controller{
         ArrayList<BulletBoss> bulletsArrayBoss;
-
+        UpdateBulletBossControllerY update;
     public BulletBossController() {
-        bulletsArrayBoss = new ArrayList<>(); 
+        bulletsArrayBoss = new ArrayList<>();
+        update=new UpdateBulletBossControllerY();
     }
 
     public void deleteBullets(BulletBoss b) {
         bulletsArrayBoss.remove(b);
     }
 
-    private void move() {
-        BulletBoss b;
-        for (int i = 0; i < bulletsArrayBoss.size(); i++) {
-            b = bulletsArrayBoss.get(i);
-            if (b.isVisible() && b.getY() > 0) 
-                b.setY(bulletsArrayBoss.get(i).getY() + Bullet.MISSILE_SPEED);
-            else 
-                deleteBullets(b);
-        }
-    }
-
     @Override
     public void update() {
-        move();
+        update.move((ArrayList)bulletsArrayBoss);
     }
 
     public ArrayList<BulletBoss> getBulletsArrayBoss() {
