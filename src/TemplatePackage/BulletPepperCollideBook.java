@@ -21,7 +21,7 @@ public class BulletPepperCollideBook extends Collision {
         entity.setVisible(false);
         entity2.setVisible(false);
         view.addStates(MainView.BULLET_PEPPER_COLLIDE_BOOK);
-        
+        view.getClip3().play();
        
     }
 }

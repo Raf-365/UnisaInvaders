@@ -22,7 +22,7 @@ public class PepperCollideShield extends Collision {
     public void differentTypeCollision(MainView view, Entity entity, Entity entity2) {
         entity.setVisible(false);
         view.addStates(MainView.PEPPER_COLLIDE_SHIELD);
-        
+         view.getClip6().play();
           
         
     }

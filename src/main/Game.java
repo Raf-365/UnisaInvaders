@@ -45,6 +45,7 @@ public class Game implements Runnable {
        
             /*RESETTO LE VARIABILI E L'ATTESA DEI SECONDI*/ 
            else {
+                
                playController.setDisableSpeedUpdateFlag(false);
                playController.setDisappearBookFlag(false);
                playController.setBookSpeedUpdateTime(System.currentTimeMillis());

@@ -21,7 +21,7 @@ public class BulletPepperCollideBoss extends Collision{
         if (entity2.isVisible()){
             entity.setVisible(false);
             view.addStates(MainView.BULLET_PEPPER_COLLIDE_BOSS);
-            
+            view.getClip4().play();
         }    
     }
 }

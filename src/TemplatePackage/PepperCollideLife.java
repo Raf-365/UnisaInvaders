@@ -21,7 +21,7 @@ public class PepperCollideLife extends Collision {
     public void differentTypeCollision(MainView view, Entity entity,  Entity entity2) {
         entity.setVisible(false);
         view.addStates(MainView.PEPPER_COLLIDE_LIFE); 
-        
+        view.getClip6().play();
         
     }
 

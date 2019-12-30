@@ -226,7 +226,7 @@ public class PlayController  implements Controller,Observer {
             getPepperController().updateHealthPepper(Pepper.MALUS);
             getHudController().updateScore(HudController.MALUS);
             getHudController().updateMalus(HudController.MALUS);
-            getPepperController().getPepper().addState(SOUND_COLLISION); //suono collisione 
+            //getPepperController().getPepper().addState(SOUND_COLLISION); //suono collisione 
             
             if (!getPepperController().isAlive()){
                 getPepperController().getPepper().addState(PEPPER_DEATH); //morte  

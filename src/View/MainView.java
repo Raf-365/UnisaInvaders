@@ -17,10 +17,8 @@ import TemplatePackage.PepperCollideShield;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -31,8 +29,9 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.io.File;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -81,12 +80,14 @@ public class MainView extends JPanel implements Observer  {
     private AudioClip clip3;
     private AudioClip clip4;
     private AudioClip clip5;
+    private AudioClip clip6;
+    private AudioClip clip7;
     PepperCollideBook pepperCollideBook = new PepperCollideBook();
-        PepperCollideLife pepperCollideLife = new PepperCollideLife();
-        PepperCollideShield pepperCollideShield = new PepperCollideShield();
-        BulletPepperCollideBoss bulletPepperCollideBoss = new BulletPepperCollideBoss();
-        PepperCollideBulletBoss pepperCollideBulletBoss = new PepperCollideBulletBoss();
-        BulletPepperCollideBook bulletPepperCollideBook = new BulletPepperCollideBook();
+    PepperCollideLife pepperCollideLife = new PepperCollideLife();
+    PepperCollideShield pepperCollideShield = new PepperCollideShield();
+    BulletPepperCollideBoss bulletPepperCollideBoss = new BulletPepperCollideBoss();
+    PepperCollideBulletBoss pepperCollideBulletBoss = new PepperCollideBulletBoss();
+    BulletPepperCollideBook bulletPepperCollideBook = new BulletPepperCollideBook();
     
     public boolean getIngame() {
         return ingame;
@@ -137,22 +138,53 @@ public class MainView extends JPanel implements Observer  {
         bossController.getBoss().addObserver(this);
         pepperController.getPepper().addObserver(this);
         URL url = getClass().getResource("shot.wav");
-        URL url2 = getClass().getResource("collide.wav");
-        /*
-        URL url3 = getClass().getResource("src/Resources/shot.wav");
-        URL url4 = getClass().getResource("src/Resources/shot.wav");
-        URL url5 = getClass().getResource("src/Resources/shot.wav");*/
-           
+        URL url2 = getClass().getResource("collide.wav");        
+        URL url3 = getClass().getResource("hitHeadSound.wav");
+        URL url4 = getClass().getResource("hitHeadSound.wav");
+        URL url5 = getClass().getResource("collide.wav");
+        URL url6 = getClass().getResource("bonusSound.wav");
+        URL url7 = getClass().getResource("gameOver.wav");          
         clip =  Applet.newAudioClip(url);
-        clip2 = Applet.newAudioClip(url2);/*
-        clip3 = Applet.newAudioClip(url2);
-        clip4 = Applet.newAudioClip(url2);
-        clip5 = Applet.newAudioClip(url2);*/
+        clip2 = Applet.newAudioClip(url2);
+        clip3 = Applet.newAudioClip(url3);
+        clip4 = Applet.newAudioClip(url4);
+        clip5 = Applet.newAudioClip(url5);
+        clip6 = Applet.newAudioClip(url6);
+        clip7= Applet.newAudioClip(url7);
+        
         
         graphicsSetup();
         setPreferredSize(new Dimension(GameFrame.MAX_X, GameFrame.MAX_Y));
         
     }
+
+    public AudioClip getClip() {
+        return clip;
+    }
+
+    public AudioClip getClip2() {
+        return clip2;
+    }
+
+    public AudioClip getClip3() {
+        return clip3;
+    }
+
+    public AudioClip getClip4() {
+        return clip4;
+    }
+
+    public AudioClip getClip5() {
+        return clip5;
+    }
+
+    public AudioClip getClip6() {
+        return clip6;
+    }
+
+
+    
+    
 
     private void graphicsSetup() {
         this.setLayout(null);
@@ -233,6 +265,9 @@ public class MainView extends JPanel implements Observer  {
         
         
     }
+    
+    
+    
     
     public void repaintComponents() {
         
@@ -335,18 +370,25 @@ public class MainView extends JPanel implements Observer  {
     }
 
     private void drawGameOver(Graphics g) {
-       
+        clip7.play();
+        playController.setEnabled(false);
+        try{
+        Thread.sleep(2500);
         MenuView view = new MenuView(gameFrame);
         view.setMessage("GAME OVER!");
-        playController.setEnabled(false);
-
+        
+        
+        
         EventQueue.invokeLater(() -> {
             gameFrame.getContentPane().removeAll();
             gameFrame.add(view);
             gameFrame.repaint();
             gameFrame.revalidate();
             view.requestFocus();
-        });
+        });}
+        catch(InterruptedException e ){
+            
+        }
     }
 
     public void loadImage(String path, Image image) {
@@ -390,12 +432,10 @@ public class MainView extends JPanel implements Observer  {
             clip.play();
             Pepper pep2 =(Pepper)event.getSource();
             pep2.removeState(PlayController.SOUND_BULLET);
-        }if (event.getState().contains(PlayController.SOUND_COLLISION)){
-            clip2.play();
-            Pepper pep3 =(Pepper)event.getSource();
-            pep3.removeState(PlayController.SOUND_COLLISION);
         }if (event.getState().contains(PlayController.PEPPER_DEATH)){
+            
             ingame = false;
+            
         Pepper pep11 =(Pepper)event.getSource();
         pep11.removeState(PlayController.PEPPER_DEATH);
         }
