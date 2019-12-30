@@ -211,12 +211,10 @@ public class MainView extends JPanel implements Observer  {
         killedBossLabel.setFont(font1);
         killedBossLabel.setForeground(Color.yellow);
         killedBossLabel.setBounds(5, 180, 200, 30);
-        
         healthLabel = new JLabel("HEALTH BAR");
         healthLabel.setFont(font1);
         healthLabel.setForeground(Color.white);
         healthLabel.setBounds(5, 5, 200, 30);
-
         healthBar = new JProgressBar(0, Pepper.HEALTH_MAX);
         healthBar.setStringPainted(true);
         healthBar.setForeground(Color.red);
@@ -224,7 +222,6 @@ public class MainView extends JPanel implements Observer  {
         healthBar.setBounds(5, 35, 130, 30);
         healthBar.setValue(pepper.getHealth());
         healthBar.setFont(font2);
-        
         healthLabelBoss = new JLabel("BOSS HEALTH");
         healthLabelBoss.setFont(font1);
         healthLabelBoss.setForeground(Color.white);
