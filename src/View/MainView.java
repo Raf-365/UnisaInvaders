@@ -4,6 +4,7 @@ import Controller.BonusController;
 import Controller.PepperController;
 import Controller.PlayController;
 import Controller.HudController;
+import java.awt.FontMetrics;
 import Controller.BookController;
 import Controller.BossController;
 import ObserverPackage.CollisionEvent;
@@ -50,7 +51,6 @@ public class MainView extends JPanel implements Observer  {
     private ArrayList<Bullet> bulletsArray;
     private ArrayList<BulletBoss> bulletsArrayBoss;
     private boolean ingame;
-
     public void setIngame(boolean ingame) {
         this.ingame = ingame;
     }
@@ -72,6 +72,7 @@ public class MainView extends JPanel implements Observer  {
     private boolean protection = false;
     private boolean drawLifeFlag = false;
     private boolean drawShieldFlag = false;
+     private boolean flag;
     private Image img = Toolkit.getDefaultToolkit().createImage("src/Resources/sfondo.jpg");
     private ArrayList<Observer> observers;
     private ArrayList<Integer> states;
@@ -95,7 +96,7 @@ public class MainView extends JPanel implements Observer  {
 
     public MainView(GameFrame frame) {
         this.gameFrame=frame;
-        
+        flag=true;
         initBoard(); 
         
         
@@ -364,32 +365,27 @@ public class MainView extends JPanel implements Observer  {
                 drawBullets(g);
                 updateLabels();
                 
-            } else 
-                drawGameOver(g);            
+            }else if(flag){
+                drawGameOver(g); 
+                flag=false;
+            }  
         }
     }
 
     private void drawGameOver(Graphics g) {
+        
+        GameOverView view1 = new GameOverView(gameFrame,playController);
         clip7.play();
-        playController.setEnabled(false);
-        try{
-        Thread.sleep(2500);
-        MenuView view = new MenuView(gameFrame);
-        view.setMessage("GAME OVER!");
-        
-        
-        
         EventQueue.invokeLater(() -> {
             gameFrame.getContentPane().removeAll();
-            gameFrame.add(view);
+            gameFrame.add(view1);
             gameFrame.repaint();
             gameFrame.revalidate();
-            view.requestFocus();
-        });}
-        catch(InterruptedException e ){
+            view1.requestFocus();
+        });
             
-        }
     }
+
 
     public void loadImage(String path, Image image) {
         ImageIcon imageIcon = new ImageIcon(path);

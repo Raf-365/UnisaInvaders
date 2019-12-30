@@ -1,14 +1,16 @@
 package View;
 
 
+import java.awt.Color;
 import javax.swing.*;
 public class GameFrame extends JFrame {
     
     public static final int MAX_X = 1280, MAX_Y = 720;
     public static final int INF_BORDER = 40;
-
+    
     public GameFrame() {
         initUi();
+        
     }
 
     private void initUi() {

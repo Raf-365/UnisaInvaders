@@ -12,7 +12,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
+import main.AudioPlayer;
 
 public class MenuView extends JPanel implements ActionListener{
     
@@ -23,13 +27,23 @@ public class MenuView extends JPanel implements ActionListener{
     private String message=null;
     private Font font, font2;
     private JLabel difficulty;
-    
+    AudioPlayer audio;
     Image img = Toolkit.getDefaultToolkit().createImage("src/Resources/peppermenu.png");
     
     public MenuView(GameFrame frame){
         playController = PlayController.getPlayController();
         this.gameFrame=frame;
         graphicSetup();
+        try{
+        this.audio=new AudioPlayer("src/Resources/mainMenuSoundtrack.wav");
+        }catch(UnsupportedAudioFileException e){
+            
+        }catch( LineUnavailableException ae){
+            
+        }catch(IOException ea){
+            
+        }
+        
     }
 
     public void setMessage(String message) {this.message = message;}   
@@ -120,7 +134,7 @@ public class MenuView extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startButton){
-                
+            audio.stopClip();
             playController.initController();
             MainView view = new MainView(gameFrame);
             playController.setView(view);
