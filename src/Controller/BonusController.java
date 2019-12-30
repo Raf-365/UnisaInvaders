@@ -9,7 +9,7 @@ import main.Game;
 
 public class BonusController implements Controller {
 
-    
+    /*----*/
     private Bonus life, shield;
     private int i;
     private static final double SHIELD_REDUCTION=0.012;
