@@ -30,6 +30,15 @@ public class BossController implements Controller{
         movementBoss=Boss.BOSS_SPEED/2;
     }
 
+    public static int getNUM_FIRE() {
+        return NUM_FIRE;
+    }
+
+    
+    public Boolean getPlayControllerReady() {
+        return playControllerReady;
+    }
+
     public Pepper getPepper() {
         return pepper;
     }
@@ -52,32 +61,15 @@ public class BossController implements Controller{
     
     @Override
     public void update(){
-        if(boss.isVisible())
-            move();
-        bulletBossController.update();
-    }
-    
-    private void followPepper(){
-        if(boss.getX() < pepper.getX())
-            boss.setDx(movementBoss);            
-        else if(boss.getX() > pepper.getX())
-            boss.setDx(-movementBoss);
-    }
-    
-    private void move(){
+        if(boss.isVisible()){
         if(!playControllerReady){
         this.playController = PlayController.getPlayController();
         this.pepper = playController.getPepperController().getPepper();
         this.playControllerReady=true;
-        }
-        
-
-            followPepper();
-        
-        if ((boss.getX() + boss.getDx() <= GameFrame.MAX_X - boss.getWidth() - 20) 
-                 && (boss.getX() + boss.getDx() >= 5)) 
-            boss.setX(boss.getX() + boss.getDx());
-        
+        }        
+            boss.followPepper(pepper);
+            boss.move();  
+                    
         /*SPARO DEL BOSS OGNI TOT SECONDI*/
         if(!stopTiming){
             timeFire = System.currentTimeMillis();
@@ -86,20 +78,23 @@ public class BossController implements Controller{
         long beforeTime = System.currentTimeMillis();
         
         if((beforeTime - timeFire)/1000 > SECONDS_BOSS_FIRE/2){
-            fire();
+            boss.fire(bulletBossController);
             stopTiming = !stopTiming;
         }
-    }
-    
-    
-    private void fire() {
-        for(int i=0; i<NUM_FIRE; i++){
-            BulletBoss bulletBoss = new BulletBoss(0,0,"src/resources/missileBoss.png");
-            bulletBoss.setX((boss.getX()+ boss.getWidth()/2)-bulletBoss.getWidth()/2);
-            bulletBoss.setY(boss.getY()+i*bulletBoss.getHeight()+5);
-            bulletBossController.getBulletsArrayBoss().add(bulletBoss);
+               
         }
+        bulletBossController.update();
     }
+    
+   /* private void followPepper(){
+        if(boss.getX() < pepper.getX())
+            boss.setDx(movementBoss);            
+        else if(boss.getX() > pepper.getX())
+            boss.setDx(-movementBoss);
+    }*/
+    
+
+    
 
     public ArrayList<BulletBoss> getBulletsArrayBoss() {
         return bulletBossController.getBulletsArrayBoss();

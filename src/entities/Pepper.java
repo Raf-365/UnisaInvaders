@@ -1,5 +1,7 @@
 package entities;
 
+import Controller.*;
+import View.GameFrame;
 import java.util.ArrayList;
 
 public class Pepper extends Character {
@@ -19,6 +21,18 @@ public class Pepper extends Character {
 
     public int getState() {
         return state;
+    }
+    
+    public void move() {
+        
+        if ((getX() +getDx() <= GameFrame.MAX_X - getWidth() - 20) && (getX() + getDx() >= 5)) 
+            setX(getX() + getDx());
+        
+    }
+    
+    public void fire(BulletController bulletController ) {
+        bulletController.getBulletsArray().add(new Bullet(getX(), getY(), 
+                "src/resources/missile2.png"));
     }
 
 }

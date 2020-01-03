@@ -10,7 +10,7 @@ import View.GameFrame;
 import View.MainView;
 import ObserverPackage.Observer;
 
-public class PepperController  implements Controller,Observer{
+public class PepperController  implements Controller{
 
     Pepper pepper; 
     BulletController bulletController;
@@ -34,17 +34,13 @@ public class PepperController  implements Controller,Observer{
         return this.pepper;
     }
 
+    @Override
     public void update() {
-        move();
+        pepper.move();
         bulletController.update();
     }
 
-    private void move() {
-        
-        if ((pepper.getX() + pepper.getDx() <= GameFrame.MAX_X - pepper.getWidth() - 20) && (pepper.getX() + pepper.getDx() >= 5)) 
-            pepper.setX(pepper.getX() + pepper.getDx());
-        
-    }
+
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -60,18 +56,13 @@ public class PepperController  implements Controller,Observer{
             pepper.addState(PlayController.SOUND_BULLET);
             fireFlag=true;
             pepper.changeImage(10);
-            fire();
+            pepper.fire(bulletController);
             stopFiring = true;
         }
     }
     
     public boolean getFireFlag(){
         return fireFlag;
-    }
-
-    private void fire() {
-        bulletController.getBulletsArray().add(new Bullet(pepper.getX(), pepper.getY(), 
-                "src/resources/missile2.png"));
     }
 
     public ArrayList<Bullet> getBulletsArray() {
@@ -108,10 +99,4 @@ public class PepperController  implements Controller,Observer{
      }
      
      
-    @Override
-    public void eventCollisionChanged(CollisionEvent collisionEvent) {
-
-        
-
-    }
 }
