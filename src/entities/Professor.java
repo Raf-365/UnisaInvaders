@@ -26,6 +26,7 @@ public class Professor extends FallingObject {
     
     public Professor(int x, int y, String path) {
         super(x, y, path);
+        /*scaliamo l'immagine alla larghezza e altezza specificata dalla costante utlizzando l'algoritmo specificato da SCALE_SMOOTH*/
         image = image.getScaledInstance(OBSTACLE_SCALE, OBSTACLE_SCALE, Image.SCALE_SMOOTH);
         w = OBSTACLE_SCALE;
         h = OBSTACLE_SCALE;
