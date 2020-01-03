@@ -18,7 +18,7 @@ public class HudControllerTest {
     private HudController hc;
     @Before
     public void setUp() {
-        hc = new HudController(0);
+        hc = new HudController();
     }
     
     @Test

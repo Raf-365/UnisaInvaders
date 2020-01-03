@@ -62,7 +62,7 @@ public class PlayController  implements Controller,Observer {
         professorController = new ProfessorController();
         bonusController = new BonusController();
         pepperController = new PepperController();
-        hudController = new HudController(pepperController.getPepper().getHealth());
+        hudController = new HudController();
         bossController = new BossController();   
     }
 
