@@ -15,9 +15,6 @@ import Controller.PepperController;
 import entities.Pepper;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import javax.swing.ImageIcon;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -36,28 +33,6 @@ public class PepperControllerTest {
         assertTrue(pc.isAlive());
         pc.getPepper().updateHealth(-5);
         assertFalse(pc.isAlive());
-    }
-    
-    @Test
-    public void testFire() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-        Method method = PepperController.class.getDeclaredMethod("fire", null);
-        method.setAccessible(true);
-        int s = pc.getBulletsArray().size();
-        method.invoke(pc,null );
-        method.invoke(pc,null );
-        assertEquals(2, pc.getBulletsArray().size());
-    }
-    
-    @Test
-    public void testMove() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-        Method method = PepperController.class.getDeclaredMethod("move", null);
-        method.setAccessible(true);
-        pc.getPepper().setDx(Pepper.PEPPER_SPEED);
-        
-       int initial_pos =pc.getPepper().getX();
-        method.invoke(pc,null );
-        
-        assertEquals(initial_pos+pc.getPepper().getDx(), pc.getPepper().getX());
     }
     
     @Test
@@ -94,3 +69,4 @@ public class PepperControllerTest {
         
     }
 }
+

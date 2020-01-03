@@ -10,18 +10,19 @@ package EntityTest;
  *
  * @author User
  */
+import Controller.BulletController;
 import org.junit.*;
-import entities.Entity;
 import entities.*;
-import View.*;
-import main.*;
 import javax.swing.ImageIcon;
 import static org.junit.Assert.*;
+
 public class PepperTest {
     private Pepper p;
+    private BulletController bc;
     @Before
     public void setUp() {
         p=new Pepper(0,0,"");
+        bc= new BulletController();
     }
     
     
@@ -47,6 +48,20 @@ public class PepperTest {
         assertEquals(i+1, p.getHealth());
     }
         
+    @Test
+    public void testFire() {
+        p.fire(bc);
+        p.fire(bc);
+        assertEquals(2, bc.getBulletsArray().size());
+    }
     
+    @Test
+    public void testMove() {
+       int  initial_pos=p.getX();
+        p.setDx(Pepper.PEPPER_SPEED);
+        p.move();
+        assertEquals(initial_pos+Pepper.PEPPER_SPEED, p.getX());
+    }
 
 }
+
