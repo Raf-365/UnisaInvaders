@@ -44,7 +44,7 @@ public abstract class Entity {
         image = ii.getImage();
     }
     
-    public void changeImageBook(int num) {
+    public void changeImageProfessor(int num) {
         ImageIcon ii = new ImageIcon("src/resources/" + num + ".png");
         image = ii.getImage();
     }

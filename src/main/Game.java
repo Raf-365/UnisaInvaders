@@ -8,8 +8,8 @@ import javax.swing.JOptionPane;
 public class Game implements Runnable {
 
     private PlayController playController;
-    public static final int DELAY = 10, SECONDS_BOOK_DISAPPEAR = 10, SECONDS_BONUS_DISAPPEAR = 3, 
-            SECONDS_SPEED_BOOKS_UPDATE = 5, SECONDS_SHIELD_DISAPPEAR = 5;
+    public static final int DELAY = 10, SECONDS_PROFESSORS_DISAPPEAR = 10, SECONDS_BONUS_DISAPPEAR = 3,
+            SECONDS_SPEED_PROFESSORS_UPDATE = 5, SECONDS_SHIELD_DISAPPEAR = 5;
     
 
     public Game() {
@@ -47,9 +47,9 @@ public class Game implements Runnable {
            else {
                 
                playController.setDisableSpeedUpdateFlag(false);
-               playController.setDisappearBookFlag(false);
-               playController.setBookSpeedUpdateTime(System.currentTimeMillis());
-               playController.setBookDisappearTime(System.currentTimeMillis());
+               playController.setDisappearProfessorFlag(false);
+               playController.setProfessorSpeedUpdateTime(System.currentTimeMillis());
+               playController.setProfessorDisappearTime(System.currentTimeMillis());
            }
                            
             timeDiff = System.currentTimeMillis() - beforeTime;

@@ -1,24 +1,22 @@
 package Controller;
 
 import ObserverPackage.Controller;
-import Controller.HudController;
-import Controller.BookController;
 import ObserverPackage.CollisionEvent;
-import entities.Book;
+import entities.Professor;
 import View.MainView;
 import entities.Bonus;
 import entities.Boss;
 import entities.Pepper;
 import static main.Game.SECONDS_BONUS_DISAPPEAR;
-import static main.Game.SECONDS_BOOK_DISAPPEAR;
+import static main.Game.SECONDS_PROFESSORS_DISAPPEAR;
 import static main.Game.SECONDS_SHIELD_DISAPPEAR;
-import static main.Game.SECONDS_SPEED_BOOKS_UPDATE;
+import static main.Game.SECONDS_SPEED_PROFESSORS_UPDATE;
 import ObserverPackage.*;
 
 public class PlayController  implements Controller,Observer {
 
     Pepper pepper;
-    BookController bookController;
+    ProfessorController professorController;
     BonusController bonusController;
     PepperController pepperController;
     HudController hudController;
@@ -28,8 +26,8 @@ public class PlayController  implements Controller,Observer {
     MainView mainView;
     static private PlayController instance = null;  //SINGLETON
     private boolean ingame, enabled = false;
-    private boolean disableSpeedUpdateFlag = false, disappearBookFlag = false, shieldFlag = false;
-    private long bookSpeedUpdateTime, bookDisappearTime, beforeTime, timeDiff, sleep, bonusSpeedUpdateTime, bonusSpeedTimeBefore = 0, bonusSpeedTimeAfter = 0;
+    private boolean disableSpeedUpdateFlag = false, disappearProfessorFlag = false, shieldFlag = false;
+    private long professorSpeedUpdateTime, professorDisappearTime, beforeTime, timeDiff, sleep, bonusSpeedUpdateTime, bonusSpeedTimeBefore = 0, bonusSpeedTimeAfter = 0;
     
     public static final int BOSS_NOT_VISIBLE = 8, BOSS_IS_VISIBLE= 9,LIFE_UPDATE = 1, SHIELD_UPDATE = 2, SOUND_BULLET= 5, SOUND_COLLISION = 6, PEPPER_DEATH = 7;
     
@@ -37,32 +35,32 @@ public class PlayController  implements Controller,Observer {
     
     private PlayController() {
         ingame = true;
-        bookSpeedUpdateTime = System.currentTimeMillis();
-        bookDisappearTime = bookSpeedUpdateTime;
+        professorSpeedUpdateTime = System.currentTimeMillis();
+        professorDisappearTime = professorSpeedUpdateTime;
         beforeTime = System.currentTimeMillis();
         initController();
         
     }
 
-    public void setBookSpeedUpdateTime(long bookSpeedUpdateTime) {
-        this.bookSpeedUpdateTime = bookSpeedUpdateTime;
+    public void setProfessorSpeedUpdateTime(long professorSpeedUpdateTime) {
+        this.professorSpeedUpdateTime = professorSpeedUpdateTime;
     }
 
-    public void setBookDisappearTime(long bookDisappearTime) {
-        this.bookDisappearTime = bookDisappearTime;
+    public void setProfessorDisappearTime(long professorDisappearTime) {
+        this.professorDisappearTime = professorDisappearTime;
     }
 
     public void setDisableSpeedUpdateFlag(boolean disableSpeedUpdateFlag) {
         this.disableSpeedUpdateFlag = disableSpeedUpdateFlag;
     }
 
-    public void setDisappearBookFlag(boolean disappearBookFlag) {
-        this.disappearBookFlag = disappearBookFlag;
+    public void setDisappearProfessorFlag(boolean disappearProfessorFlag) {
+        this.disappearProfessorFlag = disappearProfessorFlag;
     }
 
     public void initController() {
         
-        bookController = new BookController();
+        professorController = new ProfessorController();
         bonusController = new BonusController();
         pepperController = new PepperController();
         hudController = new HudController(pepperController.getPepper().getHealth());
@@ -70,7 +68,7 @@ public class PlayController  implements Controller,Observer {
     }
 
     public void updateFallingObjectSpeed() {
-        Book.updateSpeed();
+        Professor.updateSpeed();
         Bonus.updateSpeed();
     }
 
@@ -109,8 +107,8 @@ public class PlayController  implements Controller,Observer {
         return pepperController;
     }
 
-    public BookController getBookController() {
-        return bookController;
+    public ProfessorController getProfessorController() {
+        return professorController;
     }
 
     public BonusController getBonusController() {
@@ -126,7 +124,7 @@ public class PlayController  implements Controller,Observer {
     }
 
     public void updateEntities() {
-        bookController.update();
+        professorController.update();
         bonusController.update();
         pepperController.update();
         hudController.update();
@@ -149,26 +147,26 @@ public class PlayController  implements Controller,Observer {
         
         /*AUMENTO DELLA VELOCITA' DEI LIBRI DOPO UN CERTO NUMERO DI SECONDI*/
         if (this.isEnabled() && !disableSpeedUpdateFlag
-                && (beforeTime - bookSpeedUpdateTime) / 1000 > SECONDS_SPEED_BOOKS_UPDATE) {
+                && (beforeTime - professorSpeedUpdateTime) / 1000 > SECONDS_SPEED_PROFESSORS_UPDATE) {
             this.updateFallingObjectSpeed();
 
-            bookSpeedUpdateTime = System.currentTimeMillis();
+            professorSpeedUpdateTime = System.currentTimeMillis();
         }
 
         /*SCOMPARSA DEI BONUS UNA SOLA VOLTA*/
-        if (this.isEnabled() && !disappearBookFlag
-                && (beforeTime - bookDisappearTime) / 1000 > SECONDS_BONUS_DISAPPEAR) {
-            disappearBookFlag = true;
-            this.getBonusController().setDisappearBonusFlag(disappearBookFlag);
-            disappearBookFlag = false;
+        if (this.isEnabled() && !disappearProfessorFlag
+                && (beforeTime - professorDisappearTime) / 1000 > SECONDS_BONUS_DISAPPEAR) {
+            disappearProfessorFlag = true;
+            this.getBonusController().setDisappearBonusFlag(disappearProfessorFlag);
+            disappearProfessorFlag = false;
         }
 
         /*SCOMPARSA DEI LIBRI DOPO UN CERTO NUMERO DI SECONDI E COMPARSA DEL BOSS*/
-        if (this.isEnabled() && !disappearBookFlag
-                && (beforeTime - bookDisappearTime) / 1000 > SECONDS_BOOK_DISAPPEAR) {
-            disappearBookFlag = true;
-            this.getBookController().setDisappearBookFlag(disappearBookFlag);
-            this.getBonusController().setDisappearBonusFlag(disappearBookFlag);
+        if (this.isEnabled() && !disappearProfessorFlag
+                && (beforeTime - professorDisappearTime) / 1000 > SECONDS_PROFESSORS_DISAPPEAR) {
+            disappearProfessorFlag = true;
+            this.getProfessorController().setDisappearProfessorFlag(disappearProfessorFlag);
+            this.getBonusController().setDisappearBonusFlag(disappearProfessorFlag);
             disableSpeedUpdateFlag = true;
         }
 
@@ -201,13 +199,13 @@ public class PlayController  implements Controller,Observer {
             this.getBossController().updateKilledBoss();
             this.getHudController().updateScore(HudController.KILLED_BOSS);
             this.getHudController().updateBonus(HudController.KILLED_BOSS);
-            disappearBookFlag = false;
-            this.getBookController().setDisappearBookFlag(disappearBookFlag);
-            this.getBonusController().setDisappearBonusFlag(disappearBookFlag);
-            this.getBookController().updateImageBookArray();
+            disappearProfessorFlag = false;
+            this.getProfessorController().setDisappearProfessorFlag(disappearProfessorFlag);
+            this.getBonusController().setDisappearBonusFlag(disappearProfessorFlag);
+            this.getProfessorController().updateImageProfessorArray();
             disableSpeedUpdateFlag = false;
-            bookSpeedUpdateTime = System.currentTimeMillis();
-            bookDisappearTime = bookSpeedUpdateTime;
+            professorSpeedUpdateTime = System.currentTimeMillis();
+            professorDisappearTime = professorSpeedUpdateTime;
             if (this.getBossController().getMovementBoss() < Pepper.PEPPER_SPEED - 2) {
                 this.getBossController().setMovementBoss(this.getBossController().getMovementBoss() + BossController.INCREASE_SPEED_BOSS);
             }
@@ -218,8 +216,8 @@ public class PlayController  implements Controller,Observer {
     public void eventCollisionChanged(CollisionEvent collisionEvent) {
         // viene chiamato quando la mainview notifica playcontroller
         MainView source =(MainView)collisionEvent.getSource();
-        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_BOOK)){
-             source.removeState(MainView.PEPPER_COLLIDE_BOOK);
+        if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_PROFESSOR)){
+             source.removeState(MainView.PEPPER_COLLIDE_PROFESSOR);
             
                if( !getBonusController().getProtectionFlag()) {
             //pepper collide con i libri e non ha una protezione
@@ -250,10 +248,10 @@ public class PlayController  implements Controller,Observer {
             source.removeState(MainView.PEPPER_COLLIDE_SHIELD);
         
 
-        }if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOOK)) { //i colpi di pepper con i libri 
+        }if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_PROFESSOR)) { //i colpi di pepper con i libri
             getHudController().updateScore(HudController.BONUS);
             getHudController().updateBonus(HudController.BONUS);
-            source.removeState(MainView.BULLET_PEPPER_COLLIDE_BOOK);
+            source.removeState(MainView.BULLET_PEPPER_COLLIDE_PROFESSOR);
         }
 
         if (collisionEvent.getState().contains(MainView.BULLET_PEPPER_COLLIDE_BOSS)) {

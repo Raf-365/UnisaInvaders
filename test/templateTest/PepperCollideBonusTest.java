@@ -6,16 +6,14 @@
 package templateTest;
 
 
-import TemplatePackage.PepperCollideBook;
 import TemplatePackage.PepperCollideLife;
 import TemplatePackage.PepperCollideShield;
 import View.GameFrame;
 import View.MainView;
 import entities.Bonus;
-import entities.Book;
 import entities.Entity;
 import entities.Pepper;
-import java.util.ArrayList;
+
 import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;

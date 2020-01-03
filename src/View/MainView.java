@@ -4,15 +4,14 @@ import Controller.BonusController;
 import Controller.PepperController;
 import Controller.PlayController;
 import Controller.HudController;
-import java.awt.FontMetrics;
-import Controller.BookController;
+import Controller.ProfessorController;
 import Controller.BossController;
 import ObserverPackage.CollisionEvent;
 import ObserverPackage.Observer;
-import TemplatePackage.BulletPepperCollideBook;
+import TemplatePackage.BulletPepperCollideProfessor;
 import TemplatePackage.BulletPepperCollideBoss;
 import TemplatePackage.PepperCollideLife;
-import TemplatePackage.PepperCollideBook;
+import TemplatePackage.PepperCollideProfessor;
 import TemplatePackage.PepperCollideBulletBoss;
 import TemplatePackage.PepperCollideShield;
 import java.awt.Color;
@@ -31,11 +30,7 @@ import java.applet.AudioClip;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+
 import main.Game;
 
 public class MainView extends JPanel implements Observer  {
@@ -43,10 +38,10 @@ public class MainView extends JPanel implements Observer  {
     private Pepper pepper;
     private Boss boss;
     private final int DELAY = 10;
-    public static final int PEPPER_COLLIDE_BOOK = 1, PEPPER_COLLIDE_LIFE = 2, PEPPER_COLLIDE_SHIELD = 3,
-                            BULLET_PEPPER_COLLIDE_BOOK = 4, BULLET_PEPPER_COLLIDE_BOSS = 5, PEPPER_COLLIDE_BULLET_BOSS = 6;
+    public static final int PEPPER_COLLIDE_PROFESSOR = 1, PEPPER_COLLIDE_LIFE = 2, PEPPER_COLLIDE_SHIELD = 3,
+                            BULLET_PEPPER_COLLIDE_PROFESSOR = 4, BULLET_PEPPER_COLLIDE_BOSS = 5, PEPPER_COLLIDE_BULLET_BOSS = 6;
     
-    private ArrayList<Book> booksArray;
+    private ArrayList<Professor> professorsArray;
     private Bonus life, shield;
     private ArrayList<Bullet> bulletsArray;
     private ArrayList<BulletBoss> bulletsArrayBoss;
@@ -60,10 +55,10 @@ public class MainView extends JPanel implements Observer  {
     private float punteggio;
     private int punteggioBonus, punteggioMalus,numBossKilled;
     private PlayController playController;
-    private Image imagePepper, imageBook;
+    private Image imagePepper, imageProfessor;
     private PepperController pepperController;
     private BossController bossController;
-    private BookController bookController;
+    private ProfessorController professorController;
     private BonusController bonusController;
     private HudController hudController;
     //private HudControllerBoss hudControllerBoss;
@@ -83,12 +78,12 @@ public class MainView extends JPanel implements Observer  {
     private AudioClip clip5;
     private AudioClip clip6;
     private AudioClip clip7;
-    PepperCollideBook pepperCollideBook = new PepperCollideBook();
+    PepperCollideProfessor pepperCollideProfessor = new PepperCollideProfessor();
     PepperCollideLife pepperCollideLife = new PepperCollideLife();
     PepperCollideShield pepperCollideShield = new PepperCollideShield();
     BulletPepperCollideBoss bulletPepperCollideBoss = new BulletPepperCollideBoss();
     PepperCollideBulletBoss pepperCollideBulletBoss = new PepperCollideBulletBoss();
-    BulletPepperCollideBook bulletPepperCollideBook = new BulletPepperCollideBook();
+    BulletPepperCollideProfessor bulletPepperCollideProfessor = new BulletPepperCollideProfessor();
     
     public boolean getIngame() {
         return ingame;
@@ -115,7 +110,7 @@ public class MainView extends JPanel implements Observer  {
         
         //CHIEDERE A FOGGIA SE DOBBIAMO CREARE LE NOSTRE ENTITA' IN QUESTA CLASSE O NEI CONTROLLER E LASCIARE COSI'
         
-        bookController = playController.getBookController();
+        professorController = playController.getProfessorController();
         bonusController = playController.getBonusController();
         pepperController = playController.getPepperController();
         bossController = playController.getBossController();
@@ -126,7 +121,7 @@ public class MainView extends JPanel implements Observer  {
         life = bonusController.getLife();
         shield = bonusController.getShield();
         
-        booksArray = bookController.getBooks();
+        professorsArray = professorController.getProfessors();
         bulletsArray = pepperController.getBulletsArray();
         bulletsArrayBoss = bossController.getBulletsArrayBoss();
                 
@@ -331,18 +326,18 @@ public class MainView extends JPanel implements Observer  {
         g.drawImage(img, 0, 0, this);
        
         
-        if(booksArray != null){ //altrimenti al primo repaint() dopo la removeAll() lancia eccezione
+        if(professorsArray != null){ //altrimenti al primo repaint() dopo la removeAll() lancia eccezione
             
-            for (int i = 0; i < booksArray.size(); i++) 
+            for (int i = 0; i < professorsArray.size(); i++)
                 checkCollisions();
         
             if (ingame) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
 
-                for (int i = 0; i < booksArray.size(); i++) {
-                    Book book = booksArray.get(i);
-                    drawBook(g, book);
+                for (int i = 0; i < professorsArray.size(); i++) {
+                    Professor professor = professorsArray.get(i);
+                    drawProfessor(g, professor);
                     Toolkit.getDefaultToolkit().sync();
                 }
                
@@ -389,11 +384,11 @@ public class MainView extends JPanel implements Observer  {
         image = imageIcon.getImage();
     }
 
-    public void drawBook(Graphics g, Book book) {
-        if (book.isVisible()) 
-            g.drawImage(book.getImage(), book.getX(), book.getY(), this);
-        else if (book.getY() <= 0)
-            book.setVisible(true);
+    public void drawProfessor(Graphics g, Professor professor) {
+        if (professor.isVisible())
+            g.drawImage(professor.getImage(), professor.getX(), professor.getY(), this);
+        else if (professor.getY() <= 0)
+            professor.setVisible(true);
     }
     
     public void drawBonus(Graphics g, Bonus bonus) {
@@ -459,7 +454,7 @@ public class MainView extends JPanel implements Observer  {
         
     public void checkCollisions() {
        
-        pepperCollideBook.collision(this, (ArrayList)booksArray, pepper);
+        pepperCollideProfessor.collision(this, (ArrayList) professorsArray, pepper);
         pepperCollideLife.collision(this, life, pepper);
         pepperCollideShield.collision(this, shield, pepper);
         bulletPepperCollideBoss.collision(this,(ArrayList)bulletsArray, boss);
@@ -467,7 +462,7 @@ public class MainView extends JPanel implements Observer  {
         
          for (int j = 0; j < bulletsArray.size(); j++) {
             Bullet bullet = bulletsArray.get(j);
-            bulletPepperCollideBook.collision(this, (ArrayList)booksArray, bullet);
+            bulletPepperCollideProfessor.collision(this, (ArrayList) professorsArray, bullet);
          }
 
     }

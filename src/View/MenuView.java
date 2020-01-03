@@ -2,7 +2,7 @@ package View;
 
 import Controller.*;
 import entities.Bonus;
-import entities.Book;
+import entities.Professor;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -156,24 +156,24 @@ public class MenuView extends JPanel implements ActionListener{
             startButton.setEnabled(true);
             mediumDifficulty.setEnabled(false);
             easyDifficulty.setEnabled(false);
-            Book.setSpeed(BookController.HARD_BOOK); 
-            Bonus.setSpeed(BookController.HARD_BOOK);
+            Professor.setSpeed(ProfessorController.HARD_PROFESSOR);
+            Bonus.setSpeed(ProfessorController.HARD_PROFESSOR);
         }
         
         if(e.getSource() == mediumDifficulty){
             startButton.setEnabled(true);
             easyDifficulty.setEnabled(false);
             hardDifficulty.setEnabled(false);
-            Book.setSpeed(BookController.MEDIUM_BOOK); 
-            Bonus.setSpeed(BookController.MEDIUM_BOOK);
+            Professor.setSpeed(ProfessorController.MEDIUM_PROFESSOR);
+            Bonus.setSpeed(ProfessorController.MEDIUM_PROFESSOR);
         }
         
         if(e.getSource() == easyDifficulty){
             startButton.setEnabled(true);
             mediumDifficulty.setEnabled(false);  
             hardDifficulty.setEnabled(false);
-            Book.setSpeed(BookController.EASY_BOOK); 
-            Bonus.setSpeed(BookController.EASY_BOOK);
+            Professor.setSpeed(ProfessorController.EASY_PROFESSOR);
+            Bonus.setSpeed(ProfessorController.EASY_PROFESSOR);
         }
         
         if(e.getSource() == resetDifficulty){
