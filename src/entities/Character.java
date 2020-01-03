@@ -1,5 +1,7 @@
 package entities;
 
+import View.GameFrame;
+
 
 
 public abstract class Character extends Entity {
@@ -26,5 +28,13 @@ public abstract class Character extends Entity {
 
     public void updateHealth(int value) {
         health += value;
+    }
+    
+    public void move(){
+       
+        if ((getX() + getDx() <= GameFrame.MAX_X - getWidth() - 20) 
+                 && (getX() + getDx() >= 5)) 
+            setX(getX() +getDx());
+        
     }
 }

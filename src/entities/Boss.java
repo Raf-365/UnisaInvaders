@@ -20,13 +20,7 @@ public class Boss extends Character{
     
     public static int getHealthMax(){return HEALTH_MAX;}
     
-    public void move(){
-       
-        if ((getX() + getDx() <= GameFrame.MAX_X - getWidth() - 20) 
-                 && (getX() + getDx() >= 5)) 
-            setX(getX() +getDx());
-        
-    }
+
     
     public void fire(BulletBossController bulletBossController) {
         for(int i=0; i<BossController.getNUM_FIRE(); i++){

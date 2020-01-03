@@ -23,12 +23,6 @@ public class Pepper extends Character {
         return state;
     }
     
-    public void move() {
-        
-        if ((getX() +getDx() <= GameFrame.MAX_X - getWidth() - 20) && (getX() + getDx() >= 5)) 
-            setX(getX() + getDx());
-        
-    }
     
     public void fire(BulletController bulletController ) {
         bulletController.getBulletsArray().add(new Bullet(getX(), getY(), 
