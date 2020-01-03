@@ -8,7 +8,7 @@ public class HudController implements Controller{
     public static final int MALUS = -10,KILLED_BOSS = 50, BONUS = 1;
     private static final double SCORE_UPDATE = 0.02;
    
-    public HudController(int health) {
+    public HudController() {
         score = 0;
         malus = 0;
         bonus = 0;
