@@ -17,10 +17,7 @@ public abstract class Entity {
     private ArrayList<Integer> states; 
 
     
-    
-    public Entity(){
-        
-    }
+   
     
     public Entity(int x, int y, boolean visible, String path) {
         this.x = x;

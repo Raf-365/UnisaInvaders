@@ -19,10 +19,6 @@ public class Professor extends FallingObject {
     
     
    
-    public Professor(){
-        
-           
-    }
     
     public Professor(int x, int y, String path) {
         super(x, y, path);

@@ -8,10 +8,7 @@ public abstract class FallingObject extends Entity {
     public static final int FALLING_OBJECT_SPEED = 3,FALLING_OBJECT_SPEED_UPDATE=1 ;
     static int speed;
     
-    public FallingObject(){
-        
-    }
-    
+   
     public FallingObject(int x, int y, String path) {
         super(x, y, true, path);
         speed=FALLING_OBJECT_SPEED;
