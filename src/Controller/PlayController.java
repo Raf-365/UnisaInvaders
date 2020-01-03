@@ -1,6 +1,5 @@
 package Controller;
 
-import ObserverPackage.Controller;
 import ObserverPackage.CollisionEvent;
 import entities.Professor;
 import View.MainView;

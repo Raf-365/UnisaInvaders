@@ -1,5 +1,4 @@
 package Controller;
-import ObserverPackage.Controller;
 import View.GameFrame;
 import entities.*;
 import java.util.ArrayList;

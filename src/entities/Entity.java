@@ -1,7 +1,7 @@
     package entities;
 
 import ObserverPackage.CollisionEvent;
-import ObserverPackage.Controller;
+
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;

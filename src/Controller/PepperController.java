@@ -1,8 +1,5 @@
 package Controller;
 
-import ObserverPackage.Controller;
-import Controller.BulletController;
-import ObserverPackage.CollisionEvent;
 import entities.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

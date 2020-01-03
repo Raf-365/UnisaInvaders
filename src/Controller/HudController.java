@@ -1,6 +1,5 @@
 package Controller;
 
-import ObserverPackage.Controller;
 
 public class HudController implements Controller{
 

@@ -1,6 +1,5 @@
 package Controller;
 
-import ObserverPackage.Controller;
 import TemplatePackage1.UpdateBulletBossControllerY;
 import entities.*;
 import java.util.ArrayList;

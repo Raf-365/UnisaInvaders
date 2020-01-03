@@ -5,7 +5,6 @@
  */
 package Controller;
 
-import ObserverPackage.Controller;
 import entities.Professor;
 import java.util.Random;
 import View.GameFrame;

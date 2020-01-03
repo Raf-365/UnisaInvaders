@@ -1,5 +1,4 @@
 package Controller;
-import ObserverPackage.Controller;
 import ObserverPackage.Observer;
 import View.GameFrame;
 import View.MainView;

@@ -1,5 +1,4 @@
 package Controller;
-import ObserverPackage.Controller;
 import TemplatePackage1.*;
 import entities.*;
 import java.util.ArrayList;
