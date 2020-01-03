@@ -14,14 +14,12 @@ import ObserverPackage.*;
 
 public class PlayController  implements Controller,Observer {
 
-    Pepper pepper;
     ProfessorController professorController;
     BonusController bonusController;
     PepperController pepperController;
     HudController hudController;
     BossController bossController;
 
-    //HudControllerBoss hudControllerBoss;
     MainView mainView;
     static private PlayController instance = null;  //SINGLETON
     private boolean ingame, enabled = false;
@@ -177,7 +175,7 @@ public class PlayController  implements Controller,Observer {
             }
             if ((System.currentTimeMillis() - bonusSpeedTimeBefore) / 1000 < SECONDS_SHIELD_DISAPPEAR) {
                 this.getPepperController().getPepper().changeImage(30);
-                if (this.getPepperController().getFireFlag() == true) {
+                if (this.getPepperController().getFireFlag()) {
                     this.getPepperController().getPepper().changeImage(40);
                 } else {
                     this.getPepperController().getPepper().changeImage(30);
@@ -234,10 +232,10 @@ public class PlayController  implements Controller,Observer {
 
         if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_LIFE)) { //pepper con la vita
             source.removeState(MainView.PEPPER_COLLIDE_LIFE);
-            if (pepperController.getPepper().getHealth() < pepper.HEALTH_MAX - 1) {
+            if (pepperController.getPepper().getHealth() < Pepper.HEALTH_MAX - 1) {
                 getPepperController().updateHealthPepper(Pepper.HEALTH2);
                 
-            } else if (pepperController.getPepper().getHealth() == pepper.HEALTH_MAX - 1) {
+            } else if (pepperController.getPepper().getHealth() == Pepper.HEALTH_MAX - 1) {
                 getPepperController().updateHealthPepper(Pepper.HEALTH1);
             }
         }
