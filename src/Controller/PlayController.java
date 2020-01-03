@@ -11,14 +11,12 @@ import static main.Game.SECONDS_PROFESSORS_DISAPPEAR;
 import static main.Game.SECONDS_SHIELD_DISAPPEAR;
 import static main.Game.SECONDS_SPEED_PROFESSORS_UPDATE;
 import ObserverPackage.*;
+import java.util.HashMap;
 
 public class PlayController  implements Controller,Observer {
 
-    ProfessorController professorController;
-    BonusController bonusController;
-    PepperController pepperController;
-    HudController hudController;
-    BossController bossController;
+   
+    HashMap<String,Controller> controllers;
 
     MainView mainView;
     static private PlayController instance = null;  //SINGLETON
@@ -56,12 +54,13 @@ public class PlayController  implements Controller,Observer {
     }
 
     public void initController() {
-        
-        professorController = new ProfessorController();
-        bonusController = new BonusController();
-        pepperController = new PepperController();
-        hudController = new HudController();
-        bossController = new BossController();   
+        controllers = new HashMap<>();
+        controllers.put("professorController", new ProfessorController());
+        controllers.put("bonusController", new BonusController());
+        controllers.put("pepperController", new PepperController());
+        controllers.put("hudController", new HudController());
+        controllers.put("bossController", new BossController());
+
     }
 
     public void updateFallingObjectSpeed() {
@@ -70,11 +69,11 @@ public class PlayController  implements Controller,Observer {
     }
 
     public BossController getBossController() {
-        return bossController;
+        return (BossController) controllers.get("bossController");
     }
 
     public void resetBossController() {
-
+       BossController bossController = (BossController) controllers.get("bossController");
         bossController.getBoss().updateHealth((Boss.getHealthMax()));
     }
 
@@ -88,6 +87,8 @@ public class PlayController  implements Controller,Observer {
 
     public void setView(MainView mainView) {
         this.mainView = mainView;
+        BonusController bonusController = (BonusController) controllers.get("bonusController");
+        PepperController pepperController = (PepperController) controllers.get("pepperController");
         bonusController.setObserverBonus(mainView);//aggiunge come osservatori di vita e scudo , la mainview
         pepperController.setObserverPepper(mainView);//aggiunge come osservatore di pepper, la view
         
@@ -101,19 +102,19 @@ public class PlayController  implements Controller,Observer {
     }
 
     public PepperController getPepperController() {
-        return pepperController;
+        return (PepperController) controllers.get("pepperController");
     }
 
     public ProfessorController getProfessorController() {
-        return professorController;
+        return (ProfessorController) controllers.get("professorController");
     }
 
     public BonusController getBonusController() {
-        return bonusController;
+        return (BonusController) controllers.get("bonusController");
     }
 
     public HudController getHudController() {
-        return hudController;
+        return (HudController) controllers.get("hudController");
     }
 
     public boolean getIngame() {
@@ -121,12 +122,15 @@ public class PlayController  implements Controller,Observer {
     }
 
     public void updateEntities() {
-        professorController.update();
+        for(Controller c: controllers.values())
+            c.update();
+    }
+       /* professorController.update();
         bonusController.update();
         pepperController.update();
         hudController.update();
-        bossController.update();
-    }
+        bossController.update(); */
+    
 
     public void updateView() {
         mainView.repaintComponents();
@@ -232,6 +236,7 @@ public class PlayController  implements Controller,Observer {
 
         if (collisionEvent.getState().contains(MainView.PEPPER_COLLIDE_LIFE)) { //pepper con la vita
             source.removeState(MainView.PEPPER_COLLIDE_LIFE);
+              PepperController pepperController = (PepperController) controllers.get("pepperController"); //instanza creata per migliorare leggibilità
             if (pepperController.getPepper().getHealth() < Pepper.HEALTH_MAX - 1) {
                 getPepperController().updateHealthPepper(Pepper.HEALTH2);
                 
@@ -271,5 +276,4 @@ public class PlayController  implements Controller,Observer {
             }
         }
     }
-
 }
