@@ -108,7 +108,6 @@ public class MainView extends JPanel implements Observer  {
         punteggioMalus = 0;
         numBossKilled = 0;
         
-        //CHIEDERE A FOGGIA SE DOBBIAMO CREARE LE NOSTRE ENTITA' IN QUESTA CLASSE O NEI CONTROLLER E LASCIARE COSI'
         
         professorController = playController.getProfessorController();
         bonusController = playController.getBonusController();
@@ -132,7 +131,7 @@ public class MainView extends JPanel implements Observer  {
         this.observers = new ArrayList<Observer>();
         this.addObserver((Observer) playController);  
         bossController.getBoss().addObserver(this);
-        pepperController.getPepper().addObserver(this);
+     
         URL url = getClass().getResource("shot.wav");
         URL url2 = getClass().getResource("collide.wav");        
         URL url3 = getClass().getResource("hitHeadSound.wav");
